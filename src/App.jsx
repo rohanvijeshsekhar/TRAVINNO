@@ -15,7 +15,9 @@ import Loader from './components/Loader';
 
 function App() {
   const [currentView, setCurrentView] = useState('home');
-  const [showLoader, setShowLoader] = useState(true);
+  const [showLoader, setShowLoader] = useState(() => {
+    return !sessionStorage.getItem('travinno_loaded');
+  });
 
   useEffect(() => {
     const handleHashChange = () => {
