@@ -1006,7 +1006,7 @@ button, a {
 /* Card design */
 .new-testimonial-card {
   background-color: #FFFFFF;
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  border: 1.5px solid rgba(0, 0, 0, 0.12);
   border-radius: 24px;
   padding: 40px;
   width: 100%;
@@ -1020,7 +1020,7 @@ button, a {
 .new-testimonial-card:hover {
   transform: scale(1.02);
   background-color: #FAFAFA;
-  border-color: rgba(0, 0, 0, 0.16);
+  border-color: rgba(0, 0, 0, 0.24);
 }
 
 .new-testimonial-text {
