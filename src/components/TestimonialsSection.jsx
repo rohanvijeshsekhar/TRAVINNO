@@ -1,98 +1,86 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-const testimonials = [
+const testimonialsLeft = [
   {
-    name: 'Ava Green',
-    username: '@ava',
-    body: 'Travinno made our regional tour logistics completely effortless and reliable.',
-    img: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=150&h=150',
-    country: '🇦🇺 Australia',
+    quote: "Working with Travinno has consistently exceeded our expectations. Their professionalism and local expertise make every journey effortless.",
+    name: "Sarah Williams",
+    company: "Travel Consultant",
+    country: "United Kingdom"
   },
   {
-    name: 'Ana Miller',
-    username: '@ana',
-    body: 'The level of ground support and curation is unmatched in luxury destination management.',
-    img: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150&h=150',
-    country: '🇩🇪 Germany',
+    quote: "Their MICE execution is outstanding. We had 200 high-profile guests, and the coordination was flawless down to the last minute.",
+    name: "Marcus Dupont",
+    company: "Director of Operations, Elite Events",
+    country: "France"
   },
   {
-    name: 'Mateo Rossi',
-    username: '@mat',
-    body: 'Outstanding MICE execution! Every detail was handled with precision and care.',
-    img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=150&h=150',
-    country: '🇮🇹 Italy',
+    quote: "The ground handling across Asia is exceptional. Our luxury travelers expect perfection, and Travinno delivers it every single time.",
+    name: "Elena Rostova",
+    company: "Leisure Travel Manager",
+    country: "Germany"
   },
   {
-    name: 'Maya Patel',
-    username: '@maya',
-    body: 'Their deep local expertise across Asia made our corporate retreat a massive success.',
-    img: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150&h=150',
-    country: '🇮🇳 India',
-  },
-  {
-    name: 'Noah Smith',
-    username: '@noah',
-    body: 'Seamless ground transfers and luxury experiences. Highly recommend their DMC services!',
-    img: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=150&h=150',
-    country: '🇺🇸 USA',
-  },
-  {
-    name: 'Lucas Stone',
-    username: '@luc',
-    body: 'Incredibly responsive team and tailored itineraries that our clients absolutely loved.',
-    img: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&q=80&w=150&h=150',
-    country: '🇫🇷 France',
-  },
-  {
-    name: 'Haruto Sato',
-    username: '@haru',
-    body: 'Exceptional standards of service and operational execution across the Middle East.',
-    img: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=150&h=150',
-    country: '🇯🇵 Japan',
-  },
-  {
-    name: 'Emma Lee',
-    username: '@emma',
-    body: 'Our VIP clients had a wonderful, worry-free trip. Reliable ground support throughout.',
-    img: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=150&h=150',
-    country: '🇨🇦 Canada',
-  },
-  {
-    name: 'Carlos Ray',
-    username: '@carl',
-    body: 'Flexible, proactive, and professional. The ideal partner for global travel professionals.',
-    img: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=150&h=150',
-    country: '🇪🇸 Spain',
-  },
+    quote: "A truly responsive team that designs curated itineraries that showcase the absolute best of local culture and hospitality.",
+    name: "Kenji Sato",
+    company: "Bespoke Planner, Japan Luxury Travel",
+    country: "Japan"
+  }
 ];
 
-function TestimonialCard({ img, name, username, body, country }) {
+const testimonialsRight = [
+  {
+    quote: "They understand the nuances of ultra-luxury. From private yacht bookings to exclusive access, Travinno makes the impossible happen.",
+    name: "Charlotte Vance",
+    company: "Vance & Co Luxury Travel",
+    country: "USA"
+  },
+  {
+    quote: "Our corporate partners were blown away by the level of service during our executive retreat. A highly professional partner.",
+    name: "David Chen",
+    company: "Managing Director, Global Ventures",
+    country: "Singapore"
+  },
+  {
+    quote: "Proactive communication, transparent pricing, and unparalleled local connections. They are our go-to DMC.",
+    name: "Alessandro Rossi",
+    company: "Founder, Italia Extraordinary",
+    country: "Italy"
+  },
+  {
+    quote: "A seamless collaboration from start to finish. Their attention to detail keeps our VIP clients coming back year after year.",
+    name: "Amelia Thomson",
+    company: "Elite Journeys",
+    country: "Australia"
+  }
+];
+
+function TestimonialCard({ quote, name, company, country, className = "" }) {
   return (
-    <div className="testimonial-card">
-      <div className="testimonial-card-header">
-        <img src={img} alt={name} className="testimonial-card-avatar" loading="lazy" />
-        <div className="testimonial-card-info">
-          <div className="testimonial-card-name">
-            {name} <span className="testimonial-card-flag">{country}</span>
-          </div>
-          <div className="testimonial-card-username">{username}</div>
+    <div className={`testimonial-premium-card ${className}`}>
+      <span className="testimonial-quote-mark">“</span>
+      <blockquote className="testimonial-quote-text">{quote}”</blockquote>
+      <div className="testimonial-author-info">
+        <div className="testimonial-author-name">{name}</div>
+        <div className="testimonial-author-meta">
+          {company} &bull; {country}
         </div>
       </div>
-      <blockquote className="testimonial-card-body">"{body}"</blockquote>
     </div>
   );
 }
 
-function MarqueeColumn({ reverse = false }) {
+function MarqueeColumn({ items, reverse = false }) {
   return (
-    <div className="testimonials-marquee-column">
-      <div className={`testimonials-marquee-track ${reverse ? 'reverse' : ''}`}>
-        {testimonials.map((item, idx) => (
+    <div className="testimonials-marquee-col">
+      <div className={`testimonials-column-track ${reverse ? 'scroll-down' : 'scroll-up'}`}>
+        {/* First list */}
+        {items.map((item, idx) => (
           <TestimonialCard key={`orig-${idx}`} {...item} />
         ))}
-        {testimonials.map((item, idx) => (
-          <TestimonialCard key={`dup-${idx}`} {...item} />
+        {/* Duplicate list for seamless infinite loop (hidden on mobile) */}
+        {items.map((item, idx) => (
+          <TestimonialCard key={`dup-${idx}`} {...item} className="duplicate-card" />
         ))}
       </div>
     </div>
@@ -101,47 +89,57 @@ function MarqueeColumn({ reverse = false }) {
 
 export default function TestimonialsSection() {
   return (
-    <section className="testimonials-section">
-      <div className="testimonials-container">
-        <motion.h2
-          className="testimonials-title"
-          initial={{ opacity: 0, y: 15 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.8, ease: 'easeOut' }}
-        >
-          Testimonials
-        </motion.h2>
-        <motion.p
-          className="testimonials-intro"
-          initial={{ opacity: 0, y: 15 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.8, ease: 'easeOut', delay: 0.15 }}
-        >
-          Hear from our global travel partners, corporate clients and leisure professionals who trust Travinno to deliver exceptional journeys.
-        </motion.p>
+    <section className="testimonials-premium-section" id="insights">
+      <div className="testimonials-premium-container">
+        {/* Section Intro */}
+        <div className="testimonials-premium-header">
+          <motion.span
+            className="testimonials-premium-label"
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: 'easeOut' }}
+          >
+            Testimonials
+          </motion.span>
+          <motion.h2
+            className="testimonials-premium-title"
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: 'easeOut', delay: 0.1 }}
+          >
+            Trusted By<br />
+            Travel Professionals<br />
+            Worldwide
+          </motion.h2>
+          <motion.p
+            className="testimonials-premium-intro"
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: 'easeOut', delay: 0.2 }}
+          >
+            Real experiences from travel partners who trust Travinno to deliver exceptional destination management services.
+          </motion.p>
+        </div>
 
-        {/* 3D Perspective Box */}
+        {/* Dual-Column Infinite Scroll Viewport */}
         <motion.div
-          className="testimonials-perspective-wrapper"
+          className="testimonials-premium-viewport"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-40px" }}
-          transition={{ duration: 1.0, ease: 'easeOut' }}
+          viewport={{ once: true }}
+          transition={{ duration: 1.0, ease: 'easeOut', delay: 0.3 }}
         >
           {/* Fading Edge Overlays */}
-          <div className="testimonials-overlay-top" />
-          <div className="testimonials-overlay-bottom" />
-          <div className="testimonials-overlay-left" />
-          <div className="testimonials-overlay-right" />
+          <div className="testimonials-fade-overlay-top" />
+          <div className="testimonials-fade-overlay-bottom" />
 
-          {/* 3D Angled Vertical Grid */}
-          <div className="testimonials-3d-grid">
-            <MarqueeColumn />
-            <MarqueeColumn reverse />
-            <MarqueeColumn />
-            <MarqueeColumn reverse />
+          {/* Columns */}
+          <div className="testimonials-dual-columns">
+            <MarqueeColumn items={testimonialsLeft} />
+            <MarqueeColumn items={testimonialsRight} reverse />
           </div>
         </motion.div>
       </div>
