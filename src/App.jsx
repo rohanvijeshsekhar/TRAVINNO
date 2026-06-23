@@ -164,37 +164,8 @@ function App() {
     };
     gsap.ticker.add(tickerUpdate);
 
-    const fadeConfigurations = [
-      { selector: '.home-hero-fade', pinned: false },
-      { selector: '.home-editorial-fade-wrap', pinned: false },
-      { selector: '.home-services-fade-wrap', pinned: true },
-      { selector: '.home-destinations-fade-wrap', pinned: false },
-      { selector: '.home-journey-fade-wrap', pinned: false },
-      { selector: '.home-contact-fade-wrap', pinned: false },
-      { selector: '.home-why-fade-wrap', pinned: false },
-      { selector: '.home-contact-cta-fade-wrap', pinned: false }
-    ];
-
     const ctx = gsap.context(() => {
-      fadeConfigurations.forEach(({ selector, pinned }) => {
-        const element = document.querySelector(selector);
-        if (!element) return;
-
-        gsap.fromTo(element,
-          { opacity: 1 },
-          {
-            opacity: 0.35, // Fade out slightly as the section scrolls away
-            ease: 'sine.inOut',
-            scrollTrigger: {
-              trigger: element,
-              start: pinned ? 'bottom bottom' : 'top top',
-              end: 'bottom top',
-              scrub: true,
-              invalidateOnRefresh: true
-            }
-          }
-        );
-      });
+      // Disabled section opacity fade-out animations to keep sections fully bright, readable, and premium
     });
 
     return () => {
