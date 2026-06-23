@@ -370,6 +370,15 @@ const ConnectingRoute = ({
 };
 
 const BackgroundIllustrations = () => {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const media = window.matchMedia('(max-width: 1024px)');
+    setIsMobile(media.matches);
+    const listener = (e) => setIsMobile(e.matches);
+    media.addEventListener('change', listener);
+    return () => media.removeEventListener('change', listener);
+  }, []);
+
   return (
     <div className="expertise-bg-illustrations">
       <svg
@@ -379,7 +388,7 @@ const BackgroundIllustrations = () => {
         strokeWidth="1.2"
         strokeLinecap="round"
         strokeLinejoin="round"
-        preserveAspectRatio="xMidYMid slice"
+        preserveAspectRatio={isMobile ? "xMinYMid slice" : "xMidYMid slice"}
         style={{ width: "100%", height: "100%" }}
       >
         {/* LEFT SIDE: Dubai-inspired architectural sketch (strokeOpacity 0.08) */}

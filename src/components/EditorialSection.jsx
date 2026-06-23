@@ -349,22 +349,29 @@ export default function EditorialSection() {
             grid-template-columns: 1fr;
             grid-template-areas:
               "left-header"
-              "right-text"
-              "left-globe";
-            gap: 45px;
+              "left-globe"
+              "right-text";
+            row-gap: 25px;
+            column-gap: 0px;
             padding: 0 25px;
           }
           .editorial-left-globe {
-            margin-top: 0;
-            height: 340px;
+            margin-top: -25px !important;
+            height: auto !important;
             padding-right: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
           }
           .editorial-globe-canvas {
-            width: 360px !important;
-            height: 360px !important;
-            left: 50%;
-            transform: translateX(-50%);
-            top: -30px;
+            position: relative !important;
+            width: 280px !important;
+            height: 280px !important;
+            left: auto !important;
+            top: auto !important;
+            transform: none !important;
+            margin: 0 auto;
           }
           .editorial-right-text {
             padding-top: 0;
@@ -372,10 +379,14 @@ export default function EditorialSection() {
             border-left: none;
           }
           .editorial-stats {
-            position: relative;
-            bottom: 0;
-            left: 0;
-            margin-top: 15px;
+            position: relative !important;
+            bottom: auto !important;
+            left: auto !important;
+            margin-top: 0 !important;
+            width: 100%;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
           }
           .editorial-left-header {
             top: 0;

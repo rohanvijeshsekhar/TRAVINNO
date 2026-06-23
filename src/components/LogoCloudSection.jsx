@@ -42,6 +42,15 @@ const TravinnoPin = () => (
 );
 // Subcomponent: Background Illustrations matching the pattern of other sections
 const BackgroundIllustrations = () => {
+  const [isMobile, setIsMobile] = React.useState(false);
+  React.useEffect(() => {
+    const media = window.matchMedia('(max-width: 1024px)');
+    setIsMobile(media.matches);
+    const listener = (e) => setIsMobile(e.matches);
+    media.addEventListener('change', listener);
+    return () => media.removeEventListener('change', listener);
+  }, []);
+
   return (
     <div className="logo-cloud-bg-illustrations">
       <svg
@@ -51,7 +60,7 @@ const BackgroundIllustrations = () => {
         strokeWidth="1.2"
         strokeLinecap="round"
         strokeLinejoin="round"
-        preserveAspectRatio="xMidYMid slice"
+        preserveAspectRatio={isMobile ? "xMaxYMid slice" : "xMidYMid slice"}
         style={{ width: "100%", height: "100%" }}
       >
         {/* Scenic editorial line-art travel scene (strokeOpacity 0.06-0.08) */}

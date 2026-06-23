@@ -68,6 +68,15 @@ const CornerBrackets = () => (
 );
 
 const BackgroundIllustrations = () => {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const media = window.matchMedia('(max-width: 1024px)');
+    setIsMobile(media.matches);
+    const listener = (e) => setIsMobile(e.matches);
+    media.addEventListener('change', listener);
+    return () => media.removeEventListener('change', listener);
+  }, []);
+
   return (
     <div className="journey-bg-illustrations">
       <svg
@@ -77,7 +86,7 @@ const BackgroundIllustrations = () => {
         strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
-        preserveAspectRatio="xMidYMid slice"
+        preserveAspectRatio={isMobile ? "xMinYMid slice" : "xMidYMid slice"}
         style={{ width: '100%', height: '100%' }}
       >
         {/* LEFT SIDE: Thailand-inspired architectural & landscape sketch (strokeOpacity 0.08) */}

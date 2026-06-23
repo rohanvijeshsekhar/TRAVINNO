@@ -48,8 +48,62 @@ const InteractiveSelector = () => {
     }
   };
 
+  const [activeMobileIndex, setActiveMobileIndex] = useState<number | null>(null);
+  
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchStartY, setTouchStartY] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  const [touchEndY, setTouchEndY] = useState<number | null>(null);
+
+  const minSwipeDistance = 50;
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null);
+    setTouchEndY(null);
+    setTouchStart(e.targetTouches[0].clientX);
+    setTouchStartY(e.targetTouches[0].clientY);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+    setTouchEndY(e.targetTouches[0].clientY);
+  };
+
+  const handleTouchEnd = () => {
+    if (touchStart === null || touchEnd === null || touchStartY === null || touchEndY === null) return;
+    
+    const xDistance = touchStart - touchEnd;
+    const yDistance = touchStartY - touchEndY;
+    
+    if (Math.abs(xDistance) > Math.abs(yDistance)) {
+      if (Math.abs(xDistance) > minSwipeDistance) {
+        if (xDistance > 0) {
+          // Swipe Left -> next
+          setActiveMobileIndex((prev) => {
+            if (prev === null) return 0;
+            return (prev + 1) % options.length;
+          });
+        } else {
+          // Swipe Right -> prev
+          setActiveMobileIndex((prev) => {
+            if (prev === null) return options.length - 1;
+            return (prev - 1 + options.length) % options.length;
+          });
+        }
+      }
+    }
+  };
+
+  const handleMobileClick = (index: number) => {
+    if (activeMobileIndex === index) {
+      setActiveMobileIndex(null);
+    } else {
+      setActiveMobileIndex(index);
+    }
+  };
+
   useEffect(() => {
-    const timers: NodeJS.Timeout[] = [];
+    const timers: any[] = [];
     
     options.forEach((_, i) => {
       const timer = setTimeout(() => {
@@ -65,8 +119,8 @@ const InteractiveSelector = () => {
 
   return (
     <div className="relative flex flex-col items-center justify-center w-full bg-transparent font-sans text-white py-12">
-      {/* Options Container */}
-      <div className="options flex w-full max-w-[1100px] min-w-[320px] h-[450px] mx-auto items-stretch overflow-hidden relative rounded-2xl border border-white/10 bg-[#0c0c0c] shadow-2xl">
+      {/* Desktop Version */}
+      <div className="options hidden md:flex w-full max-w-[1100px] min-w-[320px] h-[450px] mx-auto items-stretch overflow-hidden relative rounded-2xl border border-white/10 bg-[#0c0c0c] shadow-2xl">
         {options.map((option, index) => (
           <div
             key={index}
@@ -125,6 +179,115 @@ const InteractiveSelector = () => {
             </div>
           </div>
         ))}
+      </div>
+
+      {/* Mobile-only Options Container */}
+      <div 
+        className="options-mobile flex md:hidden w-[calc(100%-32px)] h-[500px] mx-auto items-stretch overflow-hidden relative rounded-2xl border border-white/10 bg-[#0c0c0c] shadow-2xl select-none"
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
+        {options.map((option, index) => {
+          const isExpanded = activeMobileIndex === index;
+          return (
+            <div
+              key={index}
+              className={`
+                option-mobile relative flex flex-col justify-end overflow-hidden
+                ${isExpanded ? 'active' : ''}
+              `}
+              style={{
+                flex: activeMobileIndex === null
+                  ? '1 1 0%'
+                  : isExpanded
+                    ? '22 1 0%'
+                    : '1 1 0%',
+                transition: 'flex 750ms cubic-bezier(0.645, 0.045, 0.355, 1), opacity 700ms ease-in-out, transform 700ms ease-in-out',
+                opacity: animatedOptions.includes(index) ? 1 : 0,
+                transform: animatedOptions.includes(index) ? 'translateX(0)' : 'translateX(-60px)',
+                minWidth: '0px',
+                height: '100%',
+                margin: 0,
+                borderRight: index < options.length - 1 ? '1px solid rgba(255,255,255,0.08)' : 'none',
+                cursor: 'pointer',
+                backgroundColor: '#18181b',
+                zIndex: isExpanded ? 10 : 1,
+                willChange: 'flex-grow'
+              }}
+              onClick={() => handleMobileClick(index)}
+            >
+              {/* Background Image Layer */}
+              <div
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  backgroundImage: `url('${option.image}')`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  transform: isExpanded ? 'scale(1.05)' : 'scale(1)',
+                  filter: activeMobileIndex === null 
+                    ? 'brightness(1) blur(0px)' 
+                    : isExpanded 
+                      ? 'brightness(1) blur(0px)' 
+                      : 'brightness(0.5) blur(1px)',
+                  transition: 'transform 750ms cubic-bezier(0.645, 0.045, 0.355, 1), filter 750ms cubic-bezier(0.645, 0.045, 0.355, 1)',
+                  willChange: 'transform, filter'
+                }}
+              />
+
+              {/* Gradient overlay for text readability */}
+              <div 
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  background: 'linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.45) 45%, rgba(0, 0, 0, 0) 100%)',
+                  opacity: isExpanded ? 0.95 : 0,
+                  transition: 'opacity 750ms cubic-bezier(0.645, 0.045, 0.355, 1)',
+                  pointerEvents: 'none'
+                }}
+              />
+              
+              {/* Content Overlay */}
+              <div 
+                style={{
+                  position: 'absolute',
+                  left: '20px',
+                  bottom: '30px',
+                  right: '20px',
+                  zIndex: 10,
+                  pointerEvents: 'none',
+                  opacity: isExpanded ? 1 : 0,
+                  transform: isExpanded ? 'translateY(0)' : 'translateY(20px)',
+                  transition: 'opacity 500ms cubic-bezier(0.645, 0.045, 0.355, 1) 200ms, transform 500ms cubic-bezier(0.645, 0.045, 0.355, 1) 200ms',
+                }}
+              >
+                <h3 className="font-bold text-2xl tracking-wide uppercase text-[#F5F2EC] drop-shadow-md">
+                  {option.title}
+                </h3>
+                <p className="text-xs text-white/90 font-light mt-1.5 leading-relaxed max-w-[95%] line-clamp-3">
+                  {option.description}
+                </p>
+                <div style={{ marginTop: '16px' }}>
+                  <a 
+                    href="#contact"
+                    className="inline-flex items-center gap-1.5 text-[10px] font-semibold tracking-wider text-[#F5F2EC] uppercase pointer-events-auto hover:text-white transition-colors duration-300"
+                    style={{
+                      border: '1px solid rgba(255, 255, 255, 0.35)',
+                      padding: '8px 18px',
+                      backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                      backdropFilter: 'blur(4px)',
+                      WebkitBackdropFilter: 'blur(4px)'
+                    }}
+                  >
+                    <span>Explore</span>
+                    <span>&rarr;</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          );
+        })}
       </div>
       
       {/* Custom animations */}
