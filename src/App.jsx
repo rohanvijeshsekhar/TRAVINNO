@@ -14,6 +14,7 @@ import Loader from './components/Loader';
 import TeamPage from './components/TeamPage';
 import ServicesPage from './components/ServicesPage';
 import CinematicHero from './components/CinematicHero';
+import ContactCTA from './components/ContactCTA';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from '@studio-freight/lenis';
@@ -170,7 +171,8 @@ function App() {
       { selector: '.home-destinations-fade-wrap', pinned: false },
       { selector: '.home-journey-fade-wrap', pinned: false },
       { selector: '.home-contact-fade-wrap', pinned: false },
-      { selector: '.home-why-fade-wrap', pinned: false }
+      { selector: '.home-why-fade-wrap', pinned: false },
+      { selector: '.home-contact-cta-fade-wrap', pinned: false }
     ];
 
     const ctx = gsap.context(() => {
@@ -358,13 +360,18 @@ function App() {
 
 
           {/* Partner Section */}
-          <div id="contact" className="home-contact-fade-wrap">
+          <div className="home-contact-fade-wrap">
             <LogoCloudSection />
           </div>
 
           {/* Why Travinno Grid Section */}
           <div className="home-why-fade-wrap">
             <WhyTravinno />
+          </div>
+
+          {/* Contact CTA Section */}
+          <div className="home-contact-cta-fade-wrap">
+            <ContactCTA />
           </div>
         </>
       )}
