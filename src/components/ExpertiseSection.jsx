@@ -1,10 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { MotionPathPlugin } from 'gsap/MotionPathPlugin';
-
-gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
 const expertiseData = [
   {
@@ -189,13 +184,12 @@ const CardIllustration = ({ index, isHovered }) => {
   }
 };
 
-const ExpertiseCard = ({ item, index, isActive }) => {
+const ExpertiseCard = ({ item, index }) => {
   const [isHovered, setIsHovered] = useState(false);
-  const isHighlighted = isHovered || isActive;
   
   return (
     <motion.div
-      className={`expertise-card ${isActive ? 'active' : ''}`}
+      className="expertise-card"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
@@ -206,166 +200,21 @@ const ExpertiseCard = ({ item, index, isActive }) => {
       <div 
         className="card-illustration-container"
         style={{
-          opacity: isHighlighted ? 0.08 : 0.04,
-          filter: isHighlighted ? "drop-shadow(0 0 6px rgba(193, 18, 31, 0.85))" : "none"
+          opacity: isHovered ? 0.08 : 0.04,
+          filter: isHovered ? "drop-shadow(0 0 6px rgba(193, 18, 31, 0.85))" : "none"
         }}
       >
-        <CardIllustration index={index} isHovered={isHighlighted} />
+        <CardIllustration index={index} isHovered={isHovered} />
       </div>
       
-      {/* Aviation Navigation Board HUD items */}
       <div className="card-hud-header">
         <span className="card-waypoint">{item.waypoint}</span>
-        <div className={`radar-pulse-dot ${isHighlighted ? 'radar-active' : ''}`} />
+        <div className={`radar-pulse-dot ${isHovered ? 'radar-active' : ''}`} />
       </div>
 
       <h3 className="expertise-card-title">{item.title}</h3>
       <p className="expertise-card-desc">{item.description}</p>
     </motion.div>
-  );
-};
-
-const ConnectingRoute = ({
-  desktopPathRef,
-  desktopAirplaneRef,
-  tabletPathRef,
-  tabletAirplaneRef,
-  mobilePathRef,
-  mobileAirplaneRef
-}) => {
-  return (
-    <>
-      {/* Desktop Route (3 cols x 2 rows) - Flight Path Layer */}
-      <svg className="expertise-travel-path desktop-route" viewBox="0 0 1200 600" fill="none" preserveAspectRatio="none">
-        {/* Glow layer */}
-        <path
-          d="M 500 -300 C 400 -150, 100 50, 200 150 C 333 110, 466 190, 600 150 C 733 110, 866 190, 1000 150 C 1140 150, 1140 300, 600 300 C 60 300, 60 450, 200 450 C 333 410, 466 490, 600 450 C 733 410, 866 490, 1000 450 C 1100 450, 1050 650, 850 850"
-          stroke="#C1121F"
-          strokeWidth="6"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          opacity="0.18"
-          filter="blur(2px)"
-        />
-        {/* Dotted path */}
-        <path
-          ref={desktopPathRef}
-          d="M 500 -300 C 400 -150, 100 50, 200 150 C 333 110, 466 190, 600 150 C 733 110, 866 190, 1000 150 C 1140 150, 1140 300, 600 300 C 60 300, 60 450, 200 450 C 333 410, 466 490, 600 450 C 733 410, 866 490, 1000 450 C 1100 450, 1050 650, 850 850"
-          stroke="#C1121F"
-          strokeWidth="2"
-          strokeDasharray="1 10"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          opacity="0.38"
-        />
-      </svg>
-      {/* Desktop Route (3 cols x 2 rows) - Airplane Layer */}
-      <svg className="expertise-airplane-container desktop-route" viewBox="0 0 1200 600" fill="none" preserveAspectRatio="none">
-        <g ref={desktopAirplaneRef} style={{ display: 'none' }}>
-          {/* Subtle crimson glow under the plane */}
-          <circle r="30" fill="#C1121F" opacity="0.5" filter="blur(8px)" />
-          {/* Subtle white core glow for glass card visibility */}
-          <circle r="12" fill="#FFFFFF" opacity="0.65" filter="blur(5px)" />
-          {/* Inner group for banking rotation at original wingspan */}
-          <g className="airplane-inner">
-            {/* The white outer outline */}
-            <path 
-              d="M 20,0 L 8,-4 L 4,-4 L -8,-25 L -12,-25 L -3,-4 L -16,-3 L -22,-15 L -25,-15 L -23,0 L -25,15 L -22,15 L -16,3 L -3,4 L -12,25 L -8,25 L 4,4 L 8,4 Z" 
-              stroke="#F7F5F2" 
-              strokeWidth="1.5" 
-              fill="#050505" 
-            />
-            {/* Crimson wing tip accents */}
-            <path d="M -8,-25 L -12,-25" stroke="#C1121F" strokeWidth="2" strokeLinecap="round" />
-            <path d="M -12,25 L -8,25" stroke="#C1121F" strokeWidth="2" strokeLinecap="round" />
-            {/* Crimson cockpit/window line accent */}
-            <path d="M 5,-1 L 10,-0.5 L 12,0 L 10,0.5 L 5,1 Z" fill="#C1121F" />
-          </g>
-        </g>
-      </svg>
-
-      {/* Tablet Route (2 cols x 3 rows) - Flight Path Layer */}
-      <svg className="expertise-travel-path tablet-route" viewBox="0 0 800 900" fill="none" preserveAspectRatio="none">
-        <path
-          d="M 350 -250 C 300 -100, 100 50, 200 150 C 350 110, 450 190, 600 150 C 720 150, 720 300, 400 300 C 80 300, 80 450, 200 450 C 350 410, 450 490, 600 450 C 720 450, 720 600, 400 600 C 80 600, 80 750, 200 750 C 350 710, 450 790, 600 750 C 700 750, 650 950, 500 1150"
-          stroke="#C1121F"
-          strokeWidth="6"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          opacity="0.18"
-          filter="blur(2px)"
-        />
-        <path
-          ref={tabletPathRef}
-          d="M 350 -250 C 300 -100, 100 50, 200 150 C 350 110, 450 190, 600 150 C 720 150, 720 300, 400 300 C 80 300, 80 450, 200 450 C 350 410, 450 490, 600 450 C 720 450, 720 600, 400 600 C 80 600, 80 750, 200 750 C 350 710, 450 790, 600 750 C 700 750, 650 950, 500 1150"
-          stroke="#C1121F"
-          strokeWidth="2"
-          strokeDasharray="1 10"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          opacity="0.38"
-        />
-      </svg>
-      {/* Tablet Route (2 cols x 3 rows) - Airplane Layer */}
-      <svg className="expertise-airplane-container tablet-route" viewBox="0 0 800 900" fill="none" preserveAspectRatio="none">
-        <g ref={tabletAirplaneRef} style={{ display: 'none' }}>
-          <circle r="30" fill="#C1121F" opacity="0.5" filter="blur(8px)" />
-          <circle r="12" fill="#FFFFFF" opacity="0.65" filter="blur(5px)" />
-          <g className="airplane-inner">
-            <path 
-              d="M 20,0 L 8,-4 L 4,-4 L -8,-25 L -12,-25 L -3,-4 L -16,-3 L -22,-15 L -25,-15 L -23,0 L -25,15 L -22,15 L -16,3 L -3,4 L -12,25 L -8,25 L 4,4 L 8,4 Z" 
-              stroke="#F7F5F2" 
-              strokeWidth="1.5" 
-              fill="#050505" 
-            />
-            <path d="M -8,-25 L -12,-25" stroke="#C1121F" strokeWidth="2" strokeLinecap="round" />
-            <path d="M -12,25 L -8,25" stroke="#C1121F" strokeWidth="2" strokeLinecap="round" />
-            <path d="M 5,-1 L 10,-0.5 L 12,0 L 10,0.5 L 5,1 Z" fill="#C1121F" />
-          </g>
-        </g>
-      </svg>
-
-      {/* Mobile Route (1 col x 6 rows) - Flight Path Layer */}
-      <svg className="expertise-travel-path mobile-route" viewBox="0 0 400 1200" fill="none" preserveAspectRatio="none">
-        <path
-          d="M 200 -200 C 150 -100, 100 0, 200 100 C 300 100, 300 200, 200 300 C 100 300, 100 400, 200 500 C 300 500, 300 600, 200 700 C 100 700, 100 800, 200 900 C 300 900, 300 1000, 200 1100 C 100 1100, 150 1250, 200 1400"
-          stroke="#C1121F"
-          strokeWidth="6"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          opacity="0.18"
-          filter="blur(2px)"
-        />
-        <path
-          ref={mobilePathRef}
-          d="M 200 -200 C 150 -100, 100 0, 200 100 C 300 100, 300 200, 200 300 C 100 300, 100 400, 200 500 C 300 500, 300 600, 200 700 C 100 700, 100 800, 200 900 C 300 900, 300 1000, 200 1100 C 100 1100, 150 1250, 200 1400"
-          stroke="#C1121F"
-          strokeWidth="2"
-          strokeDasharray="1 10"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          opacity="0.38"
-        />
-      </svg>
-      {/* Mobile Route (1 col x 6 rows) - Airplane Layer */}
-      <svg className="expertise-airplane-container mobile-route" viewBox="0 0 400 1200" fill="none" preserveAspectRatio="none">
-        <g ref={mobileAirplaneRef} style={{ display: 'none' }}>
-          <circle r="30" fill="#C1121F" opacity="0.5" filter="blur(8px)" />
-          <circle r="12" fill="#FFFFFF" opacity="0.65" filter="blur(5px)" />
-          <g className="airplane-inner">
-            <path 
-              d="M 20,0 L 8,-4 L 4,-4 L -8,-25 L -12,-25 L -3,-4 L -16,-3 L -22,-15 L -25,-15 L -23,0 L -25,15 L -22,15 L -16,3 L -3,4 L -12,25 L -8,25 L 4,4 L 8,4 Z" 
-              stroke="#F7F5F2" 
-              strokeWidth="1.5" 
-              fill="#050505" 
-            />
-            <path d="M -8,-25 L -12,-25" stroke="#C1121F" strokeWidth="2" strokeLinecap="round" />
-            <path d="M -12,25 L -8,25" stroke="#C1121F" strokeWidth="2" strokeLinecap="round" />
-            <path d="M 5,-1 L 10,-0.5 L 12,0 L 10,0.5 L 5,1 Z" fill="#C1121F" />
-          </g>
-        </g>
-      </svg>
-    </>
   );
 };
 
@@ -536,349 +385,7 @@ const BackgroundIllustrations = () => {
   );
 };
 
-const findPathProgressForPoints = (rawPath, targetPoints) => {
-  const steps = 1000;
-  const minDists = targetPoints.map(() => Infinity);
-  const bestProgress = targetPoints.map(() => 0);
-  
-  for (let i = 0; i <= steps; i++) {
-    const progress = i / steps;
-    const pt = MotionPathPlugin.getPositionOnPath(rawPath, progress, false);
-    
-    targetPoints.forEach((target, index) => {
-      const dx = pt.x - target.x;
-      const dy = pt.y - target.y;
-      const dist = dx * dx + dy * dy;
-      if (dist < minDists[index]) {
-        minDists[index] = dist;
-        bestProgress[index] = progress;
-      }
-    });
-  }
-  
-  return bestProgress;
-};
-
-const getPathAngle = (rawPath, progress) => {
-  const p1 = Math.max(0, Math.min(1, progress - 0.005));
-  const p2 = Math.max(0, Math.min(1, progress + 0.005));
-  const pt1 = MotionPathPlugin.getPositionOnPath(rawPath, p1, false);
-  const pt2 = MotionPathPlugin.getPositionOnPath(rawPath, p2, false);
-  return Math.atan2(pt2.y - pt1.y, pt2.x - pt1.x) * (180 / Math.PI);
-};
-
-const getPathCurvature = (rawPath, progress) => {
-  if (progress <= 0.01 || progress >= 0.99) return 0;
-  const anglePrev = getPathAngle(rawPath, progress - 0.01);
-  const angleNext = getPathAngle(rawPath, progress + 0.01);
-  let diff = angleNext - anglePrev;
-  if (diff > 180) diff -= 360;
-  if (diff < -180) diff += 360;
-  return diff;
-};
-
-const getProgressFromTime = (time, p0, p1, p2, p3, p4, p5) => {
-  const easeInOut = (t) => t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
-  const easeIn = (t) => t * t;
-  
-  let easeInOutFunc;
-  let easeInFunc;
-  try {
-    easeInOutFunc = gsap.parseEase("power1.inOut") || easeInOut;
-    easeInFunc = gsap.parseEase("power1.in") || easeIn;
-  } catch (e) {
-    easeInOutFunc = easeInOut;
-    easeInFunc = easeIn;
-  }
-
-  if (time < 0.2) return 0;
-  if (time >= 0.2 && time < 1.2) {
-    const ratio = (time - 0.2) / 1.0;
-    const easeRatio = easeInOutFunc(ratio);
-    return 0 + easeRatio * p0;
-  }
-  if (time >= 1.2 && time < 1.5) return p0;
-  if (time >= 1.5 && time < 2.5) {
-    const ratio = (time - 1.5) / 1.0;
-    const easeRatio = easeInOutFunc(ratio);
-    return p0 + easeRatio * (p1 - p0);
-  }
-  if (time >= 2.5 && time < 2.8) return p1;
-  if (time >= 2.8 && time < 3.8) {
-    const ratio = (time - 2.8) / 1.0;
-    const easeRatio = easeInOutFunc(ratio);
-    return p1 + easeRatio * (p2 - p1);
-  }
-  if (time >= 3.8 && time < 4.1) return p2;
-  if (time >= 4.1 && time < 5.6) {
-    const ratio = (time - 4.1) / 1.5;
-    const easeRatio = easeInOutFunc(ratio);
-    return p2 + easeRatio * (p3 - p2);
-  }
-  if (time >= 5.6 && time < 5.9) return p3;
-  if (time >= 5.9 && time < 6.9) {
-    const ratio = (time - 5.9) / 1.0;
-    const easeRatio = easeInOutFunc(ratio);
-    return p3 + easeRatio * (p4 - p3);
-  }
-  if (time >= 6.9 && time < 7.2) return p4;
-  if (time >= 7.2 && time < 8.2) {
-    const ratio = (time - 7.2) / 1.0;
-    const easeRatio = easeInOutFunc(ratio);
-    return p4 + easeRatio * (p5 - p4);
-  }
-  if (time >= 8.2 && time < 8.5) return p5;
-  if (time >= 8.5 && time < 9.5) {
-    const ratio = (time - 8.5) / 1.0;
-    const easeRatio = easeInFunc(ratio);
-    return p5 + easeRatio * (1.0 - p5);
-  }
-  return 1.0;
-};
-
 export default function ExpertiseSection() {
-  const desktopPathRef = useRef(null);
-  const desktopAirplaneRef = useRef(null);
-  const tabletPathRef = useRef(null);
-  const tabletAirplaneRef = useRef(null);
-  const mobilePathRef = useRef(null);
-  const mobileAirplaneRef = useRef(null);
-  
-  const [activeCardIndex, setActiveCardIndex] = useState(-1);
-  const activeCardIndexRef = useRef(-1);
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      const mm = gsap.matchMedia();
-
-      const setupFlightAnimation = (pathEl, planeEl, centers, isDesktop = false) => {
-        if (!pathEl || !planeEl) return;
-
-        gsap.set(planeEl, { display: 'block', opacity: 0 });
-
-        const rawPath = MotionPathPlugin.getRawPath(pathEl);
-        MotionPathPlugin.cacheRawPathMeasurements(rawPath);
-
-        const progressValues = findPathProgressForPoints(rawPath, centers);
-        const [p0, p1, p2, p3, p4, p5] = progressValues;
-
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: ".expertise-section",
-            start: isDesktop ? "top top" : "top bottom",
-            end: isDesktop ? "+=180%" : "bottom top",
-            pin: isDesktop,
-            scrub: isDesktop ? 3.5 : 2.5,
-            anticipatePin: isDesktop ? 1 : 0
-          }
-        });
-
-        // 1. Fade in plane (the SVG paths have constant opacity)
-        tl.to(planeEl, { opacity: 1, duration: 0.2 }, 0);
-
-        // Move to Card 0
-        tl.to(planeEl, {
-          motionPath: {
-            path: pathEl,
-            align: pathEl,
-            alignOrigin: [0.5, 0.5],
-            autoRotate: true,
-            start: 0,
-            end: p0
-          },
-          duration: 1.0,
-          ease: "power1.inOut"
-        }, 0.2);
-
-        // Pause 0
-        tl.to({}, { duration: 0.3 });
-
-        // Move to Card 1
-        tl.to(planeEl, {
-          motionPath: {
-            path: pathEl,
-            align: pathEl,
-            alignOrigin: [0.5, 0.5],
-            autoRotate: true,
-            start: p0,
-            end: p1
-          },
-          duration: 1.0,
-          ease: "power1.inOut"
-        });
-
-        // Pause 1
-        tl.to({}, { duration: 0.3 });
-
-        // Move to Card 2
-        tl.to(planeEl, {
-          motionPath: {
-            path: pathEl,
-            align: pathEl,
-            alignOrigin: [0.5, 0.5],
-            autoRotate: true,
-            start: p1,
-            end: p2
-          },
-          duration: 1.0,
-          ease: "power1.inOut"
-        });
-
-        // Pause 2
-        tl.to({}, { duration: 0.3 });
-
-        // Move to Card 3 (longer transition swoop)
-        tl.to(planeEl, {
-          motionPath: {
-            path: pathEl,
-            align: pathEl,
-            alignOrigin: [0.5, 0.5],
-            autoRotate: true,
-            start: p2,
-            end: p3
-          },
-          duration: 1.5,
-          ease: "power1.inOut"
-        });
-
-        // Pause 3
-        tl.to({}, { duration: 0.3 });
-
-        // Move to Card 4
-        tl.to(planeEl, {
-          motionPath: {
-            path: pathEl,
-            align: pathEl,
-            alignOrigin: [0.5, 0.5],
-            autoRotate: true,
-            start: p3,
-            end: p4
-          },
-          duration: 1.0,
-          ease: "power1.inOut"
-        });
-
-        // Pause 4
-        tl.to({}, { duration: 0.3 });
-
-        // Move to Card 5
-        tl.to(planeEl, {
-          motionPath: {
-            path: pathEl,
-            align: pathEl,
-            alignOrigin: [0.5, 0.5],
-            autoRotate: true,
-            start: p4,
-            end: p5
-          },
-          duration: 1.0,
-          ease: "power1.inOut"
-        });
-
-        // Pause 5
-        tl.to({}, { duration: 0.3 });
-
-        // Exit segment path
-        tl.to(planeEl, {
-          motionPath: {
-            path: pathEl,
-            align: pathEl,
-            alignOrigin: [0.5, 0.5],
-            autoRotate: true,
-            start: p5,
-            end: 1.0
-          },
-          duration: 1.0,
-          ease: "power1.in"
-        });
-
-        // Fade out plane
-        tl.to(planeEl, { opacity: 0, duration: 0.2 });
-
-        const activeIntervals = [
-          { start: 1.2, end: 1.5, index: 0 },
-          { start: 2.5, end: 2.8, index: 1 },
-          { start: 3.8, end: 4.1, index: 2 },
-          { start: 5.6, end: 5.9, index: 3 },
-          { start: 6.9, end: 7.2, index: 4 },
-          { start: 8.2, end: 8.5, index: 5 }
-        ];
-
-        const innerPlane = planeEl.querySelector(".airplane-inner");
-
-        tl.eventCallback("onUpdate", function() {
-          const time = this.time();
-          
-          // 1. Update active card highlight
-          let activeIdx = -1;
-          for (let i = 0; i < activeIntervals.length; i++) {
-            const interval = activeIntervals[i];
-            if (time >= interval.start && time <= interval.end) {
-              activeIdx = interval.index;
-              break;
-            }
-          }
-          if (activeIdx !== activeCardIndexRef.current) {
-            activeCardIndexRef.current = activeIdx;
-            setActiveCardIndex(activeIdx);
-          }
-
-          // 2. Curvature banking physics rotation
-          if (innerPlane) {
-            const progress = getProgressFromTime(time, p0, p1, p2, p3, p4, p5);
-            const curvature = getPathCurvature(rawPath, progress);
-            const bankAngle = Math.max(-10, Math.min(10, curvature * 0.2));
-            gsap.set(innerPlane, { rotation: bankAngle });
-          }
-        });
-      };
-
-      // ==========================================
-      // DESKTOP VIEWPORT (min-width: 1024px)
-      // ==========================================
-      mm.add("(min-width: 1024px)", () => {
-        setupFlightAnimation(desktopPathRef.current, desktopAirplaneRef.current, [
-          { x: 200, y: 150 },
-          { x: 600, y: 150 },
-          { x: 1000, y: 150 },
-          { x: 200, y: 450 },
-          { x: 600, y: 450 },
-          { x: 1000, y: 450 }
-        ], true);
-      });
-
-      // ==========================================
-      // TABLET VIEWPORT (768px to 1023px)
-      // ==========================================
-      mm.add("(max-width: 1023px) and (min-width: 768px)", () => {
-        setupFlightAnimation(tabletPathRef.current, tabletAirplaneRef.current, [
-          { x: 200, y: 150 },
-          { x: 600, y: 150 },
-          { x: 200, y: 450 },
-          { x: 600, y: 450 },
-          { x: 200, y: 750 },
-          { x: 600, y: 750 }
-        ], false);
-      });
-
-      // ==========================================
-      // MOBILE VIEWPORT (up to 767px)
-      // ==========================================
-      mm.add("(max-width: 767px)", () => {
-        setupFlightAnimation(mobilePathRef.current, mobileAirplaneRef.current, [
-          { x: 200, y: 100 },
-          { x: 200, y: 300 },
-          { x: 200, y: 500 },
-          { x: 200, y: 700 },
-          { x: 200, y: 900 },
-          { x: 200, y: 1100 }
-        ], false);
-      });
-    });
-
-    return () => ctx.revert();
-  }, []);
-
   return (
     <section className="expertise-section">
       <BackgroundIllustrations />
@@ -917,20 +424,11 @@ export default function ExpertiseSection() {
 
       <div className="expertise-container">
         <div className="expertise-grid">
-          <ConnectingRoute 
-            desktopPathRef={desktopPathRef}
-            desktopAirplaneRef={desktopAirplaneRef}
-            tabletPathRef={tabletPathRef}
-            tabletAirplaneRef={tabletAirplaneRef}
-            mobilePathRef={mobilePathRef}
-            mobileAirplaneRef={mobileAirplaneRef}
-          />
           {expertiseData.map((item, index) => (
             <ExpertiseCard 
               key={index} 
               item={item} 
               index={index} 
-              isActive={activeCardIndex === index} 
             />
           ))}
         </div>
