@@ -52,7 +52,7 @@ const destinations: Destination[] = [
   {
     title: "Bali",
     region: "Southeast Asia",
-    countryName: "Indonesia",
+    countryName: "Bali",
     heading: "Sacred Temples & Pristine Beaches",
     description: "Reconnect in the spiritual capital of volcanic lake vistas, iconic terraced valleys, and private pool luxury villas.",
     highlights: ["Luxury Travel", "MICE", "Corporate", "Leisure", "Adventure"],
