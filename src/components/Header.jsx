@@ -346,10 +346,10 @@ export default function Header() {
         </nav>
       </div>
 
-      {/* Right side CTA Button (Partner Portal) - Solid Blue Rectangle */}
+      {/* Right side CTA Button (Contact Us) - Solid Blue Rectangle */}
       <div className="desktop-portal-container">
         <a
-          href="#partner-portal"
+          href="#contact"
           style={{
             fontFamily: 'var(--font-sans)',
             fontSize: '0.75rem',
@@ -373,7 +373,7 @@ export default function Header() {
             e.currentTarget.style.color = '#FFFFFF';
           }}
         >
-          Partner Portal
+          Contact Us
         </a>
       </div>
 
@@ -570,7 +570,7 @@ export default function Header() {
 
             {/* Mobile Portal CTA */}
             <a
-              href="#partner-portal"
+              href="#contact"
               onClick={() => setIsMobileMenuOpen(false)}
               className="mobile-portal-btn"
               style={{
@@ -588,7 +588,7 @@ export default function Header() {
                 borderRadius: '0px'
               }}
             >
-              Partner Portal
+              Contact Us
             </a>
           </motion.div>
         )}
