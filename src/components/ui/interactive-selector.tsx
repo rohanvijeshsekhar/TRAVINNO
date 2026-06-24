@@ -132,14 +132,9 @@ export default function InteractiveSelector() {
       scrollTrigger: {
         trigger: container,
         start: "top top",
-        end: "+=1400vh",
-        scrub: 1.5,
+        end: "+=1500vh",
+        scrub: 1,
         pin: true,
-        snap: {
-          snapTo: 1 / 6,
-          duration: { min: 0.4, max: 0.7 },
-          ease: "power1.inOut"
-        },
         onUpdate: (self) => {
           const progress = self.progress;
           const targetIdx = Math.min(6, Math.max(0, Math.round(progress * 6)));
@@ -159,7 +154,7 @@ export default function InteractiveSelector() {
           opacity: 1,
           scale: 0.97,
           duration: 1,
-          ease: "power2.inOut"
+          ease: "none"
         }, position);
       }
 
@@ -167,7 +162,7 @@ export default function InteractiveSelector() {
       if (cards[i]) {
         tl.fromTo(cards[i],
           { y: "100vh", opacity: 1, scale: 1 },
-          { y: "0px", opacity: 1, scale: 1, duration: 1, ease: "power2.inOut" },
+          { y: "0px", opacity: 1, scale: 1, duration: 1, ease: "none" },
           position
         );
       }
