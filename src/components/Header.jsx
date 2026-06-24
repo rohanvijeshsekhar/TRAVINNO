@@ -106,7 +106,21 @@ export default function Header() {
 
       {/* Desktop Menu Navigation Links (matching screenshot layout) */}
       <div className="desktop-nav-container">
-        <nav style={{ display: 'flex', gap: '35px', alignItems: 'center' }}>
+        <nav 
+          style={{ 
+            display: 'flex', 
+            gap: '30px', 
+            alignItems: 'center',
+            backgroundColor: 'rgba(255, 255, 255, 0.04)',
+            backdropFilter: 'blur(16px)',
+            WebkitBackdropFilter: 'blur(16px)',
+            border: '1px solid rgba(255, 255, 255, 0.08)',
+            borderRadius: '100px',
+            padding: '8px 28px',
+            boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.25)',
+            boxSizing: 'border-box'
+          }}
+        >
 
           {/* Link: Home */}
           <a
@@ -139,7 +153,7 @@ export default function Header() {
           <div
             onMouseEnter={() => setHoveredMenu('company')}
             onMouseLeave={() => setHoveredMenu(null)}
-            style={{ position: 'relative', paddingBottom: '10px', marginTop: '10px' }}
+            style={{ position: 'relative', paddingTop: '8px', paddingBottom: '8px' }}
           >
             <a
               href="#about"
@@ -229,7 +243,7 @@ export default function Header() {
           <div
             onMouseEnter={() => setHoveredMenu('destinations')}
             onMouseLeave={() => setHoveredMenu(null)}
-            style={{ position: 'relative', paddingBottom: '10px', marginTop: '10px' }}
+            style={{ position: 'relative', paddingTop: '8px', paddingBottom: '8px' }}
           >
             <a
               href="#destinations"
