@@ -132,8 +132,8 @@ export default function InteractiveSelector() {
       scrollTrigger: {
         trigger: container,
         start: "top top",
-        end: "+=1000vh",
-        scrub: 1,
+        end: "+=1400vh",
+        scrub: 1.5,
         pin: true,
         snap: {
           snapTo: 1 / 6,
