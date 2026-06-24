@@ -208,6 +208,15 @@ export default function LogoCloudSection() {
         >
           52 TRUSTED PARTNERSHIPS. ONE SHARED COMMITMENT TO EXCEPTIONAL JOURNEYS.
         </motion.div>
+
+        {/* Separator Line */}
+        <motion.div
+          className="partners-separator-line"
+          initial={{ opacity: 0, scaleX: 0.8 }}
+          whileInView={{ opacity: 1, scaleX: 1 }}
+          viewport={{ once: true, margin: "-40px" }}
+          transition={{ duration: 1.2, ease: 'easeOut', delay: 0.4 }}
+        />
       </div>
     </section>
   );
