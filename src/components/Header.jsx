@@ -440,470 +440,224 @@ export default function Header() {
         </a>
       </div>
 
-      {/* Premium Mobile Navigation Dock (Redesigned) */}
-      <div className="mobile-bottom-dock-container" style={{ pointerEvents: 'none', position: 'fixed', bottom: 0, left: 0, width: '100%', height: '100%', zIndex: 9999, justifyContent: 'center' }}>
-        
-        {/* Logo Menu Floating Popup Overlay & Glass Box */}
-        <AnimatePresence>
-          {isMobileMenuOpen && (
-            <>
-              {/* Tap-outside Backdrop Screen Overlay */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
-                style={{
-                  position: 'fixed',
-                  inset: 0,
-                  backgroundColor: 'rgba(0, 0, 0, 0.45)',
-                  backdropFilter: 'blur(4px)',
-                  WebkitBackdropFilter: 'blur(4px)',
-                  pointerEvents: 'auto',
-                  zIndex: 9998
-                }}
-                onClick={() => setIsMobileMenuOpen(false)}
-              />
+      {/* Mobile Menu Toggle */}
+      <button
+        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        className={`mobile-menu-toggle ${isMobileMenuOpen ? 'open' : ''}`}
+        aria-label="Toggle Navigation Menu"
+        style={{ pointerEvents: 'auto' }}
+      >
+        <span />
+        <span />
+        <span />
+      </button>
 
-              {/* Floating Glass Popup Menu */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95, y: 15, x: '-50%' }}
-                animate={{ opacity: 1, scale: 1, y: 0, x: '-50%' }}
-                exit={{ opacity: 0, scale: 0.95, y: 10, x: '-50%' }}
-                transition={{ type: 'spring', stiffness: 280, damping: 26 }}
-                style={{
-                  position: 'fixed',
-                  bottom: 'calc(104px + env(safe-area-inset-bottom, 0px))',
-                  left: '50%',
-                  width: '90%',
-                  maxWidth: '450px',
-                  backgroundColor: 'rgba(12, 12, 12, 0.85)',
-                  backdropFilter: 'blur(28px)',
-                  WebkitBackdropFilter: 'blur(28px)',
-                  border: '1px solid rgba(255, 255, 255, 0.08)',
-                  borderRadius: '28px',
-                  padding: '24px',
-                  boxShadow: '0 20px 40px rgba(0,0,0,0.65), 0 0 20px rgba(193, 18, 31, 0.08)',
-                  zIndex: 9999,
-                  pointerEvents: 'auto',
-                  boxSizing: 'border-box'
-                }}
-              >
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
-                  {/* Grid Item: Destinations */}
-                  <motion.a
-                    href="#destinations"
-                    whileHover={{ backgroundColor: 'rgba(255, 255, 255, 0.08)' }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={() => {
-                      setIsMobileMenuOpen(false);
-                    }}
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'flex-start',
-                      textDecoration: 'none',
-                      padding: '12px 14px',
-                      backgroundColor: 'rgba(255, 255, 255, 0.03)',
-                      borderRadius: '16px',
-                      border: '1px solid rgba(255, 255, 255, 0.04)',
-                      cursor: 'pointer'
-                    }}
-                  >
-                    <MapPin size={18} style={{ color: 'var(--accent-red)', marginBottom: '8px' }} />
-                    <span style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', color: '#FFFFFF' }}>
-                      Destinations
-                    </span>
-                    <span style={{ fontSize: '9px', color: 'rgba(255,255,255,0.5)', marginTop: '2px' }}>
-                      Curated journeys
-                    </span>
-                  </motion.a>
-
-                  {/* Grid Item: Services */}
-                  <motion.a
-                    href="#services"
-                    whileHover={{ backgroundColor: 'rgba(255, 255, 255, 0.08)' }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={() => {
-                      setIsMobileMenuOpen(false);
-                    }}
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'flex-start',
-                      textDecoration: 'none',
-                      padding: '12px 14px',
-                      backgroundColor: 'rgba(255, 255, 255, 0.03)',
-                      borderRadius: '16px',
-                      border: '1px solid rgba(255, 255, 255, 0.04)',
-                      cursor: 'pointer'
-                    }}
-                  >
-                    <Briefcase size={18} style={{ color: 'var(--accent-red)', marginBottom: '8px' }} />
-                    <span style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', color: '#FFFFFF' }}>
-                      Services
-                    </span>
-                    <span style={{ fontSize: '9px', color: 'rgba(255,255,255,0.5)', marginTop: '2px' }}>
-                      Luxury experience
-                    </span>
-                  </motion.a>
-
-                  {/* Grid Item: Testimonials */}
-                  <motion.a
-                    href="#testimonials"
-                    whileHover={{ backgroundColor: 'rgba(255, 255, 255, 0.08)' }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={() => {
-                      setIsMobileMenuOpen(false);
-                    }}
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'flex-start',
-                      textDecoration: 'none',
-                      padding: '12px 14px',
-                      backgroundColor: 'rgba(255, 255, 255, 0.03)',
-                      borderRadius: '16px',
-                      border: '1px solid rgba(255, 255, 255, 0.04)',
-                      cursor: 'pointer'
-                    }}
-                  >
-                    <MessageSquare size={18} style={{ color: 'var(--accent-red)', marginBottom: '8px' }} />
-                    <span style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', color: '#FFFFFF' }}>
-                      Testimonials
-                    </span>
-                    <span style={{ fontSize: '9px', color: 'rgba(255,255,255,0.5)', marginTop: '2px' }}>
-                      Guest reviews
-                    </span>
-                  </motion.a>
-
-                  {/* Grid Item: Careers */}
-                  <motion.a
-                    href="#careers"
-                    whileHover={{ backgroundColor: 'rgba(255, 255, 255, 0.08)' }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={() => {
-                      setIsMobileMenuOpen(false);
-                    }}
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'flex-start',
-                      textDecoration: 'none',
-                      padding: '12px 14px',
-                      backgroundColor: 'rgba(255, 255, 255, 0.03)',
-                      borderRadius: '16px',
-                      border: '1px solid rgba(255, 255, 255, 0.04)',
-                      cursor: 'pointer'
-                    }}
-                  >
-                    <Users size={18} style={{ color: 'var(--accent-red)', marginBottom: '8px' }} />
-                    <span style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', color: '#FFFFFF' }}>
-                      Careers
-                    </span>
-                    <span style={{ fontSize: '9px', color: 'rgba(255,255,255,0.5)', marginTop: '2px' }}>
-                      Join our team
-                    </span>
-                  </motion.a>
-
-                  {/* Grid Item: Blog */}
-                  <motion.a
-                    href="#blog"
-                    whileHover={{ backgroundColor: 'rgba(255, 255, 255, 0.08)' }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={() => {
-                      setIsMobileMenuOpen(false);
-                    }}
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'flex-start',
-                      textDecoration: 'none',
-                      padding: '12px 14px',
-                      backgroundColor: 'rgba(255, 255, 255, 0.03)',
-                      borderRadius: '16px',
-                      border: '1px solid rgba(255, 255, 255, 0.04)',
-                      cursor: 'pointer'
-                    }}
-                  >
-                    <BookOpen size={18} style={{ color: 'var(--accent-red)', marginBottom: '8px' }} />
-                    <span style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', color: '#FFFFFF' }}>
-                      Blog
-                    </span>
-                    <span style={{ fontSize: '9px', color: 'rgba(255,255,255,0.5)', marginTop: '2px' }}>
-                      Travel journals
-                    </span>
-                  </motion.a>
-
-                  {/* Grid Item: Partner Portal */}
-                  <motion.a
-                    href="#contact"
-                    whileHover={{ backgroundColor: 'rgba(255, 255, 255, 0.08)' }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={() => {
-                      setIsMobileMenuOpen(false);
-                    }}
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'flex-start',
-                      textDecoration: 'none',
-                      padding: '12px 14px',
-                      backgroundColor: 'rgba(255, 255, 255, 0.03)',
-                      borderRadius: '16px',
-                      border: '1px solid rgba(255, 255, 255, 0.04)',
-                      cursor: 'pointer'
-                    }}
-                  >
-                    <Shield size={18} style={{ color: 'var(--accent-red)', marginBottom: '8px' }} />
-                    <span style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', color: '#FFFFFF' }}>
-                      Partner Portal
-                    </span>
-                    <span style={{ fontSize: '9px', color: 'rgba(255,255,255,0.5)', marginTop: '2px' }}>
-                      Agent login
-                    </span>
-                  </motion.a>
-                </div>
-              </motion.div>
-            </>
-          )}
-        </AnimatePresence>
-
-        {/* Floating iOS Bottom Dock Navigation Bar */}
-        <motion.div
-          animate={{
-            y: scrollDirection === 'down' ? 12 : 0,
-            opacity: scrollDirection === 'down' ? 0.85 : 1
-          }}
-          transition={{ type: 'spring', stiffness: 260, damping: 20 }}
-          style={{
-            position: 'fixed',
-            bottom: 'calc(20px + env(safe-area-inset-bottom, 0px))',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            width: '90%',
-            maxWidth: '450px',
-            height: '74px',
-            backgroundColor: 'rgba(12, 12, 12, 0.55)',
-            backdropFilter: 'blur(28px)',
-            WebkitBackdropFilter: 'blur(28px)',
-            border: '1px solid rgba(255, 255, 255, 0.08)',
-            borderRadius: '999px',
-            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.35), 0 0 15px rgba(193, 18, 31, 0.15)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            padding: '0 16px',
-            pointerEvents: 'auto',
-            zIndex: 9997,
-            boxSizing: 'border-box'
-          }}
-        >
-          {/* Tab 1: Home */}
-          <a
-            href="#"
-            onClick={() => {
-              setActiveTab('home');
-              setIsMobileMenuOpen(false);
-            }}
+      {/* Mobile Menu Drawer Overlay */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -30 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -30 }}
+            transition={{ duration: 0.45, ease: [0.25, 1, 0.5, 1] }}
+            className="mobile-menu-overlay"
             style={{
-              flex: 1,
+              padding: '100px 8% 40px 8%',
               display: 'flex',
               flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              textDecoration: 'none',
-              color: activeTab === 'home' ? '#FFFFFF' : 'rgba(255, 255, 255, 0.45)',
-              transition: 'color 0.2s ease',
-              height: '100%'
+              gap: '16px',
+              pointerEvents: 'auto'
             }}
           >
-            <Home size={20} />
-            <span style={{ fontSize: '9px', fontWeight: 600, letterSpacing: '1px', marginTop: '4px', textTransform: 'uppercase' }}>
-              Home
-            </span>
-            {activeTab === 'home' && (
-              <motion.div
-                layoutId="mobileActiveDot"
-                transition={{ type: 'spring', stiffness: 350, damping: 25 }}
-                style={{
-                  width: '4px',
-                  height: '4px',
-                  borderRadius: '50%',
-                  backgroundColor: 'var(--accent-red)',
-                  boxShadow: '0 0 8px var(--accent-red)',
-                  marginTop: '3px'
-                }}
-              />
-            )}
-          </a>
-
-          {/* Tab 2: About */}
-          <a
-            href="#about"
-            onClick={() => {
-              setActiveTab('about');
-              setIsMobileMenuOpen(false);
-            }}
-            style={{
-              flex: 1,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              textDecoration: 'none',
-              color: activeTab === 'about' ? '#FFFFFF' : 'rgba(255, 255, 255, 0.45)',
-              transition: 'color 0.2s ease',
-              height: '100%'
-            }}
-          >
-            <Compass size={20} />
-            <span style={{ fontSize: '9px', fontWeight: 600, letterSpacing: '1px', marginTop: '4px', textTransform: 'uppercase' }}>
-              About
-            </span>
-            {activeTab === 'about' && (
-              <motion.div
-                layoutId="mobileActiveDot"
-                transition={{ type: 'spring', stiffness: 350, damping: 25 }}
-                style={{
-                  width: '4px',
-                  height: '4px',
-                  borderRadius: '50%',
-                  backgroundColor: 'var(--accent-red)',
-                  boxShadow: '0 0 8px var(--accent-red)',
-                  marginTop: '3px'
-                }}
-              />
-            )}
-          </a>
-
-          {/* Tab 3: Logo SVG (Center) */}
-          <div
-            style={{
-              flex: 1.2,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              height: '100%',
-              position: 'relative'
-            }}
-          >
-            <motion.div
-              whileTap={{ scale: 0.9 }}
-              whileHover={{ scale: 1.05 }}
+            {/* Mobile Home */}
+            <a
+              href="#"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="mobile-nav-link"
               style={{
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: '56px',
-                height: '56px',
-                borderRadius: '50%',
-                backgroundColor: 'rgba(255, 255, 255, 0.03)',
-                border: '1px solid rgba(255, 255, 255, 0.08)',
-                boxShadow: isMobileMenuOpen ? '0 0 15px rgba(193, 18, 31, 0.5)' : 'none',
-                transition: 'all 0.3s ease'
+                fontFamily: 'var(--font-sans)',
+                fontSize: '1.25rem',
+                fontWeight: 600,
+                letterSpacing: '2px',
+                textTransform: 'uppercase',
+                color: '#FFFFFF',
+                textDecoration: 'none',
+                padding: '12px 0'
               }}
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
-              <svg
-                viewBox="0 0 100 130"
+              Home
+            </a>
+
+            {/* Mobile Company Accordion */}
+            <div style={{ width: '100%' }}>
+              <button
+                onClick={() => setMobileCompanyOpen(!mobileCompanyOpen)}
                 style={{
-                  height: '34px',
-                  width: 'auto',
-                  display: 'block',
-                  filter: 'drop-shadow(0 0 5px rgba(193, 18, 31, 0.4))'
+                  width: '100%',
+                  background: 'none',
+                  border: 'none',
+                  color: '#FFFFFF',
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '1.25rem',
+                  fontWeight: 600,
+                  letterSpacing: '2px',
+                  textTransform: 'uppercase',
+                  padding: '12px 0',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  cursor: 'pointer'
                 }}
               >
-                <path
-                  d={`${outerPinPath} ${innerTPath}`}
-                  fillRule="evenodd"
-                  fill="#C1121F"
-                  stroke="none"
-                />
-              </svg>
-            </motion.div>
-          </div>
+                Company
+                <span style={{ fontSize: '0.8rem' }}>{mobileCompanyOpen ? '▲' : '▼'}</span>
+              </button>
 
-          {/* Tab 4: Team */}
-          <a
-            href="#team"
-            onClick={() => {
-              setActiveTab('team');
-              setIsMobileMenuOpen(false);
-            }}
-            style={{
-              flex: 1,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              textDecoration: 'none',
-              color: activeTab === 'team' ? '#FFFFFF' : 'rgba(255, 255, 255, 0.45)',
-              transition: 'color 0.2s ease',
-              height: '100%'
-            }}
-          >
-            <Users size={20} />
-            <span style={{ fontSize: '9px', fontWeight: 600, letterSpacing: '1px', marginTop: '4px', textTransform: 'uppercase' }}>
-              Team
-            </span>
-            {activeTab === 'team' && (
-              <motion.div
-                layoutId="mobileActiveDot"
-                transition={{ type: 'spring', stiffness: 350, damping: 25 }}
+              <AnimatePresence>
+                {mobileCompanyOpen && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                    style={{
+                      overflow: 'hidden',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      paddingLeft: '20px',
+                      gap: '8px',
+                      borderLeft: '1px solid rgba(255, 255, 255, 0.1)'
+                    }}
+                  >
+                    {companyItems.map((item) => (
+                      <a
+                        key={item.name}
+                        href={item.href}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        style={{
+                          padding: '8px 0',
+                          color: 'rgba(255, 255, 255, 0.7)',
+                          fontSize: '0.95rem',
+                          textDecoration: 'none',
+                          fontFamily: 'var(--font-sans)',
+                          letterSpacing: '1px'
+                        }}
+                      >
+                        {item.name}
+                      </a>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {/* Mobile Destinations Accordion */}
+            <div style={{ width: '100%' }}>
+              <button
+                onClick={() => setMobileDestinationsOpen(!mobileDestinationsOpen)}
                 style={{
-                  width: '4px',
-                  height: '4px',
-                  borderRadius: '50%',
-                  backgroundColor: 'var(--accent-red)',
-                  boxShadow: '0 0 8px var(--accent-red)',
-                  marginTop: '3px'
+                  width: '100%',
+                  background: 'none',
+                  border: 'none',
+                  color: '#FFFFFF',
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '1.25rem',
+                  fontWeight: 600,
+                  letterSpacing: '2px',
+                  textTransform: 'uppercase',
+                  padding: '12px 0',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  cursor: 'pointer'
                 }}
-              />
-            )}
-          </a>
+              >
+                Destinations
+                <span style={{ fontSize: '0.8rem' }}>{mobileDestinationsOpen ? '▲' : '▼'}</span>
+              </button>
 
-          {/* Tab 5: Contact */}
-          <a
-            href="#contact"
-            onClick={() => {
-              setActiveTab('contact');
-              setIsMobileMenuOpen(false);
-            }}
-            style={{
-              flex: 1,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              textDecoration: 'none',
-              color: activeTab === 'contact' ? '#FFFFFF' : 'rgba(255, 255, 255, 0.45)',
-              transition: 'color 0.2s ease',
-              height: '100%'
-            }}
-          >
-            <Mail size={20} />
-            <span style={{ fontSize: '9px', fontWeight: 600, letterSpacing: '1px', marginTop: '4px', textTransform: 'uppercase' }}>
+              <AnimatePresence>
+                {mobileDestinationsOpen && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                    style={{
+                      overflow: 'hidden',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      paddingLeft: '20px',
+                      gap: '8px',
+                      borderLeft: '1px solid rgba(255, 255, 255, 0.1)'
+                    }}
+                  >
+                    {destinationItems.map((item) => (
+                      <a
+                        key={item.name}
+                        href={`#${item.name.toLowerCase()}`}
+                        onClick={(e) => handleDestinationClick(e, item.index)}
+                        style={{
+                          padding: '8px 0',
+                          color: 'rgba(255, 255, 255, 0.7)',
+                          fontSize: '0.95rem',
+                          textDecoration: 'none',
+                          fontFamily: 'var(--font-sans)',
+                          letterSpacing: '1px'
+                        }}
+                      >
+                        {item.name}
+                      </a>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {/* Mobile Contact */}
+            <a
+              href="#contact"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="mobile-nav-link"
+              style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: '1.25rem',
+                fontWeight: 600,
+                letterSpacing: '2px',
+                textTransform: 'uppercase',
+                color: '#FFFFFF',
+                textDecoration: 'none',
+                padding: '12px 0'
+              }}
+            >
               Contact
-            </span>
-            {activeTab === 'contact' && (
-              <motion.div
-                layoutId="mobileActiveDot"
-                transition={{ type: 'spring', stiffness: 350, damping: 25 }}
-                style={{
-                  width: '4px',
-                  height: '4px',
-                  borderRadius: '50%',
-                  backgroundColor: 'var(--accent-red)',
-                  boxShadow: '0 0 8px var(--accent-red)',
-                  marginTop: '3px'
-                }}
-              />
-            )}
-          </a>
-        </motion.div>
-      </div>
+            </a>
+
+            {/* Mobile Portal CTA */}
+            <a
+              href="#contact"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="mobile-portal-btn"
+              style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: '1rem',
+                fontWeight: 700,
+                letterSpacing: '2px',
+                textTransform: 'uppercase',
+                color: '#FFFFFF',
+                backgroundColor: 'var(--accent-blue)',
+                textDecoration: 'none',
+                padding: '14px 0',
+                textAlign: 'center',
+                marginTop: '20px',
+                borderRadius: '0px'
+              }}
+            >
+              Contact Us
+            </a>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.header>
   );
 }
