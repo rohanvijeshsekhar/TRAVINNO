@@ -121,7 +121,7 @@ const MediaItem = ({ item, className, onClick }: { item: MediaItemType, classNam
     return (
         <img
             src={item.url} // Image source URL
-            alt={item.title} // Alt text for the image
+            alt={`${item.title} – premium experience by Travinno Trusted DMC`} // Alt text for the image
             className={`${className} object-cover cursor-pointer`} // Style the image
             onClick={onClick} // Trigger onClick when the image is clicked
             loading="lazy" // Lazy load the image for performance

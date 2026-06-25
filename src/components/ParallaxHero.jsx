@@ -63,7 +63,8 @@ export default function ParallaxHero() {
               loading="eager" 
               width="800" 
               data-parallax-layer="1" 
-              alt="Background Mountain backdrop" 
+              alt="" 
+              aria-hidden="true" 
               className="parallax__layer-img" 
             />
             {/* Midground Layer 2 - Osmo transparent midground hills */}
@@ -72,7 +73,8 @@ export default function ParallaxHero() {
               loading="eager" 
               width="800" 
               data-parallax-layer="2" 
-              alt="Hills Midground" 
+              alt="" 
+              aria-hidden="true" 
               className="parallax__layer-img" 
             />
             {/* Text Title Layer 3 */}
@@ -85,7 +87,8 @@ export default function ParallaxHero() {
               loading="eager" 
               width="800" 
               data-parallax-layer="4" 
-              alt="Forest Foreground" 
+              alt="" 
+              aria-hidden="true" 
               className="parallax__layer-img" 
             />
           </div>

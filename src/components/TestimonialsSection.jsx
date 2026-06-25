@@ -62,7 +62,7 @@ function TestimonialCard({ text, image, name, company }) {
       <div className="new-testimonial-header">
         <img
           src={image}
-          alt={name}
+          alt={`${name}, ${company} – Client Testimonial for Travinno Trusted DMC`}
           className="new-testimonial-avatar"
           loading="lazy"
         />

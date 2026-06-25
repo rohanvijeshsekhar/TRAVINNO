@@ -304,7 +304,7 @@ export default function OurJourney() {
   useEffect(() => {
     if (!isInView || isPaused) return;
 
-    const delay = activeIndex === milestones.length - 1 ? 3000 : 2500;
+    const delay = 1000;
     
     autoplayTimerRef.current = setTimeout(() => {
       setActiveIndex((prev) => (prev >= milestones.length - 1 ? 0 : prev + 1));
@@ -709,7 +709,7 @@ export default function OurJourney() {
                       height: '1px',
                       backgroundColor: '#C1121F',
                       width: `${(activeIndex / 6) * 100}%`,
-                      transition: 'width 0.8s cubic-bezier(0.25, 1, 0.5, 1)'
+                      transition: 'width 0.4s cubic-bezier(0.25, 1, 0.5, 1)'
                     }}
                   />
 
@@ -760,7 +760,8 @@ export default function OurJourney() {
                   {/* Gliding Active Indicator Logo Pointer */}
                   <img
                     src={logoImg}
-                    alt="Pointer"
+                    alt=""
+                    aria-hidden="true"
                     style={{
                       position: 'absolute',
                       left: `${(activeIndex / 6) * 100}%`,
@@ -770,7 +771,7 @@ export default function OurJourney() {
                       objectFit: 'contain',
                       transform: 'translate(-50%, -100%)', // Align the bottom tip of the logo exactly on the line
                       filter: 'drop-shadow(0 0 8px rgba(193, 18, 31, 0.8))',
-                      transition: 'left 0.8s cubic-bezier(0.25, 1, 0.5, 1)',
+                      transition: 'left 0.4s cubic-bezier(0.25, 1, 0.5, 1)',
                       zIndex: 3
                     }}
                   />
@@ -807,7 +808,7 @@ export default function OurJourney() {
                     backgroundColor: '#C1121F',
                     height: `calc(${(activeIndex / 6) * 100}% - 4px)`,
                     maxHeight: '100%',
-                    transition: 'height 0.8s cubic-bezier(0.25, 1, 0.5, 1)'
+                    transition: 'height 0.4s cubic-bezier(0.25, 1, 0.5, 1)'
                   }}
                 />
 
@@ -829,7 +830,8 @@ export default function OurJourney() {
                       {isActive ? (
                         <img
                           src={logoImg}
-                          alt="Pin"
+                          alt=""
+                          aria-hidden="true"
                           style={{
                             position: 'absolute',
                             left: '-24px',

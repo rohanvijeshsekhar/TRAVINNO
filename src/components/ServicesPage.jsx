@@ -87,6 +87,18 @@ const SERVICES_DATA = [
   }
 ];
 
+const getServiceAltText = (title) => {
+  const mapping = {
+    'Leisure Travel': 'Premium leisure travel and holiday experiences by Travinno Trusted DMC',
+    'Group Tours': 'Custom group tours and travel logistics by Travinno Trusted DMC',
+    'MICE & Events': 'Corporate MICE and custom event management solutions by Travinno Trusted DMC',
+    'Corporate Travel': 'Corporate travel and premium business trip solutions by Travinno',
+    'Ground Handling': 'Reliable ground handling and airport meet-and-greet services by Travinno Trusted DMC',
+    'Luxury Experiences': 'Bespoke luxury experiences and private charters by Travinno Trusted DMC'
+  };
+  return mapping[title] || `${title} services by Travinno Trusted DMC`;
+};
+
 const DIVIDERS = [
   'Travel is personal.',
   'Every journey deserves precision.',
@@ -179,7 +191,7 @@ function ServiceChapter({ service, idx }) {
         >
           <img
             src={service.image}
-            alt={service.title}
+            alt={getServiceAltText(service.title)}
             style={{
               width: '100%',
               height: '100%',

@@ -6,6 +6,8 @@ const innerTPath = "M 78.80,88.83 L 77.99,89.92 L 76.90,91.00 L 76.09,92.08 L 75
 const outerPinPath = "M 42.66,97.50 L 43.48,99.12 L 44.57,100.75 L 45.92,102.38 L 47.28,103.73 L 48.91,105.08 L 50.54,106.17 L 52.17,106.98 L 53.80,107.52 L 55.43,108.06 L 57.07,108.60 L 58.15,109.15 L 56.52,110.50 L 54.89,111.85 L 53.26,113.48 L 51.63,114.83 L 50.00,116.19 L 48.37,115.10 L 46.74,113.48 L 45.11,112.12 L 43.48,110.50 L 41.85,109.15 L 40.22,107.52 L 38.59,106.17 L 36.96,104.54 L 35.33,103.19 L 33.70,101.56 L 32.07,100.21 L 30.43,98.58 L 28.80,96.96 L 27.17,95.33 L 25.54,93.71 L 23.91,92.08 L 22.55,90.46 L 20.92,88.83 L 19.57,87.21 L 18.21,85.58 L 17.12,83.96 L 15.76,82.33 L 14.67,80.71 L 13.59,79.08 L 12.50,77.46 L 11.68,75.83 L 10.87,74.21 L 10.05,72.58 L 9.24,70.96 L 8.70,69.33 L 8.15,67.71 L 7.61,66.08 L 7.34,64.46 L 7.07,62.83 L 6.79,61.21 L 6.52,59.58 L 6.52,57.96 L 6.52,56.33 L 6.52,54.71 L 6.52,53.08 L 6.79,51.46 L 7.07,49.83 L 7.34,48.21 L 7.61,46.58 L 8.15,44.96 L 8.70,43.33 L 9.24,41.71 L 9.78,40.08 L 10.60,38.46 L 11.41,36.83 L 12.23,35.21 L 13.32,33.58 L 14.40,31.96 L 15.76,30.33 L 17.12,28.71 L 18.48,27.08 L 20.11,25.73 L 21.74,24.10 L 23.37,23.02 L 25.00,21.67 L 26.63,20.58 L 28.26,19.77 L 29.89,18.69 L 31.52,18.15 L 33.15,17.33 L 34.78,16.79 L 36.41,15.98 L 38.04,15.71 L 39.67,15.17 L 41.30,14.90 L 42.93,14.62 L 44.57,14.35 L 45.92,14.08 L 47.55,14.08 L 49.18,14.08 L 50.82,14.08 L 52.45,14.08 L 54.08,14.08 L 55.71,14.35 L 57.34,14.62 L 58.97,14.90 L 60.60,15.44 L 62.23,15.71 L 63.86,16.25 L 65.49,16.79 L 67.12,17.60 L 68.75,18.15 L 70.38,18.96 L 72.01,20.04 L 73.64,20.85 L 75.27,21.94 L 76.90,23.29 L 78.53,24.65 L 80.16,26.00 L 81.79,27.62 L 83.15,29.25 L 84.51,30.88 L 85.60,32.50 L 86.68,34.12 L 87.77,35.75 L 88.59,37.38 L 89.40,39.00 L 90.22,40.62 L 90.76,42.25 L 91.30,43.88 L 91.85,45.50 L 92.12,47.12 L 92.66,48.75 L 92.93,50.38 L 92.93,52.00 L 93.21,53.62 L 93.21,55.25 L 93.21,56.88 L 93.21,58.50 L 93.21,60.12 L 92.93,61.75 L 92.66,63.38 L 92.39,65.00 L 91.85,66.62 L 91.30,68.25 L 90.76,69.88 L 90.22,71.50 L 89.40,73.12 L 88.59,74.75 L 87.77,76.38 L 86.96,78.00 L 85.87,79.62 L 84.78,81.25 L 83.70,82.88 L 82.34,84.50 L 81.25,86.12 L 79.89,87.75 L 79.08,88.56";
 
 export default function Header() {
+  const isLockedMode = import.meta.env.PROD || (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1');
+
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [hoveredMenu, setHoveredMenu] = useState(null); // 'company', 'destinations', or null
   const [mobileCompanyOpen, setMobileCompanyOpen] = useState(false);
@@ -32,6 +34,27 @@ export default function Header() {
     handleHash();
     return () => window.removeEventListener('hashchange', handleHash);
   }, []);
+
+  const [activeMobileItem, setActiveMobileItem] = useState('home');
+
+  // Sync activeMobileItem with activeTab when menu opens
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      if (activeTab === 'about' || activeTab === 'team' || activeTab === 'services') {
+        setActiveMobileItem('company');
+        setMobileCompanyOpen(true);
+        setMobileDestinationsOpen(false);
+      } else if (activeTab === 'contact') {
+        setActiveMobileItem('contact');
+        setMobileCompanyOpen(false);
+        setMobileDestinationsOpen(false);
+      } else {
+        setActiveMobileItem('home');
+        setMobileCompanyOpen(false);
+        setMobileDestinationsOpen(false);
+      }
+    }
+  }, [isMobileMenuOpen, activeTab]);
 
   // Track scroll direction for dock hide/show animation
   useEffect(() => {
@@ -117,7 +140,8 @@ export default function Header() {
       {/* Brand Logo */}
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <a
-          href="#"
+          href="/TRAVINNO/"
+          aria-label="Go to Travinno Homepage"
           style={{
             display: 'flex',
             alignItems: 'center',
@@ -173,7 +197,7 @@ export default function Header() {
 
           {/* Link: Home */}
           <a
-            href="#"
+            href="/TRAVINNO/"
             style={{
               fontFamily: 'var(--font-sans)',
               fontSize: '0.75rem',
@@ -206,7 +230,11 @@ export default function Header() {
           >
             <a
               href="#about"
-              onClick={(e) => e.preventDefault()}
+              onClick={(e) => {
+                if (isLockedMode) {
+                  e.preventDefault();
+                }
+              }}
               style={{
                 fontFamily: 'var(--font-sans)',
                 fontSize: '0.75rem',
@@ -243,6 +271,8 @@ export default function Header() {
                     backdropFilter: 'blur(20px)',
                     WebkitBackdropFilter: 'blur(20px)',
                     border: '1px solid rgba(255, 255, 255, 0.08)',
+                    borderRadius: '24px 0px 0px 24px',
+                    overflow: 'hidden',
                     boxShadow: '0 15px 35px rgba(0,0,0,0.6)',
                     padding: '16px 0',
                     marginTop: '0px',
@@ -254,7 +284,12 @@ export default function Header() {
                   {companyItems.map((item) => (
                     <a
                       key={item.name}
-                      href={item.href}
+                      href={isLockedMode ? "#" : item.href}
+                      onClick={(e) => {
+                        if (isLockedMode) {
+                          e.preventDefault();
+                        }
+                      }}
                       style={{
                         padding: '10px 24px',
                         fontFamily: 'var(--font-sans)',
@@ -262,25 +297,35 @@ export default function Header() {
                         fontWeight: 500,
                         letterSpacing: '1.5px',
                         textTransform: 'uppercase',
-                        color: 'rgba(255,255,255,0.7)',
+                        color: isLockedMode ? 'rgba(255,255,255,0.35)' : 'rgba(255,255,255,0.7)',
                         textDecoration: 'none',
                         transition: 'all 0.2s ease',
-                        borderLeft: '2px solid transparent'
+                        borderLeft: '2px solid transparent',
+                        borderRadius: '12px 0px 0px 12px',
+                        cursor: isLockedMode ? 'not-allowed' : 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between'
                       }}
                       onMouseEnter={(e) => {
-                        e.currentTarget.style.color = '#FFFFFF';
-                        e.currentTarget.style.backgroundColor = 'rgba(234, 28, 41, 0.06)';
-                        e.currentTarget.style.borderLeftColor = 'var(--accent-red)';
-                        e.currentTarget.style.paddingLeft = '28px';
+                        if (!isLockedMode) {
+                          e.currentTarget.style.color = '#FFFFFF';
+                          e.currentTarget.style.backgroundColor = 'rgba(234, 28, 41, 0.06)';
+                          e.currentTarget.style.borderLeftColor = 'var(--accent-red)';
+                          e.currentTarget.style.paddingLeft = '28px';
+                        }
                       }}
                       onMouseLeave={(e) => {
-                        e.currentTarget.style.color = 'rgba(255,255,255,0.7)';
-                        e.currentTarget.style.backgroundColor = 'transparent';
-                        e.currentTarget.style.borderLeftColor = 'transparent';
-                        e.currentTarget.style.paddingLeft = '24px';
+                        if (!isLockedMode) {
+                          e.currentTarget.style.color = 'rgba(255,255,255,0.7)';
+                          e.currentTarget.style.backgroundColor = 'transparent';
+                          e.currentTarget.style.borderLeftColor = 'transparent';
+                          e.currentTarget.style.paddingLeft = '24px';
+                        }
                       }}
                     >
-                      {item.name}
+                      <span>{item.name}</span>
+                      {isLockedMode && <span style={{ fontSize: '0.65rem', opacity: 0.5 }}>🔒</span>}
                     </a>
                   ))}
                 </motion.div>
@@ -296,7 +341,11 @@ export default function Header() {
           >
             <a
               href="#destinations"
-              onClick={(e) => e.preventDefault()}
+              onClick={(e) => {
+                if (isLockedMode) {
+                  e.preventDefault();
+                }
+              }}
               style={{
                 fontFamily: 'var(--font-sans)',
                 fontSize: '0.75rem',
@@ -333,6 +382,8 @@ export default function Header() {
                     backdropFilter: 'blur(20px)',
                     WebkitBackdropFilter: 'blur(20px)',
                     border: '1px solid rgba(255, 255, 255, 0.08)',
+                    borderRadius: '24px 0px 0px 24px',
+                    overflow: 'hidden',
                     boxShadow: '0 15px 35px rgba(0,0,0,0.6)',
                     padding: '16px 0',
                     marginTop: '0px',
@@ -344,8 +395,14 @@ export default function Header() {
                   {destinationItems.map((item) => (
                     <a
                       key={item.name}
-                      href={`#${item.name.toLowerCase()}`}
-                      onClick={(e) => handleDestinationClick(e, item.index)}
+                      href={isLockedMode ? "#" : `#${item.name.toLowerCase()}`}
+                      onClick={(e) => {
+                        if (isLockedMode) {
+                          e.preventDefault();
+                        } else {
+                          handleDestinationClick(e, item.index);
+                        }
+                      }}
                       style={{
                         padding: '10px 24px',
                         fontFamily: 'var(--font-sans)',
@@ -353,25 +410,35 @@ export default function Header() {
                         fontWeight: 500,
                         letterSpacing: '1.5px',
                         textTransform: 'uppercase',
-                        color: 'rgba(255,255,255,0.7)',
+                        color: isLockedMode ? 'rgba(255,255,255,0.35)' : 'rgba(255,255,255,0.7)',
                         textDecoration: 'none',
                         transition: 'all 0.2s ease',
-                        borderLeft: '2px solid transparent'
+                        borderLeft: '2px solid transparent',
+                        borderRadius: '12px 0px 0px 12px',
+                        cursor: isLockedMode ? 'not-allowed' : 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between'
                       }}
                       onMouseEnter={(e) => {
-                        e.currentTarget.style.color = '#FFFFFF';
-                        e.currentTarget.style.backgroundColor = 'rgba(234, 28, 41, 0.06)';
-                        e.currentTarget.style.borderLeftColor = 'var(--accent-red)';
-                        e.currentTarget.style.paddingLeft = '28px';
+                        if (!isLockedMode) {
+                          e.currentTarget.style.color = '#FFFFFF';
+                          e.currentTarget.style.backgroundColor = 'rgba(234, 28, 41, 0.06)';
+                          e.currentTarget.style.borderLeftColor = 'var(--accent-red)';
+                          e.currentTarget.style.paddingLeft = '28px';
+                        }
                       }}
                       onMouseLeave={(e) => {
-                        e.currentTarget.style.color = 'rgba(255,255,255,0.7)';
-                        e.currentTarget.style.backgroundColor = 'transparent';
-                        e.currentTarget.style.borderLeftColor = 'transparent';
-                        e.currentTarget.style.paddingLeft = '24px';
+                        if (!isLockedMode) {
+                          e.currentTarget.style.color = 'rgba(255,255,255,0.7)';
+                          e.currentTarget.style.backgroundColor = 'transparent';
+                          e.currentTarget.style.borderLeftColor = 'transparent';
+                          e.currentTarget.style.paddingLeft = '24px';
+                        }
                       }}
                     >
-                      {item.name}
+                      <span>{item.name}</span>
+                      {isLockedMode && <span style={{ fontSize: '0.65rem', opacity: 0.5 }}>🔒</span>}
                     </a>
                   ))}
                 </motion.div>
@@ -381,7 +448,12 @@ export default function Header() {
 
           {/* Link: Contact */}
           <a
-            href="#contact"
+            href={isLockedMode ? "#" : "#contact"}
+            onClick={(e) => {
+              if (isLockedMode) {
+                e.preventDefault();
+              }
+            }}
             style={{
               fontFamily: 'var(--font-sans)',
               fontSize: '0.75rem',
@@ -390,55 +462,34 @@ export default function Header() {
               textTransform: 'uppercase',
               color: 'var(--text-primary)',
               textDecoration: 'none',
-              opacity: 0.8,
+              opacity: isLockedMode ? 0.45 : 0.8,
               padding: '4px 0',
+              cursor: isLockedMode ? 'not-allowed' : 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '4px',
               transition: 'all 0.3s ease'
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.opacity = '1';
-              e.currentTarget.style.color = 'var(--accent-red)';
+              if (!isLockedMode) {
+                e.currentTarget.style.opacity = '1';
+                e.currentTarget.style.color = 'var(--accent-red)';
+              }
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.opacity = '0.8';
-              e.currentTarget.style.color = 'var(--text-primary)';
+              if (!isLockedMode) {
+                e.currentTarget.style.opacity = '0.8';
+                e.currentTarget.style.color = 'var(--text-primary)';
+              }
             }}
           >
-            Contact
+            Contact {isLockedMode && "🔒"}
           </a>
 
         </nav>
       </div>
 
-      {/* Right side CTA Button (Contact Us) - Solid Blue Rectangle */}
-      <div className="desktop-portal-container">
-        <a
-          href="#contact"
-          style={{
-            fontFamily: 'var(--font-sans)',
-            fontSize: '0.75rem',
-            fontWeight: 700,
-            letterSpacing: '2px',
-            textTransform: 'uppercase',
-            color: '#FFFFFF',
-            backgroundColor: 'var(--accent-blue)',
-            textDecoration: 'none',
-            padding: '12px 26px',
-            borderRadius: '0px',
-            display: 'block',
-            transition: 'all 0.3s ease'
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = '#FFFFFF';
-            e.currentTarget.style.color = '#0B1220';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = 'var(--accent-blue)';
-            e.currentTarget.style.color = '#FFFFFF';
-          }}
-        >
-          Contact Us
-        </a>
-      </div>
+
 
       {/* Mobile Menu Toggle */}
       <button
@@ -449,213 +500,520 @@ export default function Header() {
       >
         <span />
         <span />
-        <span />
       </button>
 
       {/* Mobile Menu Drawer Overlay */}
+      {/* Mobile Menu Drawer Overlay */}
       <AnimatePresence>
         {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -30 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -30 }}
-            transition={{ duration: 0.45, ease: [0.25, 1, 0.5, 1] }}
-            className="mobile-menu-overlay"
-            style={{
-              padding: '100px 8% 40px 8%',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '16px',
-              pointerEvents: 'auto'
-            }}
-          >
-            {/* Mobile Home */}
-            <a
-              href="#"
+          <>
+            {/* Backdrop Blur Overlay */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
               onClick={() => setIsMobileMenuOpen(false)}
-              className="mobile-nav-link"
               style={{
-                fontFamily: 'var(--font-sans)',
-                fontSize: '1.25rem',
-                fontWeight: 600,
-                letterSpacing: '2px',
-                textTransform: 'uppercase',
-                color: '#FFFFFF',
-                textDecoration: 'none',
-                padding: '12px 0'
+                position: 'fixed',
+                inset: 0,
+                backgroundColor: 'rgba(0, 0, 0, 0.65)',
+                backdropFilter: 'blur(10px)',
+                WebkitBackdropFilter: 'blur(10px)',
+                zIndex: 999,
+                pointerEvents: 'auto'
+              }}
+            />
+
+            {/* Right Slide-in Drawer */}
+            <motion.div
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'spring', damping: 26, stiffness: 220 }}
+              style={{
+                position: 'fixed',
+                top: 0,
+                right: 0,
+                width: '85%',
+                maxWidth: '360px',
+                height: '100vh',
+                backgroundColor: '#050505',
+                borderLeft: '1px solid rgba(255, 255, 255, 0.08)',
+                borderRadius: '32px 0px 0px 32px',
+                boxShadow: '-10px 0 50px rgba(0, 0, 0, 0.85)',
+                zIndex: 1000,
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                padding: '32px 24px',
+                boxSizing: 'border-box',
+                pointerEvents: 'auto'
               }}
             >
-              Home
-            </a>
+              {/* Top Section (Header & Links) */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
+                {/* Header: Logo + Close Button */}
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  {/* Logo (Travinno SVG logo pin) */}
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <svg
+                      viewBox="0 0 100 130"
+                      style={{
+                        height: '32px',
+                        width: 'auto',
+                        display: 'block'
+                      }}
+                    >
+                      <path
+                        d={`${outerPinPath} ${innerTPath}`}
+                        fillRule="evenodd"
+                        fill="#800000"
+                        stroke="none"
+                      />
+                    </svg>
+                  </div>
 
-            {/* Mobile Company Accordion */}
-            <div style={{ width: '100%' }}>
-              <button
-                onClick={() => setMobileCompanyOpen(!mobileCompanyOpen)}
-                style={{
-                  width: '100%',
-                  background: 'none',
-                  border: 'none',
-                  color: '#FFFFFF',
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: '1.25rem',
-                  fontWeight: 600,
-                  letterSpacing: '2px',
-                  textTransform: 'uppercase',
-                  padding: '12px 0',
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  cursor: 'pointer'
-                }}
-              >
-                Company
-                <span style={{ fontSize: '0.8rem' }}>{mobileCompanyOpen ? '▲' : '▼'}</span>
-              </button>
-
-              <AnimatePresence>
-                {mobileCompanyOpen && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: 'auto', opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.3 }}
+                  {/* Close Icon Circle Button */}
+                  <button
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    aria-label="Close menu"
                     style={{
-                      overflow: 'hidden',
+                      backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                      border: '1px solid rgba(255, 255, 255, 0.08)',
+                      borderRadius: '50%',
+                      width: '40px',
+                      height: '40px',
                       display: 'flex',
-                      flexDirection: 'column',
-                      paddingLeft: '20px',
-                      gap: '8px',
-                      borderLeft: '1px solid rgba(255, 255, 255, 0.1)'
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      cursor: 'pointer',
+                      color: '#FFFFFF',
+                      transition: 'background-color 0.2s'
                     }}
+                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.1)'}
+                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.05)'}
                   >
-                    {companyItems.map((item) => (
-                      <a
-                        key={item.name}
-                        href={item.href}
-                        onClick={() => setIsMobileMenuOpen(false)}
+                    <span style={{ fontSize: '1.2rem', fontWeight: 300, lineHeight: 1 }}>✕</span>
+                  </button>
+                </div>
+
+                {/* Divider Line */}
+                <div style={{ width: '100%', height: '1px', backgroundColor: 'rgba(255, 255, 255, 0.05)', marginTop: '-8px' }} />
+
+                {/* Navigation Links list */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  {/* Link 1: Home */}
+                  <div style={{ position: 'relative' }}>
+                    {activeMobileItem === 'home' && (
+                      <div style={{
+                        position: 'absolute',
+                        left: '4px',
+                        top: '50%',
+                        transform: 'translateY(-50%)',
+                        width: '12px',
+                        height: '38px',
+                        borderLeft: '2.5px solid #800000',
+                        borderTopLeftRadius: '14px',
+                        borderBottomLeftRadius: '14px'
+                      }} />
+                    )}
+                    <a
+                      href="#"
+                      onClick={() => {
+                        setActiveMobileItem('home');
+                        setActiveTab('home');
+                        setIsMobileMenuOpen(false);
+                      }}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '16px',
+                        padding: '12px 0px 12px 20px',
+                        color: activeMobileItem === 'home' ? '#800000' : 'rgba(255, 255, 255, 0.7)',
+                        textDecoration: 'none',
+                        fontFamily: 'var(--font-sans)',
+                        fontSize: '1rem',
+                        fontWeight: activeMobileItem === 'home' ? 600 : 500,
+                        transition: 'all 0.25s'
+                      }}
+                    >
+                      <Home size={18} strokeWidth={2.2} />
+                      Home
+                    </a>
+                  </div>
+
+                  {/* Link 2: Company Accordion */}
+                  <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+                    <div style={{ position: 'relative' }}>
+                      {activeMobileItem === 'company' && (
+                        <div style={{
+                          position: 'absolute',
+                          left: '4px',
+                          top: '50%',
+                          transform: 'translateY(-50%)',
+                          width: '12px',
+                          height: '38px',
+                          borderLeft: '2.5px solid #800000',
+                          borderTopLeftRadius: '14px',
+                          borderBottomLeftRadius: '14px'
+                        }} />
+                      )}
+                      <button
+                        onClick={() => {
+                          setActiveMobileItem('company');
+                          setMobileCompanyOpen(!mobileCompanyOpen);
+                          setMobileDestinationsOpen(false);
+                        }}
                         style={{
-                          padding: '8px 0',
-                          color: 'rgba(255, 255, 255, 0.7)',
-                          fontSize: '0.95rem',
-                          textDecoration: 'none',
+                          width: '100%',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          padding: '12px 0px 12px 20px',
+                          background: 'none',
+                          border: 'none',
+                          color: activeMobileItem === 'company' ? '#800000' : 'rgba(255, 255, 255, 0.7)',
                           fontFamily: 'var(--font-sans)',
-                          letterSpacing: '1px'
+                          fontSize: '1rem',
+                          fontWeight: activeMobileItem === 'company' ? 600 : 500,
+                          cursor: 'pointer',
+                          textAlign: 'left',
+                          transition: 'all 0.25s'
                         }}
                       >
-                        {item.name}
-                      </a>
-                    ))}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                          <Users size={18} strokeWidth={2.2} />
+                          Company
+                        </span>
+                        <span style={{ fontSize: '0.75rem', color: 'rgba(255, 255, 255, 0.4)' }}>
+                          {mobileCompanyOpen ? '▲' : '▼'}
+                        </span>
+                      </button>
+                    </div>
 
-            {/* Mobile Destinations Accordion */}
-            <div style={{ width: '100%' }}>
-              <button
-                onClick={() => setMobileDestinationsOpen(!mobileDestinationsOpen)}
-                style={{
-                  width: '100%',
-                  background: 'none',
-                  border: 'none',
-                  color: '#FFFFFF',
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: '1.25rem',
-                  fontWeight: 600,
-                  letterSpacing: '2px',
-                  textTransform: 'uppercase',
-                  padding: '12px 0',
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  cursor: 'pointer'
-                }}
-              >
-                Destinations
-                <span style={{ fontSize: '0.8rem' }}>{mobileDestinationsOpen ? '▲' : '▼'}</span>
-              </button>
+                    <AnimatePresence>
+                      {mobileCompanyOpen && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: 'auto', opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.25 }}
+                          style={{
+                            overflow: 'hidden',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            paddingLeft: '56px',
+                            gap: '12px',
+                            marginTop: '4px',
+                            marginBottom: '10px'
+                          }}
+                        >
+                          {companyItems.map((item) => (
+                            <a
+                              key={item.name}
+                              href={isLockedMode ? "#" : item.href}
+                              onClick={(e) => {
+                                if (isLockedMode) {
+                                  e.preventDefault();
+                                } else {
+                                  setIsMobileMenuOpen(false);
+                                }
+                              }}
+                              style={{
+                                color: isLockedMode ? 'rgba(255, 255, 255, 0.3)' : 'rgba(255, 255, 255, 0.5)',
+                                fontSize: '0.9rem',
+                                textDecoration: 'none',
+                                fontFamily: 'var(--font-sans)',
+                                fontWeight: 400,
+                                transition: 'color 0.2s',
+                                cursor: isLockedMode ? 'not-allowed' : 'pointer',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '8px'
+                              }}
+                              onMouseEnter={(e) => {
+                                if (!isLockedMode) e.currentTarget.style.color = '#800000';
+                              }}
+                              onMouseLeave={(e) => {
+                                if (!isLockedMode) e.currentTarget.style.color = 'rgba(255, 255, 255, 0.5)';
+                              }}
+                            >
+                              {item.name} {isLockedMode && "🔒"}
+                            </a>
+                          ))}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
 
-              <AnimatePresence>
-                {mobileDestinationsOpen && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: 'auto', opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.3 }}
-                    style={{
-                      overflow: 'hidden',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      paddingLeft: '20px',
-                      gap: '8px',
-                      borderLeft: '1px solid rgba(255, 255, 255, 0.1)'
-                    }}
-                  >
-                    {destinationItems.map((item) => (
-                      <a
-                        key={item.name}
-                        href={`#${item.name.toLowerCase()}`}
-                        onClick={(e) => handleDestinationClick(e, item.index)}
+                  {/* Link 3: Destinations Accordion */}
+                  <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+                    <div style={{ position: 'relative' }}>
+                      {activeMobileItem === 'destinations' && (
+                        <div style={{
+                          position: 'absolute',
+                          left: '4px',
+                          top: '50%',
+                          transform: 'translateY(-50%)',
+                          width: '12px',
+                          height: '38px',
+                          borderLeft: '2.5px solid #800000',
+                          borderTopLeftRadius: '14px',
+                          borderBottomLeftRadius: '14px'
+                        }} />
+                      )}
+                      <button
+                        onClick={() => {
+                          setActiveMobileItem('destinations');
+                          setMobileDestinationsOpen(!mobileDestinationsOpen);
+                          setMobileCompanyOpen(false);
+                        }}
                         style={{
-                          padding: '8px 0',
-                          color: 'rgba(255, 255, 255, 0.7)',
-                          fontSize: '0.95rem',
-                          textDecoration: 'none',
+                          width: '100%',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          padding: '12px 0px 12px 20px',
+                          background: 'none',
+                          border: 'none',
+                          color: activeMobileItem === 'destinations' ? '#800000' : 'rgba(255, 255, 255, 0.7)',
                           fontFamily: 'var(--font-sans)',
-                          letterSpacing: '1px'
+                          fontSize: '1rem',
+                          fontWeight: activeMobileItem === 'destinations' ? 600 : 500,
+                          cursor: 'pointer',
+                          textAlign: 'left',
+                          transition: 'all 0.25s'
                         }}
                       >
-                        {item.name}
-                      </a>
-                    ))}
-                  </motion.div>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                          <Compass size={18} strokeWidth={2.2} />
+                          Destinations
+                        </span>
+                        <span style={{ fontSize: '0.75rem', color: 'rgba(255, 255, 255, 0.4)' }}>
+                          {mobileDestinationsOpen ? '▲' : '▼'}
+                        </span>
+                      </button>
+                    </div>
+
+                    <AnimatePresence>
+                      {mobileDestinationsOpen && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: 'auto', opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.25 }}
+                          style={{
+                            overflow: 'hidden',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            paddingLeft: '56px',
+                            gap: '12px',
+                            marginTop: '4px',
+                            marginBottom: '10px'
+                          }}
+                        >
+                          {destinationItems.map((item) => (
+                            <a
+                              key={item.name}
+                              href={isLockedMode ? "#" : `#${item.name.toLowerCase()}`}
+                              onClick={(e) => {
+                                if (isLockedMode) {
+                                  e.preventDefault();
+                                } else {
+                                  handleDestinationClick(e, item.index);
+                                  setIsMobileMenuOpen(false);
+                                }
+                              }}
+                              style={{
+                                color: isLockedMode ? 'rgba(255, 255, 255, 0.3)' : 'rgba(255, 255, 255, 0.5)',
+                                fontSize: '0.9rem',
+                                textDecoration: 'none',
+                                fontFamily: 'var(--font-sans)',
+                                fontWeight: 400,
+                                transition: 'color 0.2s',
+                                cursor: isLockedMode ? 'not-allowed' : 'pointer',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '8px'
+                              }}
+                              onMouseEnter={(e) => {
+                                if (!isLockedMode) e.currentTarget.style.color = '#800000';
+                              }}
+                              onMouseLeave={(e) => {
+                                if (!isLockedMode) e.currentTarget.style.color = 'rgba(255, 255, 255, 0.5)';
+                              }}
+                            >
+                              {item.name} {isLockedMode && "🔒"}
+                            </a>
+                          ))}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+
+                  {/* Link 4: Contact */}
+                  <div style={{ position: 'relative' }}>
+                    {activeMobileItem === 'contact' && (
+                      <div style={{
+                        position: 'absolute',
+                        left: '4px',
+                        top: '50%',
+                        transform: 'translateY(-50%)',
+                        width: '12px',
+                        height: '38px',
+                        borderLeft: '2.5px solid #800000',
+                        borderTopLeftRadius: '14px',
+                        borderBottomLeftRadius: '14px'
+                      }} />
+                    )}
+                    <a
+                      href={isLockedMode ? "#" : "#contact"}
+                      onClick={(e) => {
+                        if (isLockedMode) {
+                          e.preventDefault();
+                        } else {
+                          setActiveMobileItem('contact');
+                          setActiveTab('contact');
+                          setIsMobileMenuOpen(false);
+                        }
+                      }}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '16px',
+                        padding: '12px 0px 12px 20px',
+                        color: isLockedMode
+                          ? 'rgba(255, 255, 255, 0.35)'
+                          : activeMobileItem === 'contact' ? '#800000' : 'rgba(255, 255, 255, 0.7)',
+                        textDecoration: 'none',
+                        fontFamily: 'var(--font-sans)',
+                        fontSize: '1rem',
+                        fontWeight: !isLockedMode && activeMobileItem === 'contact' ? 600 : 500,
+                        transition: 'all 0.25s',
+                        cursor: isLockedMode ? 'not-allowed' : 'pointer'
+                      }}
+                    >
+                      <Mail size={18} strokeWidth={2.2} />
+                      Contact {isLockedMode && "🔒"}
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              {/* Bottom Section (CTA + Utilities) */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', alignItems: 'center' }}>
+                {/* CTA Button "Get in Touch" */}
+                {isLockedMode ? (
+                  <a
+                    href="#"
+                    onClick={(e) => e.preventDefault()}
+                    style={{
+                      width: '80%',
+                      backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                      border: '1px solid rgba(255, 255, 255, 0.08)',
+                      color: 'rgba(255, 255, 255, 0.35)',
+                      fontFamily: 'var(--font-sans)',
+                      fontSize: '0.85rem',
+                      fontWeight: 600,
+                      letterSpacing: '1.5px',
+                      textTransform: 'uppercase',
+                      textAlign: 'center',
+                      padding: '12px 0',
+                      borderRadius: '100px',
+                      textDecoration: 'none',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '8px',
+                      cursor: 'not-allowed',
+                      transition: 'all 0.3s'
+                    }}
+                  >
+                    Get in Touch 🔒
+                  </a>
+                ) : (
+                  <a
+                    href="#contact"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    style={{
+                      width: '80%',
+                      backgroundColor: '#800000',
+                      color: '#FFFFFF',
+                      fontFamily: 'var(--font-sans)',
+                      fontSize: '0.85rem',
+                      fontWeight: 600,
+                      letterSpacing: '1.5px',
+                      textTransform: 'uppercase',
+                      textAlign: 'center',
+                      padding: '12px 0',
+                      borderRadius: '100px',
+                      textDecoration: 'none',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '8px',
+                      boxShadow: '0 8px 24px rgba(128, 0, 0, 0.3)',
+                      transition: 'all 0.3s'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = '#600000';
+                      e.currentTarget.style.boxShadow = '0 8px 28px rgba(128, 0, 0, 0.45)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = '#800000';
+                      e.currentTarget.style.boxShadow = '0 8px 24px rgba(128, 0, 0, 0.3)';
+                    }}
+                  >
+                    Get in Touch <span style={{ fontSize: '1.1rem' }}>→</span>
+                  </a>
                 )}
-              </AnimatePresence>
-            </div>
 
-            {/* Mobile Contact */}
-            <a
-              href="#contact"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="mobile-nav-link"
-              style={{
-                fontFamily: 'var(--font-sans)',
-                fontSize: '1.25rem',
-                fontWeight: 600,
-                letterSpacing: '2px',
-                textTransform: 'uppercase',
-                color: '#FFFFFF',
-                textDecoration: 'none',
-                padding: '12px 0'
-              }}
-            >
-              Contact
-            </a>
-
-            {/* Mobile Portal CTA */}
-            <a
-              href="#contact"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="mobile-portal-btn"
-              style={{
-                fontFamily: 'var(--font-sans)',
-                fontSize: '1rem',
-                fontWeight: 700,
-                letterSpacing: '2px',
-                textTransform: 'uppercase',
-                color: '#FFFFFF',
-                backgroundColor: 'var(--accent-blue)',
-                textDecoration: 'none',
-                padding: '14px 0',
-                textAlign: 'center',
-                marginTop: '20px',
-                borderRadius: '0px'
-              }}
-            >
-              Contact Us
-            </a>
-          </motion.div>
+                {/* Call Us & Email links at the bottom */}
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '12px',
+                  color: 'rgba(255, 255, 255, 0.4)',
+                  fontSize: '0.78rem',
+                  fontFamily: 'var(--font-sans)',
+                  letterSpacing: '0.5px'
+                }}>
+                  <a
+                    href="tel:+97145260000"
+                    style={{
+                      color: 'rgba(255, 255, 255, 0.4)',
+                      textDecoration: 'none',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      transition: 'color 0.2s'
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.color = '#800000'}
+                    onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(255, 255, 255, 0.4)'}
+                  >
+                    📞 Call Us
+                  </a>
+                  <span>•</span>
+                  <a
+                    href="mailto:info@travinno.ae"
+                    style={{
+                      color: 'rgba(255, 255, 255, 0.4)',
+                      textDecoration: 'none',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      transition: 'color 0.2s'
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.color = '#800000'}
+                    onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(255, 255, 255, 0.4)'}
+                  >
+                    ✉ Email
+                  </a>
+                </div>
+              </div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
     </motion.header>

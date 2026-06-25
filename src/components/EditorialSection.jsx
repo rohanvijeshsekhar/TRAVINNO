@@ -237,15 +237,16 @@ export default function EditorialSection() {
         .editorial-stat-item {
           display: flex;
           flex-direction: column;
-          align-items: flex-start;
-          text-align: left;
+          align-items: center;
+          text-align: center;
         }
 
         .editorial-stat-number {
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          padding: 6px 18px;
+          width: 120px;
+          height: 48px;
           background: rgba(255, 255, 255, 0.03);
           backdrop-filter: blur(12px);
           -webkit-backdrop-filter: blur(12px);
@@ -255,12 +256,12 @@ export default function EditorialSection() {
           
           /* Text styling */
           font-family: var(--font-sans);
-          font-size: clamp(1.6rem, 2.8vw, 2.1rem);
+          font-size: clamp(1.4rem, 2.5vw, 1.8rem);
           font-weight: 700;
           line-height: 1;
           letter-spacing: -0.01em;
           margin-bottom: 12px;
-          align-self: flex-start;
+          align-self: center;
           
           /* Off-white glass gradient text color */
           background-image: linear-gradient(180deg, #FFFFFF 40%, rgba(255, 255, 255, 0.65) 100%);
@@ -276,7 +277,7 @@ export default function EditorialSection() {
           line-height: 1.4;
           letter-spacing: 0.02em;
           font-family: var(--font-sans);
-          padding-left: 6px;
+          text-align: center;
         }
 
         /* Right Column text layout (width limited to 620px) */
@@ -387,6 +388,12 @@ export default function EditorialSection() {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 12px;
+          }
+          .editorial-stat-number {
+            width: 85px;
+            height: 38px;
+            font-size: 1.15rem;
+            margin-bottom: 8px;
           }
           .editorial-left-header {
             top: 0;

@@ -19,13 +19,15 @@ import Footer from './components/Footer';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from '@studio-freight/lenis';
-import spaceStarsImg from './assets/space_stars.png';
 
 
 
 function App() {
   const [currentView, setCurrentView] = useState('home');
   const [showLoader, setShowLoader] = useState(true);
+
+  // Lock logic: locked only in production builds or when not on localhost
+  const isLockedMode = import.meta.env.PROD || (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1');
 
   // Starry sky background movement state
   const [stars] = useState(() =>
@@ -42,22 +44,36 @@ function App() {
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash;
-      if (hash === '#about') {
-        setCurrentView('about');
-      } else if (hash === '#team') {
-        setCurrentView('team');
-      } else if (hash === '#services') {
-        setCurrentView('services');
-      } else {
+
+      if (isLockedMode) {
+        // Locked mode: Force view to remain on home page
         setCurrentView('home');
-        if (hash) {
-          // Wait for DOM layout, then scroll to section ID
+        if (hash && hash !== '#about' && hash !== '#team' && hash !== '#services') {
           setTimeout(() => {
             const el = document.getElementById(hash.substring(1));
             if (el) {
               el.scrollIntoView({ behavior: 'smooth' });
             }
           }, 150);
+        }
+      } else {
+        // Normal mode (development)
+        if (hash === '#about') {
+          setCurrentView('about');
+        } else if (hash === '#team') {
+          setCurrentView('team');
+        } else if (hash === '#services') {
+          setCurrentView('services');
+        } else {
+          setCurrentView('home');
+          if (hash) {
+            setTimeout(() => {
+              const el = document.getElementById(hash.substring(1));
+              if (el) {
+                el.scrollIntoView({ behavior: 'smooth' });
+              }
+            }, 150);
+          }
         }
       }
     };
@@ -69,7 +85,7 @@ function App() {
     return () => {
       window.removeEventListener('hashchange', handleHashChange);
     };
-  }, []);
+  }, [isLockedMode]);
 
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -206,23 +222,24 @@ function App() {
               overflow: 'hidden'
             }}
           >
-            {/* Fixed Background Starry Sky */}
+            {/* Background Reddish-Orange-Black Gradient with Static Check Pattern */}
             <div 
               style={{
-                position: 'fixed',
+                position: 'absolute',
                 inset: 0,
-                backgroundImage: `linear-gradient(to bottom, rgba(5, 5, 5, 0.45) 0%, rgba(5, 5, 5, 0.45) 100%), url(${spaceStarsImg})`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
+                backgroundImage: 'linear-gradient(rgba(245, 242, 236, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(245, 242, 236, 0.05) 1px, transparent 1px), radial-gradient(circle at 50% 20%, rgba(193, 18, 31, 0.14) 0%, transparent 45%), radial-gradient(circle at 85% 75%, rgba(230, 80, 20, 0.03) 0%, transparent 60%)',
+                backgroundSize: '100px 100px, 100px 100px, auto, auto',
+                backgroundRepeat: 'repeat, repeat, no-repeat, no-repeat',
+                backgroundColor: '#050505',
                 zIndex: 1,
                 pointerEvents: 'none'
               }}
             />
 
-            {/* Fixed Twinkling & Drifting Stars */}
+            {/* Twinkling & Drifting Stars */}
             <div 
               style={{ 
-                position: 'fixed', 
+                position: 'absolute', 
                 inset: 0, 
                 overflow: 'hidden', 
                 pointerEvents: 'none', 
@@ -266,6 +283,34 @@ function App() {
                 />
               ))}
             </div>
+
+            {/* Top Smooth Blend Overlay */}
+            <div 
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '160px',
+                background: 'linear-gradient(to bottom, #050505 0%, transparent 100%)',
+                zIndex: 3,
+                pointerEvents: 'none'
+              }}
+            />
+
+            {/* Bottom Smooth Blend Overlay */}
+            <div 
+              style={{
+                position: 'absolute',
+                bottom: 0,
+                left: 0,
+                width: '100%',
+                height: '160px',
+                background: 'linear-gradient(to top, #050505 0%, transparent 100%)',
+                zIndex: 3,
+                pointerEvents: 'none'
+              }}
+            />
 
             <div style={{ maxWidth: '1300px', margin: '0 auto', textAlign: 'center', boxSizing: 'border-box', padding: '0 8px', display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative', zIndex: 10 }}>
               <span

@@ -368,7 +368,7 @@ export default function TeamPage() {
               >
                 <img 
                   src={leader.image} 
-                  alt={leader.name} 
+                  alt={`${leader.name} – ${leader.position} at Travinno Trusted DMC`} 
                   style={{
                     width: '100%',
                     height: '560px',
@@ -505,7 +505,7 @@ export default function TeamPage() {
                 >
                   <img 
                     src={member.image} 
-                    alt={member.name} 
+                    alt={`${member.name} – ${member.position} at Travinno Trusted DMC`} 
                     style={{
                       width: '100%',
                       height: member.height,

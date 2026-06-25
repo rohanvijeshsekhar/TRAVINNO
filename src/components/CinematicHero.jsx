@@ -60,6 +60,20 @@ const DESTINATIONS = [
   }
 ];
 
+const getDestinationAltText = (name) => {
+  const cleanName = name.replace(' Duplicate', '');
+  const mapping = {
+    'Dubai': 'Luxury travel in Dubai with Travinno Trusted DMC',
+    'Kenya': 'Kenya safari destination managed by Travinno Trusted DMC',
+    'Thailand': 'Premium Thailand holiday experiences by Travinno Trusted DMC',
+    'Vietnam': 'Bespoke Vietnam tours and luxury cruises with Travinno Trusted DMC',
+    'Singapore': 'Singapore destination management services by Travinno Trusted DMC',
+    'Malaysia': 'Destination management services in Malaysia with Travinno Trusted DMC',
+    'Bali': 'Luxury holidays in Bali by Travinno Trusted DMC'
+  };
+  return mapping[cleanName] || `Premium travel experiences in ${cleanName} by Travinno Trusted DMC`;
+};
+
 export default function CinematicHero() {
   const [imagesLoaded, setImagesLoaded] = useState(false);
   const slideRefs = useRef([]);
@@ -131,9 +145,10 @@ export default function CinematicHero() {
     // initial entrance fade (duration 1.8s)
     tl.fromTo(slideRefs.current[0], { opacity: 0 }, { opacity: 1, duration: transitionTime, ease: 'power1.inOut' }, 0);
     tl.fromTo(textRefs.current[0], { y: 15, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: 'power2.out' }, 0.5);
-    // fade out at t = 4.0
-    tl.to(slideRefs.current[0], { opacity: 0, duration: transitionTime, ease: 'power1.inOut' }, 4.0);
+    // text exit at 4.0
     tl.to(textRefs.current[0], { y: -15, opacity: 0, duration: 0.8, ease: 'power2.inOut' }, 4.0);
+    // instant opacity reset when next slide is fully opaque
+    tl.to(slideRefs.current[0], { opacity: 0, duration: 0 }, 5.8);
 
     // Slide 1: Kenya (T = 3.6s, movement = 5.4s)
     tl.fromTo(imageRefs.current[1],
@@ -143,9 +158,9 @@ export default function CinematicHero() {
     );
     tl.fromTo(slideRefs.current[1], { opacity: 0 }, { opacity: 1, duration: transitionTime, ease: 'power1.inOut' }, 4.0);
     tl.fromTo(textRefs.current[1], { y: 15, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: 'power2.out' }, 4.4);
-    // fade out at t = 7.6
-    tl.to(slideRefs.current[1], { opacity: 0, duration: transitionTime, ease: 'power1.inOut' }, 7.6);
+    // text exit at 7.6
     tl.to(textRefs.current[1], { y: -15, opacity: 0, duration: 0.8, ease: 'power2.inOut' }, 7.6);
+    tl.to(slideRefs.current[1], { opacity: 0, duration: 0 }, 9.4);
 
     // Slide 2: Thailand (T = 4.2s, movement = 6.0s)
     tl.fromTo(imageRefs.current[2],
@@ -155,9 +170,9 @@ export default function CinematicHero() {
     );
     tl.fromTo(slideRefs.current[2], { opacity: 0 }, { opacity: 1, duration: transitionTime, ease: 'power1.inOut' }, 7.6);
     tl.fromTo(textRefs.current[2], { y: 15, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: 'power2.out' }, 8.0);
-    // fade out at t = 11.8
-    tl.to(slideRefs.current[2], { opacity: 0, duration: transitionTime, ease: 'power1.inOut' }, 11.8);
+    // text exit at 11.8
     tl.to(textRefs.current[2], { y: -15, opacity: 0, duration: 0.8, ease: 'power2.inOut' }, 11.8);
+    tl.to(slideRefs.current[2], { opacity: 0, duration: 0 }, 13.6);
 
     // Slide 3: Malaysia (T = 3.8s, movement = 5.6s)
     tl.fromTo(imageRefs.current[3],
@@ -167,9 +182,9 @@ export default function CinematicHero() {
     );
     tl.fromTo(slideRefs.current[3], { opacity: 0 }, { opacity: 1, duration: transitionTime, ease: 'power1.inOut' }, 11.8);
     tl.fromTo(textRefs.current[3], { y: 15, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: 'power2.out' }, 12.2);
-    // fade out at t = 15.6
-    tl.to(slideRefs.current[3], { opacity: 0, duration: transitionTime, ease: 'power1.inOut' }, 15.6);
+    // text exit at 15.6
     tl.to(textRefs.current[3], { y: -15, opacity: 0, duration: 0.8, ease: 'power2.inOut' }, 15.6);
+    tl.to(slideRefs.current[3], { opacity: 0, duration: 0 }, 17.4);
 
     // Slide 4: Singapore (T = 4.4s, movement = 6.2s)
     tl.fromTo(imageRefs.current[4],
@@ -179,9 +194,9 @@ export default function CinematicHero() {
     );
     tl.fromTo(slideRefs.current[4], { opacity: 0 }, { opacity: 1, duration: transitionTime, ease: 'power1.inOut' }, 15.6);
     tl.fromTo(textRefs.current[4], { y: 15, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: 'power2.out' }, 16.0);
-    // fade out at t = 20.0
-    tl.to(slideRefs.current[4], { opacity: 0, duration: transitionTime, ease: 'power1.inOut' }, 20.0);
+    // text exit at 20.0
     tl.to(textRefs.current[4], { y: -15, opacity: 0, duration: 0.8, ease: 'power2.inOut' }, 20.0);
+    tl.to(slideRefs.current[4], { opacity: 0, duration: 0 }, 21.8);
 
     // Slide 5: Vietnam (T = 3.7s, movement = 5.5s)
     tl.fromTo(imageRefs.current[5],
@@ -191,9 +206,9 @@ export default function CinematicHero() {
     );
     tl.fromTo(slideRefs.current[5], { opacity: 0 }, { opacity: 1, duration: transitionTime, ease: 'power1.inOut' }, 20.0);
     tl.fromTo(textRefs.current[5], { y: 15, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: 'power2.out' }, 20.4);
-    // fade out at t = 23.7
-    tl.to(slideRefs.current[5], { opacity: 0, duration: transitionTime, ease: 'power1.inOut' }, 23.7);
+    // text exit at 23.7
     tl.to(textRefs.current[5], { y: -15, opacity: 0, duration: 0.8, ease: 'power2.inOut' }, 23.7);
+    tl.to(slideRefs.current[5], { opacity: 0, duration: 0 }, 25.5);
 
     // Slide 6: Bali (T = 5.0s, movement = 6.8s)
     tl.fromTo(imageRefs.current[6],
@@ -203,9 +218,9 @@ export default function CinematicHero() {
     );
     tl.fromTo(slideRefs.current[6], { opacity: 0 }, { opacity: 1, duration: transitionTime, ease: 'power1.inOut' }, 23.7);
     tl.fromTo(textRefs.current[6], { y: 15, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: 'power2.out' }, 24.1);
-    // fade out at t = 28.7
-    tl.to(slideRefs.current[6], { opacity: 0, duration: transitionTime, ease: 'power1.inOut' }, 28.7);
+    // text exit at 28.7
     tl.to(textRefs.current[6], { y: -15, opacity: 0, duration: 0.8, ease: 'power2.inOut' }, 28.7);
+    tl.to(slideRefs.current[6], { opacity: 0, duration: 0 }, 30.5);
 
     // Slide 7: Dubai Duplicate (Fade-in transition over 1.8s)
     tl.fromTo(imageRefs.current[7],
@@ -258,7 +273,7 @@ export default function CinematicHero() {
             <img
               ref={addToImageRefs}
               src={dest.image}
-              alt={dest.name}
+              alt={getDestinationAltText(dest.name)}
               style={{
                 width: '100%',
                 height: '100%',

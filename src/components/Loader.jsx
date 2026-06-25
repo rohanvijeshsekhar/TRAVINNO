@@ -32,16 +32,101 @@ export default function Loader({ onComplete }) {
         left: 0,
         width: '100vw',
         height: '100vh',
-        backgroundColor: '#000000',
+        backgroundColor: '#050505',
         zIndex: 99999,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        pointerEvents: 'none'
+        pointerEvents: 'none',
+        overflow: 'hidden'
       }}
     >
-      <div className="loader-logo-wrapper" style={{ position: 'relative', width: '120px', height: '156px' }}>
+      {/* 1. Grid Check Backdrop with increased opacity */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          width: '100%',
+          height: '100%',
+          pointerEvents: 'none',
+          zIndex: 1
+        }}
+      >
+        <svg style={{ width: '100%', height: '100%' }}>
+          <defs>
+            <pattern id="loader-grid" width="60" height="60" patternUnits="userSpaceOnUse">
+              <path d="M 60 0 L 0 0 0 60" fill="none" stroke="rgba(255,255,255,0.18)" strokeWidth="0.6" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#loader-grid)" />
+        </svg>
+      </div>
+
+      {/* 2. Left Corner (Bottom Left) Malaysia Buildings Illustration */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 0.22, y: 0 }}
+        transition={{ delay: 0.4, duration: 1.0, ease: "easeOut" }}
+        style={{
+          position: 'absolute',
+          bottom: '4%',
+          left: '5%',
+          width: '240px',
+          height: '360px',
+          zIndex: 2,
+          pointerEvents: 'none'
+        }}
+      >
+        <svg viewBox="0 0 280 720" style={{ width: '100%', height: '100%', overflow: 'visible' }}>
+          <g stroke="rgba(255, 255, 255, 0.7)" strokeWidth="2.2" fill="none" strokeLinecap="round">
+            <g transform="translate(-1480, -130)">
+              {/* Petronas Twin Towers */}
+              <line x1="1540" y1="160" x2="1540" y2="820" />
+              <line x1="1700" y1="160" x2="1700" y2="820" />
+              <path d="M 1540,480 H 1700 M 1540,490 H 1700 M 1610,480 V 490 M 1630,480 V 490 M 1620,480 V 490" />
+              {/* Tower 1 */}
+              <path d="M 1536,260 V 340 H 1544 V 260 Z" />
+              <path d="M 1530,340 V 420 H 1550 V 340 Z" />
+              <path d="M 1522,420 V 520 H 1558 V 420 Z" />
+              <path d="M 1512,520 V 640 H 1568 V 520 Z" />
+              <path d="M 1500,640 V 750 H 1580 V 640 Z" />
+              <path d="M 1480,750 V 820 H 1600 V 750 Z" />
+              {/* Tower 2 */}
+              <path d="M 1696,260 V 340 H 1704 V 260 Z" />
+              <path d="M 1690,340 V 420 H 1710 V 340 Z" />
+              <path d="M 1682,420 V 520 H 1718 V 420 Z" />
+              <path d="M 1672,520 V 640 H 1728 V 520 Z" />
+              <path d="M 1660,640 V 750 H 1740 V 640 Z" />
+              <path d="M 1640,750 V 820 H 1760 V 750 Z" />
+              {/* Accents / Overshoots */}
+              <line x1="1490" y1="750" x2="1590" y2="750" />
+              <line x1="1505" y1="640" x2="1575" y2="640" />
+              <line x1="1518" y1="520" x2="1562" y2="520" />
+              <line x1="1650" y1="750" x2="1750" y2="750" />
+              <line x1="1665" y1="640" x2="1735" y2="640" />
+              <line x1="1678" y1="520" x2="1722" y2="520" />
+            </g>
+          </g>
+          {/* Label text */}
+          <text
+            x="140"
+            y="710"
+            textAnchor="middle"
+            fill="rgba(255, 255, 255, 0.4)"
+            fontFamily="var(--font-sans)"
+            fontSize="24"
+            letterSpacing="0.15em"
+          >
+            KUL // 3.1578° N, 101.7119° E
+          </text>
+        </svg>
+      </motion.div>
+
+
+
+      {/* 4. Center Logo Reveal Component Layer */}
+      <div className="loader-logo-wrapper" style={{ position: 'relative', width: '120px', height: '156px', zIndex: 10 }}>
         <svg
           viewBox="0 0 100 130"
           style={{
@@ -95,28 +180,113 @@ export default function Loader({ onComplete }) {
         </svg>
       </div>
 
-      {/* Step 4: Brand Name "TRAVINNO" fades in (Duration 0.5s, starts after 2.2s when fill completes) */}
+      {/* Step 4: Brand elements fade in (starts after 2.2s when fill completes) */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{
           delay: 2.2,
-          duration: 0.5,
+          duration: 0.8,
           ease: "easeOut"
         }}
         style={{
-          marginTop: '32px',
-          fontFamily: "var(--font-sans)",
-          fontWeight: 500,
-          fontSize: '24px',
-          letterSpacing: '0.25em',
-          color: '#FFFFFF',
-          textTransform: 'uppercase',
-          textAlign: 'center',
-          userSelect: 'none'
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          marginTop: '8px',
+          zIndex: 10,
+          width: '100%',
+          maxWidth: '600px'
         }}
       >
-        TRAVINNO
+        {/* Brand Name */}
+        <div
+          style={{
+            fontFamily: "var(--font-sans)",
+            fontWeight: 500,
+            fontSize: '24px',
+            letterSpacing: '0.25em',
+            color: '#FFFFFF',
+            textTransform: 'uppercase',
+            textAlign: 'center',
+            userSelect: 'none',
+            marginBottom: '8px'
+          }}
+        >
+          TRAVINNO
+        </div>
+
+        {/* Tagline */}
+        <div
+          style={{
+            fontFamily: "var(--font-sans)",
+            fontWeight: 400,
+            fontSize: '10px',
+            letterSpacing: '0.18em',
+            color: 'rgba(245, 242, 236, 0.45)',
+            textTransform: 'uppercase',
+            textAlign: 'center',
+            userSelect: 'none',
+            marginBottom: '28px'
+          }}
+        >
+          CRAFTING JOURNEYS, CREATING MEMORIES
+        </div>
+
+        {/* Glowing Divider Line */}
+        <div
+          style={{
+            position: 'relative',
+            width: '80%',
+            maxWidth: '480px',
+            height: '1.5px',
+            background: 'linear-gradient(90deg, rgba(234, 28, 41, 0) 0%, rgba(234, 28, 41, 1) 50%, rgba(234, 28, 41, 0) 100%)',
+            marginBottom: '28px',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}
+        >
+          {/* Ambient Glow */}
+          <div
+            style={{
+              position: 'absolute',
+              width: '160px',
+              height: '4px',
+              background: 'rgba(234, 28, 41, 0.6)',
+              filter: 'blur(3px)',
+              borderRadius: '50%'
+            }}
+          />
+          {/* Lens Flare Sparkle */}
+          <div
+            style={{
+              position: 'absolute',
+              left: '62%', // matching the image flare position (slightly right of center)
+              width: '3px',
+              height: '3px',
+              background: '#FFFFFF',
+              borderRadius: '50%',
+              boxShadow: '0 0 8px #FFFFFF, 0 0 16px #EA1C29, 0 0 24px #EA1C29'
+            }}
+          />
+        </div>
+
+        {/* Loading Text */}
+        <div
+          style={{
+            fontFamily: "var(--font-sans)",
+            fontWeight: 400,
+            fontSize: '13px',
+            letterSpacing: '0.35em',
+            color: 'rgba(245, 242, 236, 0.55)',
+            textTransform: 'uppercase',
+            textAlign: 'center',
+            userSelect: 'none'
+          }}
+        >
+          LOADING...
+        </div>
       </motion.div>
     </motion.div>
   );

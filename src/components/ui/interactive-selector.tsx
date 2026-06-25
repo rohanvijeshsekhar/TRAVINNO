@@ -91,13 +91,26 @@ const getFlag = (title: string) => {
   }
 };
 
+const getDestinationAltText = (title: string) => {
+  const mapping: Record<string, string> = {
+    'Dubai': 'Luxury travel in Dubai with Travinno Trusted DMC',
+    'Kenya': 'Kenya safari destination managed by Travinno Trusted DMC',
+    'Thailand': 'Premium Thailand holiday experiences by Travinno Trusted DMC',
+    'Vietnam': 'Bespoke Vietnam tours and luxury cruises with Travinno Trusted DMC',
+    'Singapore': 'Singapore destination management services by Travinno Trusted DMC',
+    'Malaysia': 'Destination management services in Malaysia with Travinno Trusted DMC',
+    'Bali': 'Luxury holidays in Bali by Travinno Trusted DMC'
+  };
+  return mapping[title] || `Premium travel experiences in ${title} by Travinno Trusted DMC`;
+};
+
 export default function InteractiveSelector() {
   const containerRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const titleRefs = useRef<(HTMLDivElement | null)[]>([]);
   const ctaRefs = useRef<(HTMLDivElement | null)[]>([]);
   const imageRefs = useRef<(HTMLImageElement | null)[]>([]);
-  
+
   const [activeIndex, setActiveIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -148,8 +161,8 @@ export default function InteractiveSelector() {
       const position = i - 1; // absolute start position in timeline
 
       // 1. Outgoing Card (i-1) - moves up slightly, scales down slightly, remains fully opaque
-      if (cards[i-1]) {
-        tl.to(cards[i-1], {
+      if (cards[i - 1]) {
+        tl.to(cards[i - 1], {
           y: "-30px",
           opacity: 1,
           scale: 0.97,
@@ -177,8 +190,8 @@ export default function InteractiveSelector() {
   }, []);
 
   return (
-    <div 
-      ref={containerRef} 
+    <div
+      ref={containerRef}
       className="destinations-stack-section"
       style={{
         position: 'relative',
@@ -558,7 +571,7 @@ export default function InteractiveSelector() {
 
                     <h3 className="dest-editorial-heading">{dest.heading}</h3>
                     <p className="dest-editorial-description">{dest.description}</p>
-                    
+
                     <div className="dest-feature-pills-container">
                       {dest.highlights.map((highlight, hidx) => (
                         <span key={`high-${hidx}`} className="dest-feature-pill">
@@ -581,7 +594,7 @@ export default function InteractiveSelector() {
                     <img
                       ref={(el) => { imageRefs.current[idx] = el; }}
                       src={dest.image}
-                      alt={`${dest.title} landscape`}
+                      alt={getDestinationAltText(dest.title)}
                       className="destination-img"
                     />
                   </div>

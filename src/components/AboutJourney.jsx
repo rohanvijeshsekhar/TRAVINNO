@@ -222,7 +222,7 @@ export default function AboutJourney() {
           
           <img 
             src={data.photo} 
-            alt={`${data.city} photograph`} 
+            alt={`Vintage scrapbook photograph of ${data.city}, ${data.country} – Travinno Trusted DMC history`} 
             className="vintage-photo-img" 
           />
 
@@ -373,7 +373,7 @@ export default function AboutJourney() {
         <div className="vintage-photo-container" style={{ width: '90%', margin: '0 auto 16px auto', height: '170px' }}>
           <div className="tape tape-tl" style={{ width: '40px', height: '15px' }} />
           <div className="tape tape-br" style={{ width: '40px', height: '15px' }} />
-          <img src={data.photo} alt={data.city} className="vintage-photo-img" />
+          <img src={data.photo} alt={`Vintage scrapbook photograph of ${data.city}, ${data.country} – Travinno Trusted DMC history`} className="vintage-photo-img" />
           <div className="photo-inner-shadow" />
         </div>
 
