@@ -967,7 +967,7 @@ a {
 @media (max-width: 1023px) {
   .expertise-section {
     height: auto;
-    padding: 30px 24px 100px 24px;
+    padding: 30px 24px 20px 24px;
     justify-content: flex-start;
   }
 
@@ -989,7 +989,7 @@ a {
 /* Mobile Media adjustments */
 @media (max-width: 767px) {
   .expertise-section {
-    padding: 20px 20px 80px 20px;
+    padding: 20px 20px 20px 20px;
   }
 
   .expertise-heading {

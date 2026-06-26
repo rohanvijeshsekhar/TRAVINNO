@@ -511,6 +511,10 @@ export default function InteractiveSelector() {
 
         /* Responsive Mobile Layout (Tablet and Mobile stack) */
         @media (max-width: 1023px) {
+          .destinations-section {
+            padding-top: 40px !important;
+          }
+
           .destinations-stack-section {
             height: 100vh !important;
             height: 100dvh !important;
@@ -524,7 +528,7 @@ export default function InteractiveSelector() {
             display: flex !important;
             justify-content: center !important;
             align-items: flex-start !important;
-            padding-top: 92px !important;
+            padding-top: 24px !important;
             box-sizing: border-box !important;
           }
 

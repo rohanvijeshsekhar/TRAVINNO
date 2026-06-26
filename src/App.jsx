@@ -108,6 +108,7 @@ function App() {
     if (currentView !== 'home' || showLoader) return;
 
     gsap.registerPlugin(ScrollTrigger);
+    ScrollTrigger.config({ ignoreMobileResize: true });
 
     // Initialize Lenis smooth scroll
     const lenis = new Lenis({
@@ -220,7 +221,7 @@ function App() {
           {/* Destinations Showcase Section */}
           <div
             id="destinations"
-            className="home-destinations-fade-wrap"
+            className="home-destinations-fade-wrap destinations-section"
             style={{
               backgroundColor: '#050505',
               padding: '100px 24px 0 24px',
@@ -321,7 +322,7 @@ function App() {
               }}
             />
 
-            <div style={{ maxWidth: '1300px', margin: '0 auto', textAlign: 'center', boxSizing: 'border-box', padding: '0 8px', display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative', zIndex: 10 }}>
+            <div className="destinations-heading-container" style={{ maxWidth: '1300px', margin: '0 auto', textAlign: 'center', boxSizing: 'border-box', padding: '0 8px', display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative', zIndex: 10 }}>
               <span
                 style={{
                   display: 'inline-flex',
