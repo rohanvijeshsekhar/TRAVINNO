@@ -136,8 +136,8 @@ export default function InteractiveSelector() {
     let tl: gsap.core.Timeline;
     let st: ScrollTrigger;
     let currentProgress = 0;
-    const lerpFactor = 0.04;
-    const maxDelta = 0.005; // speed limit per frame to prevent skipping cards during momentum scrolls
+    const lerpFactor = 0.12; // Increased for faster catch-up (eliminates auto-slide lag)
+    const maxDelta = 0.025;  // Higher speed limit so swipe inputs react immediately
 
     const updateAnimation = () => {
       const target = targetProgressRef.current;
@@ -243,10 +243,15 @@ export default function InteractiveSelector() {
           if (anyWindow.lenis) {
             const start = self.start;
             const end = self.end;
-            const lenisScroll = anyWindow.lenis.scroll;
-            progress = (lenisScroll - start) / (end - start);
+            const diffRange = end - start;
+            if (diffRange > 0 && typeof anyWindow.lenis.scroll === 'number') {
+              const lenisScroll = anyWindow.lenis.scroll;
+              progress = (lenisScroll - start) / diffRange;
+            }
           }
-          targetProgressRef.current = gsap.utils.clamp(0, 1, progress);
+          if (!isNaN(progress)) {
+            targetProgressRef.current = gsap.utils.clamp(0, 1, progress);
+          }
         }
       });
     }, containerRef);
