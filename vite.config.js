@@ -4,12 +4,17 @@ import { fileURLToPath, URL } from 'url'
 import tailwindcss from '@tailwindcss/vite'
 
 // https://vite.dev/config/
-export default defineConfig({
-  plugins: [react(), tailwindcss()],
-  resolve: {
-    alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
-    }
-  },
-  base: (process.env.GITHUB_ACTIONS || process.env.npm_lifecycle_event === 'deploy' || process.env.npm_lifecycle_event === 'predeploy') ? '/TRAVINNO/' : '/demo/',
+export default defineConfig(({ command, mode }) => {
+  const isGithub = process.env.GITHUB_ACTIONS || mode === 'github';
+  const base = isGithub ? '/TRAVINNO/' : '/demo/';
+
+  return {
+    plugins: [react(), tailwindcss()],
+    resolve: {
+      alias: {
+        '@': fileURLToPath(new URL('./src', import.meta.url))
+      }
+    },
+    base: base,
+  }
 })
