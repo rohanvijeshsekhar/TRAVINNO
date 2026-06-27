@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -113,150 +113,162 @@ export default function InteractiveSelector() {
   const ctaRefs = useRef<(HTMLDivElement | null)[]>([]);
   const imageRefs = useRef<(HTMLImageElement | null)[]>([]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
-    const container = containerRef.current;
-    if (!container) return;
+    let ctx: any;
+    let refreshInitListener: any;
+    let rafId1 = 0;
+    let rafId2 = 0;
 
-    const cards = cardRefs.current.filter((c): c is HTMLDivElement => c !== null);
-    if (cards.length === 0) return;
+    const initScrollTrigger = () => {
+      const container = containerRef.current;
+      if (!container) return;
 
-    // ─── iOS WebKit Fix 1 ───────────────────────────────────────────────────
-    // Strip will-change and hardware-acceleration hints from every card.
-    // On WebKit, will-change:transform causes the browser to promote elements
-    // into independent compositing layers BEFORE GSAP pins the container.
-    // When ScrollTrigger then sets position:fixed on the container, the
-    // pre-promoted card layers do not re-composite correctly, producing the
-    // "cards appear early" and "blank space" symptoms on real iPhones.
-    // Removing these hints lets GSAP own the compositing lifecycle entirely.
-    cards.forEach(card => {
-      card.style.willChange = 'auto';
-      card.style.transform = 'none';
-      // Note: CSS transform-style:preserve-3d stays in the stylesheet but is
-      // overridden here at runtime only on the element-level style.
-    });
+      const cards = cardRefs.current.filter((c): c is HTMLDivElement => c !== null);
+      if (cards.length === 0) return;
 
-    // ─── iOS WebKit Fix 2 ───────────────────────────────────────────────────
-    // Measure the VISUAL viewport in pixels.
-    // On iOS Safari, CSS 1vh = layout viewport height (includes the address
-    // bar chrome ~80px). window.innerHeight = VISUAL viewport (excludes it).
-    // GSAP's scroll calculations use window.innerHeight internally, so every
-    // distance we pass to GSAP must also use window.innerHeight — never "vh".
-    const getVH = () => window.innerHeight;
+      // ─── iOS WebKit Fix 1 ───────────────────────────────────────────────────
+      // Strip will-change and hardware-acceleration hints from every card to let GSAP own compositing
+      cards.forEach(card => {
+        card.style.willChange = 'auto';
+        card.style.transform = 'none';
+      });
 
-    const ctx = gsap.context(() => {
-      // Set initial positions using measured pixels, not "100vh" strings.
-      // "100vh" on iOS Safari ≠ window.innerHeight, causing cards starting
-      // below the visible screen to actually start INSIDE it.
-      cards.forEach((card, idx) => {
-        gsap.set(card, {
-          y: idx === 0 ? 0 : () => getVH(),   // function form: re-evaluated on invalidateOnRefresh
-          opacity: 1,
-          scale: 1,
-          force3D: true
+      // ─── iOS WebKit Fix 2 ───────────────────────────────────────────────────
+      // Measure the VISUAL viewport in pixels.
+      const getVH = () => window.innerHeight;
+
+      // Stable viewport height to bypass iOS Safari address bar resizing height shifts.
+      const updateStickyHeight = () => {
+        const vh = getVH();
+        const stickyViewport = container.querySelector('.destinations-sticky-viewport') as HTMLDivElement;
+        if (stickyViewport) {
+          stickyViewport.style.height = `${vh}px`;
+        }
+      };
+
+      // Initially configure and listen to refreshInit
+      updateStickyHeight();
+      refreshInitListener = updateStickyHeight;
+      ScrollTrigger.addEventListener("refreshInit", updateStickyHeight);
+
+      // Get the locked height of the sticky viewport (constant during scroll)
+      const getStableVH = () => {
+        const stickyViewport = container.querySelector('.destinations-sticky-viewport') as HTMLDivElement;
+        return stickyViewport ? stickyViewport.offsetHeight : getVH();
+      };
+
+      ctx = gsap.context(() => {
+        // Set initial positions using measured pixels, not "100vh" strings.
+        cards.forEach((card, idx) => {
+          gsap.set(card, {
+            y: idx === 0 ? 0 : () => getStableVH(),   // function form: re-evaluated on invalidateOnRefresh
+            opacity: 1,
+            scale: 1,
+            force3D: true
+          });
+        });
+
+        // ─── iOS WebKit Fix 3 ─────────────────────────────────────────────────
+        // Pixel-based end calculation.
+        const transitionDuration = 1.0;
+        const step = 0.8;
+        const holdBuffer = 0.8;   // matches tl.to({}, { duration: 0.8 }) at end
+        const totalTimelineUnits = (cards.length - 1) * step + transitionDuration + holdBuffer;
+        const SCROLL_PER_UNIT = () => getStableVH() * 0.7;
+
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: container,
+            start: 'top top',
+            end: () => `+=${totalTimelineUnits * SCROLL_PER_UNIT()}`,
+            pin: true,
+            pinSpacing: true,
+            scrub: 1.5,
+            invalidateOnRefresh: true   // re-runs end() and all gsap.set() on resize
+          }
+        });
+
+        const isMobile = window.innerWidth < 1024;
+
+        for (let i = 1; i < cards.length; i++) {
+          const startPos = (i - 1) * step;
+
+          if (isMobile) {
+            tl.to(cards[i - 1], {
+              opacity: 1,
+              duration: transitionDuration
+            }, startPos);
+          } else {
+            tl.to(cards[i - 1], {
+              y: -30,
+              scale: 0.97,
+              duration: transitionDuration,
+              ease: 'power1.inOut'
+            }, startPos);
+          }
+
+          // ─── iOS WebKit Fix 4 ─────────────────────────────────────────────
+          // Replace fromTo "100vh" with stable visual viewport height.
+          tl.fromTo(cards[i],
+            { y: () => getStableVH(), scale: 1 },
+            {
+              y: 0,
+              scale: 1,
+              duration: transitionDuration,
+              ease: 'power1.inOut',
+              force3D: true
+            },
+            startPos
+          );
+        }
+
+        // Final hold buffer so Vietnam card stays visible before unpinning
+        tl.to({}, { duration: holdBuffer });
+
+      }, container);
+
+      // ─── iOS WebKit Fix 5 ───────────────────────────────────────────────────
+      // Double requestAnimationFrame before ScrollTrigger.refresh().
+      rafId1 = requestAnimationFrame(() => {
+        rafId2 = requestAnimationFrame(() => {
+          ScrollTrigger.refresh(true);
         });
       });
+    };
 
-      // ─── iOS WebKit Fix 3 ─────────────────────────────────────────────────
-      // Pixel-based end calculation.
-      // Original: end: "+=1400vh" — on iOS this resolved to 1400 * cssVH which
-      // is 1400 * (layout viewport height) instead of 1400 * window.innerHeight.
-      // Because iOS layout vh > visual vh, the ScrollTrigger "end" was computed
-      // to be further than it should be, causing the pin to hold for too long
-      // and producing the blank space at the bottom.
-      //
-      // New approach: calculate the exact scroll distance needed to transition
-      // through every card at a fixed "200% of viewport" per transition, which
-      // matches what the timeline duration/step ratio produces visually.
-      // The function form means invalidateOnRefresh re-runs this on resize.
-      const transitionDuration = 1.0;
-      const step = 0.8;
-      const holdBuffer = 0.8;   // matches tl.to({}, { duration: 0.8 }) at end
-      const totalTimelineUnits = (cards.length - 1) * step + transitionDuration + holdBuffer;
-      // scrollPixelsPerTimelineUnit: how many scroll pixels correspond to 1
-      // unit of timeline time. We want each card transition to feel like
-      // scrolling ~200px at scrub:1.5, matching original 1400vh/7cards feel
-      // but computed from the measured visual viewport.
-      const SCROLL_PER_UNIT = () => getVH() * 0.7;
-
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: container,
-          start: 'top top',
-          // Function form: recalculated by invalidateOnRefresh on every resize
-          // or iOS orientation change. Avoids stale vh-based measurements.
-          end: () => `+=${totalTimelineUnits * SCROLL_PER_UNIT()}`,
-          pin: true,
-          pinSpacing: true,
-          // anticipatePin removed: on iOS native momentum scroll, anticipatePin
-          // fires based on scroll velocity prediction which is unreliable with
-          // WebKit's rubber-band physics, causing early pin engagement.
-          scrub: 1.5,
-          invalidateOnRefresh: true   // re-runs end() and all gsap.set() on resize
-        }
-      });
-
-      const isMobile = window.innerWidth < 1024;
-
-      for (let i = 1; i < cards.length; i++) {
-        const startPos = (i - 1) * step;
-
-        if (isMobile) {
-          tl.to(cards[i - 1], {
-            opacity: 1,
-            duration: transitionDuration
-          }, startPos);
+    // Ensure all web fonts and stylesheets are fully loaded to stabilize document height
+    const readyCheck = () => {
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(() => {
+          if (document.readyState === 'complete') {
+            initScrollTrigger();
+          } else {
+            window.addEventListener('load', initScrollTrigger, { once: true });
+          }
+        });
+      } else {
+        if (document.readyState === 'complete') {
+          initScrollTrigger();
         } else {
-          tl.to(cards[i - 1], {
-            y: -30,
-            scale: 0.97,
-            duration: transitionDuration,
-            ease: 'power1.inOut'
-          }, startPos);
+          window.addEventListener('load', initScrollTrigger, { once: true });
         }
-
-        // ─── iOS WebKit Fix 4 ─────────────────────────────────────────────
-        // Replace fromTo "100vh" with function returning window.innerHeight px.
-        // The fromTo from-value is re-evaluated by invalidateOnRefresh because
-        // we use a function. On a vh string, invalidateOnRefresh cannot
-        // recalculate it — the stale string is reused, which is why rotating
-        // an iPhone and refreshing breaks the slide-in distance.
-        tl.fromTo(cards[i],
-          { y: () => getVH(), scale: 1 },
-          {
-            y: 0,
-            scale: 1,
-            duration: transitionDuration,
-            ease: 'power1.inOut',
-            force3D: true
-          },
-          startPos
-        );
       }
+    };
 
-      // Final hold buffer so Vietnam card stays visible before unpinning
-      tl.to({}, { duration: holdBuffer });
-
-    }, containerRef);
-
-    // ─── iOS WebKit Fix 5 ───────────────────────────────────────────────────
-    // Double requestAnimationFrame before ScrollTrigger.refresh().
-    // On iOS Safari, a single rAF fires after DOM commit but before the
-    // browser's rendering pipeline (compositing + GPU upload) completes.
-    // Images may still be decoding their first frames. A second rAF guarantees
-    // we are in the next rendering cycle where all layout and paint is stable.
-    let rafId2 = 0;
-    const rafId1 = requestAnimationFrame(() => {
-      rafId2 = requestAnimationFrame(() => {
-        ScrollTrigger.refresh(true);
-      });
-    });
+    readyCheck();
 
     return () => {
+      if (refreshInitListener) {
+        ScrollTrigger.removeEventListener("refreshInit", refreshInitListener);
+      }
+      window.removeEventListener('load', initScrollTrigger);
       cancelAnimationFrame(rafId1);
       cancelAnimationFrame(rafId2);
-      ctx.revert();
+      if (ctx) {
+        ctx.revert();
+      }
     };
   }, []);
 
@@ -295,8 +307,8 @@ export default function InteractiveSelector() {
           width: 100%;
           height: 100%;
           background-image: 
-            linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+          linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
           background-size: 50px 50px;
           pointer-events: none;
           z-index: 0;
