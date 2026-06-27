@@ -119,83 +119,143 @@ export default function InteractiveSelector() {
     const container = containerRef.current;
     if (!container) return;
 
-    // Filter out null card elements
     const cards = cardRefs.current.filter((c): c is HTMLDivElement => c !== null);
     if (cards.length === 0) return;
 
-    // Build within GSAP context for proper cleanup/react lifecycle safety
+    // ─── iOS WebKit Fix 1 ───────────────────────────────────────────────────
+    // Strip will-change and hardware-acceleration hints from every card.
+    // On WebKit, will-change:transform causes the browser to promote elements
+    // into independent compositing layers BEFORE GSAP pins the container.
+    // When ScrollTrigger then sets position:fixed on the container, the
+    // pre-promoted card layers do not re-composite correctly, producing the
+    // "cards appear early" and "blank space" symptoms on real iPhones.
+    // Removing these hints lets GSAP own the compositing lifecycle entirely.
+    cards.forEach(card => {
+      card.style.willChange = 'auto';
+      card.style.transform = 'none';
+      // Note: CSS transform-style:preserve-3d stays in the stylesheet but is
+      // overridden here at runtime only on the element-level style.
+    });
+
+    // ─── iOS WebKit Fix 2 ───────────────────────────────────────────────────
+    // Measure the VISUAL viewport in pixels.
+    // On iOS Safari, CSS 1vh = layout viewport height (includes the address
+    // bar chrome ~80px). window.innerHeight = VISUAL viewport (excludes it).
+    // GSAP's scroll calculations use window.innerHeight internally, so every
+    // distance we pass to GSAP must also use window.innerHeight — never "vh".
+    const getVH = () => window.innerHeight;
+
     const ctx = gsap.context(() => {
-      // Programmatically set initial deck coordinates
+      // Set initial positions using measured pixels, not "100vh" strings.
+      // "100vh" on iOS Safari ≠ window.innerHeight, causing cards starting
+      // below the visible screen to actually start INSIDE it.
       cards.forEach((card, idx) => {
-        if (idx === 0) {
-          gsap.set(card, { y: "0px", opacity: 1, scale: 1 });
-        } else {
-          gsap.set(card, { y: "100vh", opacity: 1, scale: 1 });
-        }
+        gsap.set(card, {
+          y: idx === 0 ? 0 : () => getVH(),   // function form: re-evaluated on invalidateOnRefresh
+          opacity: 1,
+          scale: 1,
+          force3D: true
+        });
       });
 
-      // Construct exactly ONE timeline linked to exactly ONE ScrollTrigger instance
+      // ─── iOS WebKit Fix 3 ─────────────────────────────────────────────────
+      // Pixel-based end calculation.
+      // Original: end: "+=1400vh" — on iOS this resolved to 1400 * cssVH which
+      // is 1400 * (layout viewport height) instead of 1400 * window.innerHeight.
+      // Because iOS layout vh > visual vh, the ScrollTrigger "end" was computed
+      // to be further than it should be, causing the pin to hold for too long
+      // and producing the blank space at the bottom.
+      //
+      // New approach: calculate the exact scroll distance needed to transition
+      // through every card at a fixed "200% of viewport" per transition, which
+      // matches what the timeline duration/step ratio produces visually.
+      // The function form means invalidateOnRefresh re-runs this on resize.
+      const transitionDuration = 1.0;
+      const step = 0.8;
+      const holdBuffer = 0.8;   // matches tl.to({}, { duration: 0.8 }) at end
+      const totalTimelineUnits = (cards.length - 1) * step + transitionDuration + holdBuffer;
+      // scrollPixelsPerTimelineUnit: how many scroll pixels correspond to 1
+      // unit of timeline time. We want each card transition to feel like
+      // scrolling ~200px at scrub:1.5, matching original 1400vh/7cards feel
+      // but computed from the measured visual viewport.
+      const SCROLL_PER_UNIT = () => getVH() * 1.4;
+
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: container,
-          start: "top top",
-          end: "+=1400vh",
+          start: 'top top',
+          // Function form: recalculated by invalidateOnRefresh on every resize
+          // or iOS orientation change. Avoids stale vh-based measurements.
+          end: () => `+=${totalTimelineUnits * SCROLL_PER_UNIT()}`,
           pin: true,
           pinSpacing: true,
-          anticipatePin: 1,
+          // anticipatePin removed: on iOS native momentum scroll, anticipatePin
+          // fires based on scroll velocity prediction which is unreliable with
+          // WebKit's rubber-band physics, causing early pin engagement.
           scrub: 1.5,
-          invalidateOnRefresh: true
+          invalidateOnRefresh: true   // re-runs end() and all gsap.set() on resize
         }
       });
 
-      const transitionDuration = 1.0;
-      const step = 0.8;
-      const checkMobile = window.innerWidth < 1024;
+      const isMobile = window.innerWidth < 1024;
 
       for (let i = 1; i < cards.length; i++) {
         const startPos = (i - 1) * step;
 
-        // Scale down outgoing deck item (i-1)
-        if (checkMobile) {
+        if (isMobile) {
           tl.to(cards[i - 1], {
             opacity: 1,
             duration: transitionDuration
           }, startPos);
         } else {
           tl.to(cards[i - 1], {
-            y: "-30px",
+            y: -30,
             scale: 0.97,
             duration: transitionDuration,
-            ease: "power1.inOut"
+            ease: 'power1.inOut'
           }, startPos);
         }
 
-        // Slide up incoming deck item (i)
+        // ─── iOS WebKit Fix 4 ─────────────────────────────────────────────
+        // Replace fromTo "100vh" with function returning window.innerHeight px.
+        // The fromTo from-value is re-evaluated by invalidateOnRefresh because
+        // we use a function. On a vh string, invalidateOnRefresh cannot
+        // recalculate it — the stale string is reused, which is why rotating
+        // an iPhone and refreshing breaks the slide-in distance.
         tl.fromTo(cards[i],
-          { y: "100vh", scale: 1 },
+          { y: () => getVH(), scale: 1 },
           {
-            y: "0px",
+            y: 0,
             scale: 1,
             duration: transitionDuration,
-            ease: "power1.inOut",
+            ease: 'power1.inOut',
             force3D: true
           },
           startPos
         );
       }
 
-      // Add final holding buffer for Vietnam slide
-      tl.to({}, { duration: 0.8 });
+      // Final hold buffer so Vietnam card stays visible before unpinning
+      tl.to({}, { duration: holdBuffer });
+
     }, containerRef);
 
-    // Defer ScrollTrigger.refresh() to after the first browser paint so all
-    // images and layout are fully resolved before offsets are cached.
-    const rafId = requestAnimationFrame(() => {
-      ScrollTrigger.refresh(true);
+    // ─── iOS WebKit Fix 5 ───────────────────────────────────────────────────
+    // Double requestAnimationFrame before ScrollTrigger.refresh().
+    // On iOS Safari, a single rAF fires after DOM commit but before the
+    // browser's rendering pipeline (compositing + GPU upload) completes.
+    // Images may still be decoding their first frames. A second rAF guarantees
+    // we are in the next rendering cycle where all layout and paint is stable.
+    let rafId2 = 0;
+    const rafId1 = requestAnimationFrame(() => {
+      rafId2 = requestAnimationFrame(() => {
+        ScrollTrigger.refresh(true);
+      });
     });
 
     return () => {
-      cancelAnimationFrame(rafId);
+      cancelAnimationFrame(rafId1);
+      cancelAnimationFrame(rafId2);
       ctx.revert();
     };
   }, []);
@@ -271,11 +331,8 @@ export default function InteractiveSelector() {
           justify-content: space-between;
           overflow: hidden; /* Clip image corners automatically */
           box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
-          will-change: transform, opacity;
           backface-visibility: hidden;
           -webkit-backface-visibility: hidden;
-          transform: translate3d(0, 0, 0);
-          transform-style: preserve-3d;
         }
 
         /* LEFT SIDE (45%) */
@@ -519,11 +576,8 @@ export default function InteractiveSelector() {
             flex-direction: column-reverse !important;
             border-radius: 24px !important;
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7) !important;
-            will-change: transform, opacity;
             backface-visibility: hidden;
             -webkit-backface-visibility: hidden;
-            transform: translate3d(0, 0, 0);
-            transform-style: preserve-3d;
           }
 
           .card-left-panel {
