@@ -172,6 +172,7 @@ export default function FlyHigherV2() {
           end: "+=1400vh",
           pin: true,
           pinSpacing: true,
+          pinType: "fixed",
           anticipatePin: 1,
           scrub: 1.5,
           invalidateOnRefresh: true
@@ -228,22 +229,14 @@ export default function FlyHigherV2() {
 
   return (
     <div
-      ref={containerRef}
       id="destinations"
       className="home-destinations-fade-wrap destinations-section"
       style={{
         backgroundColor: '#050505',
+        padding: '100px 24px 0 24px',
         position: 'relative',
         zIndex: 5,
-        overflow: 'hidden',
-        height: '100vh',
-        height: '100dvh',
-        width: '100%',
-        boxSizing: 'border-box',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        padding: '80px 24px 40px 24px'
+        overflow: 'hidden'
       }}
     >
       {/* Background Reddish-Orange-Black Gradient with Static Check Pattern */}
@@ -388,25 +381,27 @@ export default function FlyHigherV2() {
         </h2>
       </div>
 
-      <div className="destinations-cards-wrapper" style={{ position: 'relative', zIndex: 10, flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', marginTop: '10px' }}>
+      <div className="destinations-cards-wrapper" style={{ position: 'relative', zIndex: 10 }}>
         <div
+          ref={containerRef}
           className="destinations-stack-section"
           style={{
             position: 'relative',
-            width: '100%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
+            height: '100vh',
+            height: '100dvh',
             backgroundColor: 'transparent',
+            width: '100%',
             boxSizing: 'border-box'
           }}
         >
           <style>{`
             .destinations-sticky-viewport {
-              position: relative;
+              position: absolute;
+              top: 0;
+              left: 0;
               width: 100%;
-              height: auto;
-              overflow: visible;
+              height: 100%;
+              overflow: hidden;
               background-color: transparent;
               display: flex;
               justify-content: center;
@@ -652,35 +647,27 @@ export default function FlyHigherV2() {
 
             @media (max-width: 1023px) {
               .destinations-section {
-                height: 100vh !important;
-                height: 100dvh !important;
-                padding: 60px 16px 20px 16px !important;
-                box-sizing: border-box !important;
-                display: flex !important;
-                flex-direction: column !important;
-                justify-content: space-between !important;
+                padding-top: 40px !important;
               }
 
               .destinations-cards-wrapper {
-                margin-top: 0 !important;
-                flex: 1 !important;
-                display: flex !important;
-                align-items: center !important;
-                justify-content: center !important;
+                margin-top: -70px !important;
               }
 
               .destinations-stack-section {
+                height: 100vh !important;
+                height: 100dvh !important;
                 padding: 0 !important;
               }
 
               .destinations-sticky-viewport {
-                position: relative !important;
-                height: auto !important;
-                overflow: visible !important;
+                position: absolute !important;
+                height: 100% !important;
+                overflow: hidden !important;
                 display: flex !important;
                 justify-content: center !important;
-                align-items: center !important;
-                padding-top: 0 !important;
+                align-items: flex-start !important;
+                padding-top: 96px !important;
                 box-sizing: border-box !important;
               }
 
