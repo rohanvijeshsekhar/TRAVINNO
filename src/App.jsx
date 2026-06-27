@@ -175,7 +175,12 @@ function App() {
       style={{
         width: '100%',
         backgroundColor: '#050505',
-        overflowX: 'hidden'
+        // 'overflow: clip' prevents horizontal overflow without creating a new
+        // scroll container. Unlike overflowX:'hidden' (which implicitly sets
+        // overflow-y:auto and creates a new containing block for position:fixed),
+        // 'clip' does NOT establish a scroll container, so GSAP's position:fixed
+        // pin correctly anchors to the viewport — not this wrapper.
+        overflow: 'clip'
       }}
     >
       {/* Fullscreen Loading Experience */}
