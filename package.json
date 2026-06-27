@@ -7,10 +7,12 @@
     "dev": "vite",
     "build": "vite build",
     "build:gh": "vite build --mode github",
+    "build:gh2": "vite build --mode github2",
     "lint": "eslint .",
     "preview": "vite preview",
     "predeploy": "npm run build:gh",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist",
+    "deploy2": "npm run build:gh2 && gh-pages -d dist -r https://github.com/rohanvijeshsekhar/TRAVINNO2.git"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.7",

@@ -6,7 +6,8 @@ import tailwindcss from '@tailwindcss/vite'
 // https://vite.dev/config/
 export default defineConfig(({ command, mode }) => {
   const isGithub = mode === 'github';
-  const base = isGithub ? '/TRAVINNO/' : '/demo/';
+  const isGithub2 = mode === 'github2';
+  const base = isGithub ? '/TRAVINNO/' : isGithub2 ? '/TRAVINNO2/' : '/demo/';
 
   return {
     plugins: [react(), tailwindcss()],
