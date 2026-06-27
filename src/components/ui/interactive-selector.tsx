@@ -112,6 +112,9 @@ const getDestinationAltText = (title: string) => {
 export default function InteractiveSelector() {
   const containerRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const titleRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const ctaRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const imageRefs = useRef<(HTMLImageElement | null)[]>([]);
 
   useLayoutEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
