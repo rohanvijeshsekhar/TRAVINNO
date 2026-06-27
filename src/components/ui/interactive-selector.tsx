@@ -191,10 +191,14 @@ export default function InteractiveSelector() {
       tl.to({}, { duration: 0.8 });
     }, containerRef);
 
-    // Call ScrollTrigger refresh exactly ONCE to guarantee stable layout offsets
-    ScrollTrigger.refresh(true);
+    // Defer ScrollTrigger.refresh() to after the first browser paint so all
+    // images and layout are fully resolved before offsets are cached.
+    const rafId = requestAnimationFrame(() => {
+      ScrollTrigger.refresh(true);
+    });
 
     return () => {
+      cancelAnimationFrame(rafId);
       ctx.revert();
     };
   }, []);
@@ -651,7 +655,7 @@ export default function InteractiveSelector() {
                       ref={(el) => { imageRefs.current[idx] = el; }}
                       src={dest.image}
                       alt={getDestinationAltText(dest.title)}
-                      loading="lazy"
+                      loading="eager"
                       decoding="async"
                       className="destination-img"
                     />

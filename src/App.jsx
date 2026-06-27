@@ -253,8 +253,7 @@ function App() {
               backgroundColor: '#050505',
               padding: '100px 24px 0 24px',
               position: 'relative',
-              zIndex: 5,
-              overflow: 'hidden'
+              zIndex: 5
             }}
           >
             {/* Background Reddish-Orange-Black Gradient with Static Check Pattern */}
