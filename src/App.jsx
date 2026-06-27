@@ -188,6 +188,7 @@ function App() {
         <Loader
           onComplete={() => {
             setShowLoader(false);
+            window.dispatchEvent(new Event('travinnoLoaderComplete'));
           }}
         />
       )}

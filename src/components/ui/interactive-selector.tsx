@@ -117,9 +117,9 @@ export default function InteractiveSelector() {
     gsap.registerPlugin(ScrollTrigger);
 
     let ctx: any;
-    let refreshInitListener: any;
     let rafId1 = 0;
     let rafId2 = 0;
+    let loaderListener: any;
 
     const initScrollTrigger = () => {
       const container = containerRef.current;
@@ -128,109 +128,71 @@ export default function InteractiveSelector() {
       const cards = cardRefs.current.filter((c): c is HTMLDivElement => c !== null);
       if (cards.length === 0) return;
 
-      // ─── iOS WebKit Fix 1 ───────────────────────────────────────────────────
-      // Strip will-change and hardware-acceleration hints from every card to let GSAP own compositing
-      cards.forEach(card => {
-        card.style.willChange = 'auto';
-        card.style.transform = 'none';
-      });
-
-      // ─── iOS WebKit Fix 2 ───────────────────────────────────────────────────
-      // Measure the VISUAL viewport in pixels.
-      const getVH = () => window.innerHeight;
-
-      // Stable viewport height to bypass iOS Safari address bar resizing height shifts.
-      const updateStickyHeight = () => {
-        const vh = getVH();
-        const stickyViewport = container.querySelector('.destinations-sticky-viewport') as HTMLDivElement;
-        if (stickyViewport) {
-          stickyViewport.style.height = `${vh}px`;
-        }
-      };
-
-      // Initially configure and listen to refreshInit
-      updateStickyHeight();
-      refreshInitListener = updateStickyHeight;
-      ScrollTrigger.addEventListener("refreshInit", updateStickyHeight);
-
-      // Get the locked height of the sticky viewport (constant during scroll)
-      const getStableVH = () => {
-        const stickyViewport = container.querySelector('.destinations-sticky-viewport') as HTMLDivElement;
-        return stickyViewport ? stickyViewport.offsetHeight : getVH();
-      };
-
       ctx = gsap.context(() => {
-        // Set initial positions using measured pixels, not "100vh" strings.
+        // Programmatically set initial deck coordinates
         cards.forEach((card, idx) => {
-          gsap.set(card, {
-            y: idx === 0 ? 0 : () => getStableVH(),   // function form: re-evaluated on invalidateOnRefresh
-            opacity: 1,
-            scale: 1,
-            force3D: true
-          });
-        });
-
-        // ─── iOS WebKit Fix 3 ─────────────────────────────────────────────────
-        // Pixel-based end calculation.
-        const transitionDuration = 1.0;
-        const step = 0.8;
-        const holdBuffer = 0.8;   // matches tl.to({}, { duration: 0.8 }) at end
-        const totalTimelineUnits = (cards.length - 1) * step + transitionDuration + holdBuffer;
-        const SCROLL_PER_UNIT = () => getStableVH() * 0.7;
-
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: container,
-            start: 'top top',
-            end: () => `+=${totalTimelineUnits * SCROLL_PER_UNIT()}`,
-            pin: true,
-            pinSpacing: true,
-            scrub: 1.5,
-            invalidateOnRefresh: true   // re-runs end() and all gsap.set() on resize
+          if (idx === 0) {
+            gsap.set(card, { y: "0px", opacity: 1, scale: 1 });
+          } else {
+            gsap.set(card, { y: "100vh", opacity: 1, scale: 1 });
           }
         });
 
-        const isMobile = window.innerWidth < 1024;
+        // Construct exactly ONE timeline linked to exactly ONE ScrollTrigger instance
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: container,
+            start: "top top",
+            end: "+=1400vh",
+            pin: true,
+            pinSpacing: true,
+            scrub: 1.5,
+            invalidateOnRefresh: true
+          }
+        });
+
+        const transitionDuration = 1.0;
+        const step = 0.8;
+        const checkMobile = window.innerWidth < 1024;
 
         for (let i = 1; i < cards.length; i++) {
           const startPos = (i - 1) * step;
 
-          if (isMobile) {
+          // Scale down outgoing deck item (i-1)
+          if (checkMobile) {
             tl.to(cards[i - 1], {
               opacity: 1,
               duration: transitionDuration
             }, startPos);
           } else {
             tl.to(cards[i - 1], {
-              y: -30,
+              y: "-30px",
               scale: 0.97,
               duration: transitionDuration,
-              ease: 'power1.inOut'
+              ease: "power1.inOut"
             }, startPos);
           }
 
-          // ─── iOS WebKit Fix 4 ─────────────────────────────────────────────
-          // Replace fromTo "100vh" with stable visual viewport height.
+          // Slide up incoming deck item (i)
           tl.fromTo(cards[i],
-            { y: () => getStableVH(), scale: 1 },
+            { y: "100vh", scale: 1 },
             {
-              y: 0,
+              y: "0px",
               scale: 1,
               duration: transitionDuration,
-              ease: 'power1.inOut',
+              ease: "power1.inOut",
               force3D: true
             },
             startPos
           );
         }
 
-        // Final hold buffer so Vietnam card stays visible before unpinning
-        tl.to({}, { duration: holdBuffer });
+        // Add final holding buffer for Vietnam slide
+        tl.to({}, { duration: 0.8 });
+      }, containerRef);
 
-      }, container);
-
-      // ─── iOS WebKit Fix 5 ───────────────────────────────────────────────────
-      // Double requestAnimationFrame before ScrollTrigger.refresh().
+      // Defer ScrollTrigger.refresh() to after the double requestAnimationFrame
+      // to guarantee all fonts, images, and layout calculations are completely stable.
       rafId1 = requestAnimationFrame(() => {
         rafId2 = requestAnimationFrame(() => {
           ScrollTrigger.refresh(true);
@@ -238,32 +200,33 @@ export default function InteractiveSelector() {
       });
     };
 
-    // Ensure all web fonts and stylesheets are fully loaded to stabilize document height
-    const readyCheck = () => {
-      if (document.fonts && document.fonts.ready) {
-        document.fonts.ready.then(() => {
-          if (document.readyState === 'complete') {
-            initScrollTrigger();
+    const checkAndInit = () => {
+      const loader = document.querySelector('.fullscreen-loader');
+      if (loader) {
+        loaderListener = () => {
+          window.removeEventListener('travinnoLoaderComplete', loaderListener);
+          if (document.fonts && document.fonts.ready) {
+            document.fonts.ready.then(initScrollTrigger);
           } else {
-            window.addEventListener('load', initScrollTrigger, { once: true });
+            initScrollTrigger();
           }
-        });
+        };
+        window.addEventListener('travinnoLoaderComplete', loaderListener);
       } else {
-        if (document.readyState === 'complete') {
-          initScrollTrigger();
+        if (document.fonts && document.fonts.ready) {
+          document.fonts.ready.then(initScrollTrigger);
         } else {
-          window.addEventListener('load', initScrollTrigger, { once: true });
+          initScrollTrigger();
         }
       }
     };
 
-    readyCheck();
+    checkAndInit();
 
     return () => {
-      if (refreshInitListener) {
-        ScrollTrigger.removeEventListener("refreshInit", refreshInitListener);
+      if (loaderListener) {
+        window.removeEventListener('travinnoLoaderComplete', loaderListener);
       }
-      window.removeEventListener('load', initScrollTrigger);
       cancelAnimationFrame(rafId1);
       cancelAnimationFrame(rafId2);
       if (ctx) {
@@ -307,8 +270,8 @@ export default function InteractiveSelector() {
           width: 100%;
           height: 100%;
           background-image: 
-          linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+            linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
           background-size: 50px 50px;
           pointer-events: none;
           z-index: 0;
@@ -343,8 +306,11 @@ export default function InteractiveSelector() {
           justify-content: space-between;
           overflow: hidden; /* Clip image corners automatically */
           box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
+          will-change: transform, opacity;
           backface-visibility: hidden;
           -webkit-backface-visibility: hidden;
+          transform: translate3d(0, 0, 0);
+          transform-style: preserve-3d;
         }
 
         /* LEFT SIDE (45%) */
@@ -588,8 +554,11 @@ export default function InteractiveSelector() {
             flex-direction: column-reverse !important;
             border-radius: 24px !important;
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7) !important;
+            will-change: transform, opacity;
             backface-visibility: hidden;
             -webkit-backface-visibility: hidden;
+            transform: translate3d(0, 0, 0);
+            transform-style: preserve-3d;
           }
 
           .card-left-panel {
