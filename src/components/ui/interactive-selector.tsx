@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useLayoutEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -112,44 +112,21 @@ const getDestinationAltText = (title: string) => {
 export default function InteractiveSelector() {
   const containerRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const titleRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const ctaRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const imageRefs = useRef<(HTMLImageElement | null)[]>([]);
-  const currentActiveRef = useRef(0);
 
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [isMobile, setIsMobile] = useState(false);
-
-  // Preload all destination images on mount to prevent layout/network lag during scrolling
-  useEffect(() => {
-    destinations.forEach((dest) => {
-      const img = new Image();
-      img.src = dest.image;
-    });
-  }, []);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 1024);
-    };
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  useEffect(() => {
+  useLayoutEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
     const container = containerRef.current;
     if (!container) return;
 
-    const cards = cardRefs.current;
+    // Filter out null card elements
+    const cards = cardRefs.current.filter((c): c is HTMLDivElement => c !== null);
+    if (cards.length === 0) return;
 
-    // Set up GSAP context for proper lifecycle cleanup in React
+    // Build within GSAP context for proper cleanup/react lifecycle safety
     const ctx = gsap.context(() => {
-      // Reset initial card styles programmatically
+      // Programmatically set initial deck coordinates
       cards.forEach((card, idx) => {
-        if (!card) return;
         if (idx === 0) {
           gsap.set(card, { y: "0px", opacity: 1, scale: 1 });
         } else {
@@ -157,93 +134,65 @@ export default function InteractiveSelector() {
         }
       });
 
-      // Define timeline bound directly to ScrollTrigger scrub (Apple-grade smoothness)
+      // Construct exactly ONE timeline linked to exactly ONE ScrollTrigger instance
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: container,
           start: "top top",
-          end: "+=1400vh", // Increased container height for longer scroll distance
+          end: "+=1400vh",
           pin: true,
-          anticipatePin: 1, // Smooths pinning on touch/mobile devices
-          scrub: 1.5, // Slower catch-up delay for smooth, steady, and unhurried transition
-          invalidateOnRefresh: true, // Recalculate on refresh
-          onUpdate: (self) => {
-            const progress = self.progress;
-            const t = progress * 5.8; // Mapped to the total timeline transitions including the hold
-            
-            // Determine active index based on timeline boundary thresholds
-            let activeIdx = 0;
-            if (t < 0.5) activeIdx = 0;
-            else if (t < 1.3) activeIdx = 1;
-            else if (t < 2.1) activeIdx = 2;
-            else if (t < 2.9) activeIdx = 3;
-            else if (t < 3.7) activeIdx = 4;
-            else if (t < 4.5) activeIdx = 5;
-            else activeIdx = 6;
-
-            // React State Gating: ONLY trigger state updates when active card index changes (6 times total)
-            if (activeIdx !== currentActiveRef.current) {
-              currentActiveRef.current = activeIdx;
-              setActiveIndex(activeIdx);
-            }
-          }
+          pinSpacing: true,
+          anticipatePin: 1,
+          scrub: 1.5,
+          invalidateOnRefresh: true
         }
       });
 
-      // Overlapping transitions (step = 0.8, duration = 1.0)
       const transitionDuration = 1.0;
       const step = 0.8;
       const checkMobile = window.innerWidth < 1024;
 
-      for (let i = 1; i < 7; i++) {
+      for (let i = 1; i < cards.length; i++) {
         const startPos = (i - 1) * step;
 
-        // 1. Outgoing Card (i-1) - moves up slightly, scales down slightly
-        if (cards[i - 1]) {
-          if (checkMobile) {
-            // Keep the outgoing card fully visible and stationary on mobile (prevents rushing/flashing)
-            tl.to(cards[i - 1], {
-              opacity: 1,
-              duration: transitionDuration,
-            }, startPos);
-          } else {
-            tl.to(cards[i - 1], {
-              y: "-30px",
-              scale: 0.97,
-              duration: transitionDuration,
-              ease: "power1.inOut"
-            }, startPos);
-          }
+        // Scale down outgoing deck item (i-1)
+        if (checkMobile) {
+          tl.to(cards[i - 1], {
+            opacity: 1,
+            duration: transitionDuration
+          }, startPos);
+        } else {
+          tl.to(cards[i - 1], {
+            y: "-30px",
+            scale: 0.97,
+            duration: transitionDuration,
+            ease: "power1.inOut"
+          }, startPos);
         }
 
-        // 2. Incoming Card (i) - slides up to 0px
-        if (cards[i]) {
-          tl.fromTo(cards[i],
-            { y: "100vh", scale: 1 },
-            { 
-              y: "0px", 
-              scale: 1, 
-              duration: transitionDuration, 
-              ease: "power1.inOut",
-              force3D: true // Promote layer to GPU compositor
-            },
-            startPos
-          );
-        }
+        // Slide up incoming deck item (i)
+        tl.fromTo(cards[i],
+          { y: "100vh", scale: 1 },
+          {
+            y: "0px",
+            scale: 1,
+            duration: transitionDuration,
+            ease: "power1.inOut",
+            force3D: true
+          },
+          startPos
+        );
       }
 
-      // Add a hold duration of 0.8s for the last card (Vietnam) so it stays pinned and stationary in the tray
+      // Add final holding buffer for Vietnam slide
       tl.to({}, { duration: 0.8 });
     }, containerRef);
 
-    // Refresh ScrollTrigger to ensure position parameters are exact
-    setTimeout(() => {
-      ScrollTrigger.refresh();
-    }, 100);
+    // Call ScrollTrigger refresh exactly ONCE to guarantee stable layout offsets
+    ScrollTrigger.refresh(true);
 
     return () => {
-      ctx.revert(); // Reverts timelines and kills ScrollTriggers
-      currentActiveRef.current = 0;
+      ctx.revert();
     };
   }, []);
 
