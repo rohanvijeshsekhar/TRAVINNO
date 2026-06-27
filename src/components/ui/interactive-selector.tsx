@@ -120,22 +120,6 @@ export default function InteractiveSelector() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
 
-  const touchStartX = useRef(0);
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartX.current = e.touches[0].clientX;
-  };
-
-  const handleTouchEnd = (e: React.TouchEvent) => {
-    const touchEndX = e.changedTouches[0].clientX;
-    const diffX = touchStartX.current - touchEndX;
-    if (diffX > 60) {
-      setActiveIndex((prev) => Math.min(destinations.length - 1, prev + 1));
-    } else if (diffX < -60) {
-      setActiveIndex((prev) => Math.max(0, prev - 1));
-    }
-  };
-
   // Preload all destination images on mount to prevent layout/network lag during scrolling
   useEffect(() => {
     destinations.forEach((dest) => {
@@ -155,6 +139,7 @@ export default function InteractiveSelector() {
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
+    ScrollTrigger.config({ ignoreMobileResize: true });
 
     const container = containerRef.current;
     if (!container) return;
@@ -163,12 +148,6 @@ export default function InteractiveSelector() {
 
     // Set up GSAP context for proper lifecycle cleanup in React
     const ctx = gsap.context(() => {
-      if (isMobile) {
-        cards.forEach((card) => {
-          if (card) gsap.set(card, { clearProps: "all" });
-        });
-        return;
-      }
       // Reset initial card styles programmatically
       cards.forEach((card, idx) => {
         if (!card) return;
@@ -267,7 +246,7 @@ export default function InteractiveSelector() {
       ctx.revert(); // Reverts timelines and kills ScrollTriggers
       currentActiveRef.current = 0;
     };
-  }, [isMobile]);
+  }, []);
 
   return (
     <div
@@ -550,27 +529,28 @@ export default function InteractiveSelector() {
           }
 
           .destinations-stack-section {
-            height: auto !important;
-            padding: 20px 0 60px 0 !important;
+            height: 100vh !important;
+            height: 100dvh !important;
+            padding: 0 !important;
           }
 
           .destinations-sticky-viewport {
+            position: absolute;
+            height: 100%;
+            overflow: hidden;
             display: flex !important;
             justify-content: center !important;
             align-items: flex-start !important;
-            padding-top: 10px !important;
+            padding-top: 80px !important;
             box-sizing: border-box !important;
-            position: relative !important;
-            height: auto !important;
-            width: 100% !important;
           }
 
           .destinations-cards-container {
             width: 90% !important;
-            height: 64vh !important;
-            height: 64dvh !important;
+            height: 66vh !important;
+            height: 66dvh !important;
             max-height: 520px !important;
-            min-height: 400px !important;
+            min-height: 380px !important;
             display: flex !important;
             justify-content: center !important;
             align-items: center !important;
@@ -664,69 +644,6 @@ export default function InteractiveSelector() {
             gap: 4px !important;
           }
 
-          /* Mobile Swipe Slider Navigation Styling */
-          .mobile-nav-arrow {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: rgba(13, 13, 13, 0.85);
-            border: 1px solid #282828;
-            color: #F5F2EC;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1rem;
-            cursor: pointer;
-            z-index: 100;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(4px);
-            outline: none;
-          }
-          
-          .mobile-arrow-left {
-            left: -16px;
-          }
-          
-          .mobile-arrow-right {
-            right: -16px;
-          }
-          
-          .mobile-nav-arrow:active {
-            border-color: #C1121F;
-            background: #C1121F;
-            color: #FFFFFF;
-          }
-          
-          .mobile-dots-indicator {
-            position: absolute;
-            bottom: -32px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 8px;
-            z-index: 100;
-          }
-          
-          .mobile-dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            padding: 0;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            outline: none;
-          }
-          
-          .mobile-dot.active {
-            background: #C1121F;
-            width: 16px;
-            border-radius: 3px;
-          }
         }
       `}</style>
 
@@ -736,34 +653,16 @@ export default function InteractiveSelector() {
         <div className="destinations-grid-bg" />
 
         {/* Floating Stack Container */}
-        <div 
-          className="destinations-cards-container"
-          onTouchStart={handleTouchStart}
-          onTouchEnd={handleTouchEnd}
-        >
+        <div className="destinations-cards-container">
           {destinations.map((dest, idx) => {
             return (
               <div
                 key={`dest-card-${idx}`}
                 ref={(el) => { cardRefs.current[idx] = el; }}
                 className="destination-card"
-                style={
-                  isMobile
-                    ? {
-                        zIndex: activeIndex === idx ? 10 : idx + 1,
-                        opacity: activeIndex === idx ? 1 : 0,
-                        transform: activeIndex === idx
-                          ? "translate3d(0, 0, 0) scale(1)"
-                          : idx < activeIndex
-                          ? "translate3d(-30px, 0, 0) scale(0.96)"
-                          : "translate3d(30px, 0, 0) scale(0.96)",
-                        pointerEvents: activeIndex === idx ? "auto" : "none",
-                        transition: "transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s cubic-bezier(0.25, 1, 0.5, 1)"
-                      }
-                    : {
-                        zIndex: idx + 1
-                      }
-                }
+                style={{
+                  zIndex: idx + 1
+                }}
               >
                 {/* Left textual storytelling column */}
                 <div className="card-left-panel">
@@ -810,42 +709,6 @@ export default function InteractiveSelector() {
               </div>
             );
           })}
-
-          {/* Mobile swipe and tap navigation controls */}
-          {isMobile && (
-            <>
-              {activeIndex > 0 && (
-                <button 
-                  onClick={() => setActiveIndex(prev => Math.max(0, prev - 1))}
-                  className="mobile-nav-arrow mobile-arrow-left"
-                  aria-label="Previous destination"
-                >
-                  ←
-                </button>
-              )}
-              {activeIndex < destinations.length - 1 && (
-                <button 
-                  onClick={() => setActiveIndex(prev => Math.min(destinations.length - 1, prev + 1))}
-                  className="mobile-nav-arrow mobile-arrow-right"
-                  aria-label="Next destination"
-                >
-                  →
-                </button>
-              )}
-
-              {/* Page Dot Indicators */}
-              <div className="mobile-dots-indicator">
-                {destinations.map((_, dotIdx) => (
-                  <button
-                    key={`dot-${dotIdx}`}
-                    onClick={() => setActiveIndex(dotIdx)}
-                    className={`mobile-dot ${activeIndex === dotIdx ? 'active' : ''}`}
-                    aria-label={`Go to slide ${dotIdx + 1}`}
-                  />
-                ))}
-              </div>
-            </>
-          )}
         </div>
       </div>
     </div>
