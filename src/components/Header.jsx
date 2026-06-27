@@ -1003,21 +1003,16 @@ export default function Header() {
                     📞 Call Us
                   </a>
                   <span>•</span>
-                  <a
-                    href="mailto:info@travinno.ae"
+                  <span
                     style={{
                       color: 'rgba(255, 255, 255, 0.4)',
-                      textDecoration: 'none',
                       display: 'flex',
                       alignItems: 'center',
-                      gap: '4px',
-                      transition: 'color 0.2s'
+                      gap: '4px'
                     }}
-                    onMouseEnter={(e) => e.currentTarget.style.color = '#800000'}
-                    onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(255, 255, 255, 0.4)'}
                   >
-                    ✉ Email
-                  </a>
+                    TRAVINNO
+                  </span>
                 </div>
               </div>
             </motion.div>
