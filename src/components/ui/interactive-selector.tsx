@@ -221,6 +221,7 @@ export default function InteractiveSelector() {
       className="destinations-stack-section"
       style={{
         position: 'relative',
+        zIndex: 10,
         // Use 100svh on iOS (small viewport height = visible area without chrome).
         // 100dvh is fine on most modern browsers but 100svh is the safest for pinning
         // since it matches the most conservative (smallest) viewport measurement.
