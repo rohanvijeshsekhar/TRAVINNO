@@ -201,11 +201,10 @@ export default function InteractiveSelector() {
         // 1. Outgoing Card (i-1) - moves up slightly, scales down slightly
         if (cards[i - 1]) {
           if (checkMobile) {
-            // Fade out the outgoing card on mobile as the new card slides in to prevent overlapping
+            // Keep the outgoing card fully visible and stationary on mobile (prevents rushing/flashing)
             tl.to(cards[i - 1], {
-              opacity: 0,
+              opacity: 1,
               duration: transitionDuration,
-              ease: "power1.inOut"
             }, startPos);
           } else {
             tl.to(cards[i - 1], {
