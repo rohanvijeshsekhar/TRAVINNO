@@ -165,8 +165,14 @@ export default function Header() {
           transition: 'background 0.3s ease, backdrop-filter 0.3s ease, -webkit-backdrop-filter 0.3s ease'
         }}
       >
-      {/* Brand Logo */}
-      <div style={{ display: 'flex', alignItems: 'center' }}>
+      <div 
+        style={{ 
+          display: 'flex', 
+          alignItems: 'center',
+          filter: isMobileMenuOpen ? 'blur(4px)' : 'none',
+          transition: 'filter 0.3s ease'
+        }}
+      >
         <a
           href={import.meta.env.BASE_URL}
           aria-label="Go to Travinno Homepage"
