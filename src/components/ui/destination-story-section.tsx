@@ -167,31 +167,47 @@ export default function DestinationStorySection() {
           const startPos = (i - 1) * totalDurationPerCard;
           const yOffset = isMobile ? 24 : 40; // Maintain 8-12% visible margin responsive to screen height
 
-          // Shift all previously stacked cards upward to build a layered editorial deck
-          for (let j = 0; j < i; j++) {
-            const finalY = -(i - j) * yOffset;
-            const finalScale = 1 - (i - j) * 0.02;
+          if (isMobile) {
+            // Mobile: Card slides upward and stops at a static stacked offset (i * yOffset)
+            // Existing cards 0 to i-1 remain fixed and never move again.
+            tl.fromTo(cards[i],
+              { y: () => getVH(), scale: 1, opacity: 1 },
+              {
+                y: i * yOffset,
+                scale: 1,
+                opacity: 1,
+                duration: transitionDuration,
+                ease: "power2.inOut"
+              },
+              startPos
+            );
+          } else {
+            // Desktop: Shift all previously stacked cards upward by yOffset
+            for (let j = 0; j < i; j++) {
+              const finalY = -(i - j) * yOffset;
+              const finalScale = 1 - (i - j) * 0.02;
 
-            tl.to(cards[j], {
-              y: finalY,
-              scale: finalScale,
-              duration: transitionDuration,
-              ease: "power2.inOut"
-            }, startPos);
+              tl.to(cards[j], {
+                y: finalY,
+                scale: finalScale,
+                duration: transitionDuration,
+                ease: "power2.inOut"
+              }, startPos);
+            }
+
+            // Incoming card (i) slides to y: 0
+            tl.fromTo(cards[i],
+              { y: () => getVH(), scale: 1, opacity: 1 },
+              {
+                y: 0,
+                scale: 1,
+                opacity: 1,
+                duration: transitionDuration,
+                ease: "power2.inOut"
+              },
+              startPos
+            );
           }
-
-          // Incoming card (i) slides up from bottom
-          tl.fromTo(cards[i],
-            { y: () => getVH(), scale: 1, opacity: 1 },
-            {
-              y: 0,
-              scale: 1,
-              opacity: 1,
-              duration: transitionDuration,
-              ease: "power2.inOut"
-            },
-            startPos
-          );
 
           if (textContainers[i]) {
             const incomingTexts = textContainers[i].querySelectorAll('.story-animate-el');
