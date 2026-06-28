@@ -516,6 +516,14 @@ export default function DestinationStorySection() {
 
         /* Responsive Mobile Layout (Tablet and Mobile stack) */
         @media (max-width: 1023px) {
+          .destinations-section {
+            padding: 40px 16px 0 16px !important;
+          }
+
+          .destinations-heading-container {
+            margin-bottom: 20px !important;
+          }
+
           .destinations-story-viewport {
             position: relative;
             width: 100%;
@@ -524,8 +532,8 @@ export default function DestinationStorySection() {
             overflow: hidden;
             display: flex !important;
             justify-content: center !important;
-            align-items: center !important;
-            padding-top: 0 !important;
+            align-items: flex-start !important;
+            padding-top: 15px !important;
             box-sizing: border-box !important;
           }
 
