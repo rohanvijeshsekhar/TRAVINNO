@@ -29,7 +29,7 @@ const IS_TOUCH_DEVICE = typeof window !== 'undefined'
 
 function App() {
   const [currentView, setCurrentView] = useState('home');
-  const [showLoader, setShowLoader] = useState(true);
+  const [showLoader, setShowLoader] = useState(false);
 
   // Lock logic: disabled to allow full access when hosted
   const isLockedMode = false;
