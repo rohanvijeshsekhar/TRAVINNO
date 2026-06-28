@@ -14,6 +14,20 @@ interface Destination {
 
 const BASE = import.meta.env.BASE_URL;
 
+const getFlagEmoji = (title: string) => {
+  switch (title) {
+    case "United Arab Emirates":
+    case "Dubai": return "🇦🇪";
+    case "Malaysia": return "🇲🇾";
+    case "Thailand": return "🇹🇭";
+    case "Singapore": return "🇸🇬";
+    case "Bali": return "🇮🇩";
+    case "Kenya": return "🇰🇪";
+    case "Vietnam": return "🇻🇳";
+    default: return "";
+  }
+};
+
 const destinations: Destination[] = [
   {
     title: "Dubai",
@@ -264,284 +278,409 @@ export default function DestinationStorySection() {
           height: 100vh;
           height: 100dvh;
           overflow: hidden;
-          background-color: #050505;
+          background-color: transparent;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          box-sizing: border-box;
+          padding: 0;
         }
 
-        .destinations-story-card {
+        .destinations-grid-bg {
           position: absolute;
           top: 0;
           left: 0;
           width: 100%;
           height: 100%;
+          background-image: 
+            linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+          background-size: 50px 50px;
+          pointer-events: none;
+          z-index: 0;
+          mask-image: radial-gradient(circle at 50% 50%, black 40%, transparent 95%);
+          -webkit-mask-image: radial-gradient(circle at 50% 50%, black 40%, transparent 95%);
+        }
+
+        .destinations-cards-container {
+          position: relative;
+          width: 92%;
+          height: 72vh;
+          max-height: 720px;
+          min-height: 520px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          z-index: 2;
+        }
+
+        .destinations-story-card {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          background: #0B0B0B;
+          border: 1px solid #181818;
+          border-radius: 32px;
+          box-sizing: border-box;
+          padding: 0;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
           overflow: hidden;
+          box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85);
           will-change: transform, opacity;
           backface-visibility: hidden;
           -webkit-backface-visibility: hidden;
         }
 
-        .story-bg-image {
-          position: absolute;
-          top: 0;
-          left: 0;
+        /* LEFT SIDE (45%) */
+        .card-left-panel {
+          width: 45%;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          box-sizing: border-box;
+          padding: 40px 0 40px 48px;
+          z-index: 5;
+        }
+
+        .left-panel-content {
+          max-width: 85%;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+        }
+
+        /* RIGHT SIDE (55%) */
+        .card-right-panel {
+          width: 55%;
+          height: 100%;
+          position: relative;
+          overflow: hidden;
+          box-sizing: border-box;
+          z-index: 2;
+        }
+
+        .destination-image-wrapper {
+          width: 100%;
+          height: 100%;
+          position: relative;
+          overflow: hidden;
+        }
+
+        .destination-img {
           width: 100%;
           height: 100%;
           object-fit: cover;
-          z-index: 1;
+          display: block;
+          opacity: 1;
+          transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        .story-vignette-overlay {
-          position: absolute;
-          inset: 0;
-          z-index: 2;
-          background: radial-gradient(circle at 60% 50%, transparent 10%, rgba(5,5,5,0.7) 60%, rgba(5,5,5,0.98) 100%),
-                      linear-gradient(to top, rgba(5,5,5,1) 0%, rgba(5,5,5,0.3) 40%, transparent 100%);
-          pointer-events: none;
+        .destinations-story-card:hover .destination-img {
+          transform: scale(1.03);
         }
 
-        .story-content-panel {
-          position: absolute;
-          inset: 0;
-          z-index: 3;
-          display: flex;
-          align-items: center;
-          padding: 80px 10% 80px 10%;
-          box-sizing: border-box;
-        }
-
-        .story-text-container {
-          max-width: 540px;
+        /* Typography & Spacing hierarchy */
+        .dest-meta-container {
           display: flex;
           flex-direction: column;
-          align-items: flex-start;
-          text-align: left;
+          gap: 10px;
+          margin-bottom: 12px;
         }
 
-        /* Editorial Typography & Spacing */
-        .story-meta-pill {
-          display: inline-flex;
-          align-items: center;
-          gap: 8px;
-          padding: 6px 14px;
-          border: 1px solid rgba(193, 18, 31, 0.25);
-          border-radius: 100px;
+        .dest-region-label {
           font-family: var(--font-sans);
-          font-size: 0.65rem;
-          font-weight: 600;
-          letter-spacing: 0.18em;
-          color: rgba(247, 245, 242, 0.85);
-          background: rgba(193, 18, 31, 0.05);
-          backdrop-filter: blur(8px);
-          -webkit-backdrop-filter: blur(8px);
-          margin-bottom: 24px;
-          text-transform: uppercase;
-        }
-
-        .story-meta-pill-dot {
-          width: 5px;
-          height: 5px;
-          background-color: #C1121F;
-          border-radius: 50%;
-          box-shadow: 0 0 6px #C1121F;
-        }
-
-        .story-title-line {
-          font-family: var(--font-heading);
-          font-size: clamp(2.5rem, 5.5vw, 5.8rem);
+          font-size: 0.8rem;
           font-weight: 500;
-          line-height: 1.05;
-          letter-spacing: -0.01em;
-          color: #F7F5F2;
-          margin: 0 0 8px 0;
+          color: rgba(255, 255, 255, 0.4);
+          text-transform: uppercase;
+          letter-spacing: 1.5px;
         }
 
-        .story-heading-script {
+        .dest-country-heading {
+          margin: 0;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          line-height: 1;
+        }
+
+        .dest-country-name-script {
           font-family: 'Allura', cursive;
-          background: linear-gradient(to bottom, #F7F5F2 20%, #E8A7A7 60%, #C1121F 100%);
+          background: linear-gradient(to bottom, #F5F2EC 20%, #E8A7A7 60%, #C1121F 100%);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           background-clip: text;
           display: inline-block;
-          font-size: clamp(1.8rem, 3.2vw, 2.8rem);
+          font-size: 2.2rem;
           font-weight: 400;
           letter-spacing: 0.02em;
-          line-height: 1.1;
+          line-height: 1;
           text-transform: none;
+        }
+
+        .dest-flag-span {
+          font-size: 1.5rem;
+          vertical-align: middle;
+        }
+
+        .dest-editorial-heading {
+          font-family: var(--font-heading);
+          font-size: clamp(1.8rem, 2.6vw, 2.8rem);
+          font-weight: 500;
+          line-height: 1.15;
+          color: #F5F2EC;
+          margin: 0 0 16px 0;
+          letter-spacing: 0.01em;
+        }
+
+        .dest-editorial-description {
+          font-family: var(--font-sans);
+          font-size: 0.92rem;
+          line-height: 1.6;
+          color: rgba(245, 242, 236, 0.7);
           margin: 0 0 20px 0;
+          font-weight: 400;
         }
 
-        .story-description-para {
-          font-family: 'Satoshi', var(--font-sans);
-          font-size: clamp(0.9rem, 1.1vw, 1.05rem);
-          line-height: 1.65;
-          color: rgba(247, 245, 242, 0.65);
-          margin: 0 0 28px 0;
-          max-width: 460px;
-        }
-
-        .story-pills-row {
+        /* Feature Pills Styling */
+        .dest-feature-pills-container {
           display: flex;
           flex-wrap: wrap;
           gap: 8px;
-          margin-bottom: 32px;
+          margin-bottom: 24px;
         }
 
-        .story-detail-pill {
-          padding: 6px 12px;
-          background-color: rgba(255, 255, 255, 0.03);
-          border: 1px solid rgba(255, 255, 255, 0.07);
-          border-radius: 100px;
+        .dest-feature-pill {
+          display: inline-block;
+          padding: 6px 14px;
+          border: 1px solid #1c1c1c;
+          background-color: #0d0d0d;
+          color: rgba(245, 242, 236, 0.8);
           font-family: var(--font-sans);
           font-size: 0.72rem;
-          color: rgba(255, 255, 255, 0.75);
-          backdrop-filter: blur(4px);
-          -webkit-backdrop-filter: blur(4px);
+          font-weight: 500;
+          border-radius: 100px;
+          cursor: default;
+          transition: border-color 0.25s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        .story-explore-btn {
+        .dest-feature-pill:hover {
+          border-color: #C1121F;
+        }
+
+        /* Explore Button Styling */
+        .dest-button-container {
+          display: flex;
+        }
+
+        .dest-explore-button {
           display: inline-flex;
           align-items: center;
-          gap: 12px;
+          gap: 10px;
           padding: 12px 28px;
-          background-color: #F7F5F2;
-          color: #050505;
+          border: 1px solid #282828;
+          background-color: #000000;
+          color: #F5F2EC;
           font-family: var(--font-sans);
-          font-size: 0.8rem;
+          font-size: 0.78rem;
           font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 1px;
           border-radius: 100px;
+          cursor: pointer;
           text-decoration: none;
-          box-shadow: 0 10px 30px rgba(255, 255, 255, 0.1);
-          transition: all 0.3s ease;
+          transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        .story-explore-btn:hover {
-          background-color: #ffffff;
-          transform: translateY(-2px);
-          box-shadow: 0 15px 40px rgba(255, 255, 255, 0.2);
-        }
-
-        .story-explore-btn .btn-arrow {
+        .dest-explore-button .btn-arrow {
           transition: transform 0.3s ease;
         }
 
-        .story-explore-btn:hover .btn-arrow {
+        .dest-explore-button:hover {
+          border-color: #C1121F;
+          box-shadow: 0 0 15px rgba(193, 18, 31, 0.25);
+          color: #FFFFFF;
+        }
+
+        .dest-explore-button:hover .btn-arrow {
           transform: translateX(4px);
         }
 
-        /* ─── Mobile Media Query ────────────────────────────────────────── */
+        /* Responsive Mobile Layout (Tablet and Mobile stack) */
         @media (max-width: 1023px) {
-          .story-vignette-overlay {
-            background: linear-gradient(to top, rgba(5,5,5,0.95) 0%, rgba(5,5,5,0.75) 50%, rgba(5,5,5,0.6) 100%);
+          .destinations-story-viewport {
+            position: absolute;
+            height: 100%;
+            overflow: hidden;
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+            padding-top: 0 !important;
+            box-sizing: border-box !important;
           }
 
-          .story-content-panel {
-            padding: 80px 24px 60px 24px;
-            align-items: flex-end;
+          .destinations-cards-container {
+            width: 90% !important;
+            height: 66vh !important;
+            height: 66dvh !important;
+            max-height: 520px !important;
+            min-height: 380px !important;
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+            position: relative !important;
+            gap: 0 !important;
+            padding: 0 !important;
+            box-sizing: border-box !important;
           }
 
-          .story-text-container {
-            max-width: 100%;
+          .destinations-story-card {
+            position: absolute !important;
+            width: 100% !important;
+            height: 100% !important;
+            flex-direction: column-reverse !important;
+            border-radius: 24px !important;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7) !important;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
           }
 
-          .story-meta-pill {
-            margin-bottom: 12px;
-            padding: 4px 10px;
-            font-size: 0.6rem;
+          .card-left-panel {
+            width: 100% !important;
+            height: 62% !important;
+            padding: 16px 16px !important;
+            justify-content: flex-start !important;
+            z-index: 5;
           }
 
-          .story-title-line {
-            font-size: 2.5rem !important;
-            margin-bottom: 4px;
+          .left-panel-content {
+            max-width: 100% !important;
           }
 
-          .story-heading-script {
+          .card-right-panel {
+            width: 100% !important;
+            height: 38% !important;
+            border-radius: 0;
+          }
+
+          .destination-image-wrapper {
+            border-radius: 0;
+          }
+
+          .dest-editorial-heading {
             font-size: 1.35rem !important;
-            margin-bottom: 12px;
+            margin-bottom: 8px !important;
+            line-height: 1.2 !important;
           }
 
-          .story-description-para {
-            font-size: 0.85rem !important;
-            line-height: 1.55;
-            margin-bottom: 20px;
-            max-width: 100%;
+          .dest-country-heading {
+            font-size: 1.25rem !important;
           }
 
-          .story-pills-row {
-            margin-bottom: 24px;
-            gap: 6px;
+          .dest-country-name-script {
+             font-size: 1.75rem !important;
           }
 
-          .story-detail-pill {
-            padding: 4px 10px;
-            font-size: 0.65rem;
+          .dest-editorial-description {
+            font-size: 0.82rem !important;
+            line-height: 1.45 !important;
+            margin-bottom: 6px !important;
+            display: -webkit-box !important;
+            -webkit-line-clamp: 2 !important;
+            -webkit-box-orient: vertical !important;
+            overflow: hidden !important;
           }
 
-          .story-explore-btn {
-            padding: 10px 22px;
-            font-size: 0.75rem;
+          .dest-feature-pills-container {
+            margin-bottom: 8px !important;
+            gap: 6px !important;
+          }
+
+          .dest-feature-pill {
+            padding: 4px 10px !important;
+            font-size: 0.65rem !important;
+          }
+
+          .dest-explore-button {
+            padding: 8px 20px !important;
+            font-size: 0.72rem !important;
+          }
+          
+          .dest-number-label {
+            margin-bottom: 6px !important;
+          }
+          
+          .dest-meta-container {
+            margin-bottom: 6px !important;
+            gap: 4px !important;
           }
         }
       `}</style>
 
       {/* Immersive Sticky Viewport */}
       <div ref={viewportRef} className="destinations-story-viewport">
-        {destinations.map((dest, idx) => (
-          <div
-            key={`dest-story-${idx}`}
-            ref={(el) => { cardRefs.current[idx] = el; }}
-            className="destinations-story-card"
-            style={{ zIndex: idx + 1 }}
-          >
-            {/* Immersive background image */}
-            <img
-              src={dest.image}
-              alt={dest.countryName}
-              loading={idx < 2 ? 'eager' : 'lazy'}
-              className="story-bg-image"
-            />
-            {/* Vignette lighting overlay */}
-            <div className="story-vignette-overlay" />
+        {/* Subtle grid background */}
+        <div className="destinations-grid-bg" />
 
-            {/* Editorial Story Panel */}
-            <div className="story-content-panel">
-              <div
-                ref={(el) => { textContainerRefs.current[idx] = el; }}
-                className="story-text-container"
-              >
-                <div className="story-animate-el story-meta-pill">
-                  <span className="story-meta-pill-dot" />
-                  <span>{dest.region}</span>
+        {/* Floating Stack Container */}
+        <div className="destinations-cards-container">
+          {destinations.map((dest, idx) => (
+            <div
+              key={`dest-story-${idx}`}
+              ref={(el) => { cardRefs.current[idx] = el; }}
+              className="destinations-story-card"
+              style={{ zIndex: idx + 1 }}
+            >
+              {/* Left textual storytelling column */}
+              <div className="card-left-panel">
+                <div
+                  ref={(el) => { textContainerRefs.current[idx] = el; }}
+                  className="left-panel-content"
+                >
+                  <div className="story-animate-el dest-meta-container">
+                    <span className="dest-region-label">{dest.region}</span>
+                    <h4 className="dest-country-heading">
+                      <span className="dest-country-name-script">{dest.countryName}</span>
+                      <span className="dest-flag-span">{getFlagEmoji(dest.title)}</span>
+                    </h4>
+                  </div>
+
+                  <h3 className="story-animate-el dest-editorial-heading">{dest.heading}</h3>
+                  <p className="story-animate-el dest-editorial-description">{dest.description}</p>
+
+                  <div className="story-animate-el dest-feature-pills-container">
+                    {dest.highlights.map((highlight, hidx) => (
+                      <span key={`high-${hidx}`} className="dest-feature-pill">
+                        {highlight}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div className="story-animate-el dest-button-container">
+                    <a href="#contact" className="dest-explore-button">
+                      Explore Destination <span className="btn-arrow">→</span>
+                    </a>
+                  </div>
                 </div>
+              </div>
 
-                <h2 className="story-animate-el story-title-line">
-                  {dest.countryName}
-                </h2>
-                
-                <h3 className="story-animate-el story-heading-script">
-                  {dest.heading}
-                </h3>
-                
-                <p className="story-animate-el story-description-para">
-                  {dest.description}
-                </p>
-
-                <div className="story-animate-el story-pills-row">
-                  {dest.highlights.map((h, hidx) => (
-                    <span key={hidx} className="story-detail-pill">
-                      {h}
-                    </span>
-                  ))}
-                </div>
-
-                <div className="story-animate-el story-button-row">
-                  <a href="#contact" className="story-explore-btn">
-                    <span>Explore Destination</span>
-                    <span className="btn-arrow">→</span>
-                  </a>
+              {/* Right photographic cinematic column */}
+              <div className="card-right-panel">
+                <div className="destination-image-wrapper">
+                  <img
+                    src={dest.image}
+                    alt={dest.countryName}
+                    loading={idx < 2 ? 'eager' : 'lazy'}
+                    className="destination-img"
+                  />
                 </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );
