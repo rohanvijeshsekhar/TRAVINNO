@@ -584,17 +584,17 @@ export default function Header() {
                 opacity: 0.65
               }}
             >
-              {/* Glow Wash */}
+              {/* Cherry Red Glow Wash at bottom of menu */}
               <div
                 style={{
                   position: 'absolute',
-                  bottom: '-10%',
-                  right: '-10%',
-                  width: '250px',
-                  height: '250px',
-                  borderRadius: '50%',
-                  background: 'radial-gradient(circle, rgba(193, 18, 31, 0.05) 0%, rgba(234, 28, 41, 0.01) 50%, transparent 100%)',
-                  filter: 'blur(40px)',
+                  bottom: '-80px',
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  width: '100%',
+                  height: '350px',
+                  background: 'radial-gradient(ellipse at 50% 100%, rgba(193, 18, 31, 0.22) 0%, rgba(193, 18, 31, 0.05) 50%, transparent 80%)',
+                  filter: 'blur(60px)',
                   pointerEvents: 'none'
                 }}
               />
