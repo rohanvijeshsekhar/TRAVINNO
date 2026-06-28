@@ -553,10 +553,7 @@ export default function DestinationStorySection() {
 
           .destinations-cards-container {
             width: 90% !important;
-            height: 66vh !important;
-            height: 66dvh !important;
-            max-height: 520px !important;
-            min-height: 380px !important;
+            height: 480px !important;
             display: flex !important;
             justify-content: center !important;
             align-items: center !important;
