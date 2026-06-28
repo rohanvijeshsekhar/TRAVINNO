@@ -330,6 +330,11 @@ export default function DestinationStorySection() {
           will-change: transform, opacity;
           backface-visibility: hidden;
           -webkit-backface-visibility: hidden;
+          transform: translate3d(0, 100vh, 0);
+        }
+
+        .destinations-story-card:first-child {
+          transform: translate3d(0, 0, 0);
         }
 
         /* LEFT SIDE (45%) */
@@ -543,11 +548,17 @@ export default function DestinationStorySection() {
             width: 100% !important;
             height: 100% !important;
             flex-direction: column-reverse !important;
-            background: transparent !important;
-            border: none !important;
-            box-shadow: none !important;
+            background: #0B0B0B !important;
+            border: 1px solid #181818 !important;
+            border-radius: 24px !important;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7) !important;
             backface-visibility: hidden;
             -webkit-backface-visibility: hidden;
+            transform: translate3d(0, 100vh, 0) !important;
+          }
+
+          .destinations-story-card:first-child {
+            transform: translate3d(0, 0, 0) !important;
           }
 
           .card-left-panel {
@@ -556,12 +567,10 @@ export default function DestinationStorySection() {
             padding: 16px 16px !important;
             justify-content: flex-start !important;
             z-index: 5;
-            background-color: #0B0B0B !important;
-            border-radius: 0 0 24px 24px !important;
-            border-left: 1px solid #181818 !important;
-            border-right: 1px solid #181818 !important;
-            border-bottom: 1px solid #181818 !important;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4) !important;
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            border-radius: 0 !important;
           }
 
           .left-panel-content {
@@ -573,9 +582,7 @@ export default function DestinationStorySection() {
             height: 38% !important;
             border-radius: 24px 24px 0 0 !important;
             overflow: hidden !important;
-            border-left: 1px solid #181818 !important;
-            border-right: 1px solid #181818 !important;
-            border-top: 1px solid #181818 !important;
+            border: none !important;
           }
 
           .destination-image-wrapper {
