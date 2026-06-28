@@ -570,6 +570,22 @@ export default function Header() {
                 msOverflowStyle: 'none'
               }}
             >
+            {/* Bright, premium Cherry Red Glow Wash at bottom of menu */}
+            <div
+              style={{
+                position: 'absolute',
+                bottom: '-120px',
+                left: '50%',
+                transform: 'translateX(-50%)',
+                width: '130%',
+                height: '480px',
+                background: 'radial-gradient(ellipse at 50% 100%, rgba(193, 18, 31, 0.45) 0%, rgba(193, 18, 31, 0.15) 55%, transparent 85%)',
+                filter: 'blur(80px)',
+                pointerEvents: 'none',
+                zIndex: 0
+              }}
+            />
+
             {/* Background Graphic Illustration (matching Footer style) */}
             <div
               style={{
@@ -584,20 +600,6 @@ export default function Header() {
                 opacity: 0.65
               }}
             >
-              {/* Cherry Red Glow Wash at bottom of menu */}
-              <div
-                style={{
-                  position: 'absolute',
-                  bottom: '-80px',
-                  left: '50%',
-                  transform: 'translateX(-50%)',
-                  width: '100%',
-                  height: '350px',
-                  background: 'radial-gradient(ellipse at 50% 100%, rgba(193, 18, 31, 0.22) 0%, rgba(193, 18, 31, 0.05) 50%, transparent 80%)',
-                  filter: 'blur(60px)',
-                  pointerEvents: 'none'
-                }}
-              />
 
               <svg
                 viewBox="0 0 360 800"
