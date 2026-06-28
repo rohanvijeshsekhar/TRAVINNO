@@ -543,8 +543,9 @@ export default function DestinationStorySection() {
             width: 100% !important;
             height: 100% !important;
             flex-direction: column-reverse !important;
-            border-radius: 24px !important;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7) !important;
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
             backface-visibility: hidden;
             -webkit-backface-visibility: hidden;
           }
@@ -555,6 +556,12 @@ export default function DestinationStorySection() {
             padding: 16px 16px !important;
             justify-content: flex-start !important;
             z-index: 5;
+            background-color: #0B0B0B !important;
+            border-radius: 0 0 24px 24px !important;
+            border-left: 1px solid #181818 !important;
+            border-right: 1px solid #181818 !important;
+            border-bottom: 1px solid #181818 !important;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4) !important;
           }
 
           .left-panel-content {
@@ -564,11 +571,16 @@ export default function DestinationStorySection() {
           .card-right-panel {
             width: 100% !important;
             height: 38% !important;
-            border-radius: 0;
+            border-radius: 24px 24px 0 0 !important;
+            overflow: hidden !important;
+            border-left: 1px solid #181818 !important;
+            border-right: 1px solid #181818 !important;
+            border-top: 1px solid #181818 !important;
           }
 
           .destination-image-wrapper {
-            border-radius: 0;
+            border-radius: 24px 24px 0 0 !important;
+            overflow: hidden !important;
           }
 
           .dest-editorial-heading {
@@ -645,7 +657,6 @@ export default function DestinationStorySection() {
                     <span className="dest-region-label">{dest.region}</span>
                     <h4 className="dest-country-heading">
                       <span className="dest-country-name-script">{dest.countryName}</span>
-                      <span className="dest-flag-span">{getFlagEmoji(dest.title)}</span>
                     </h4>
                   </div>
 
