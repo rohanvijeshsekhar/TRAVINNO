@@ -121,18 +121,21 @@ export default function DestinationStorySection() {
       const getVH = () => window.innerHeight;
 
       ctx = gsap.context(() => {
-        // Set initial state: Card 0 visible, others hidden and scaled down
+        const isMobile = window.innerWidth < 1024;
+
+        // Set initial state: Card 0 visible at y:0, others visible but translated offscreen below (y:getVH())
         cards.forEach((card, idx) => {
-          if (idx === 0) {
-            gsap.set(card, { opacity: 1, scale: 1, visibility: 'visible' });
-            if (textContainers[0]) {
-              const children = textContainers[0].querySelectorAll('.story-animate-el');
+          gsap.set(card, {
+            y: idx === 0 ? 0 : () => getVH(),
+            opacity: 1,
+            scale: 1,
+            visibility: 'visible'
+          });
+          if (textContainers[idx]) {
+            const children = textContainers[idx].querySelectorAll('.story-animate-el');
+            if (idx === 0) {
               gsap.set(children, { y: 0, opacity: 1 });
-            }
-          } else {
-            gsap.set(card, { opacity: 0, scale: 0.95, visibility: 'hidden' });
-            if (textContainers[idx]) {
-              const children = textContainers[idx].querySelectorAll('.story-animate-el');
+            } else {
               gsap.set(children, { y: 40, opacity: 0 });
             }
           }
@@ -159,17 +162,25 @@ export default function DestinationStorySection() {
           }
         });
 
-        // Loop cards to create smooth sequential cinematic fade/dissolve transitions
+        // Loop cards to create smooth sequential cinematic card stack transitions
         for (let i = 1; i < cards.length; i++) {
           const startPos = (i - 1) * totalDurationPerCard;
 
-          // Outgoing card (i-1) zooms out/fades
-          tl.to(cards[i - 1], {
-            opacity: 0,
-            scale: 1.04,
-            duration: transitionDuration,
-            ease: "power2.inOut"
-          }, startPos);
+          // Outgoing card (i-1) shifts slightly up and scales down on desktop; remains static on mobile
+          if (isMobile) {
+            tl.to(cards[i - 1], {
+              opacity: 1, // keep visible
+              duration: transitionDuration,
+              ease: "power2.inOut"
+            }, startPos);
+          } else {
+            tl.to(cards[i - 1], {
+              y: -20,
+              scale: 0.98,
+              duration: transitionDuration,
+              ease: "power2.inOut"
+            }, startPos);
+          }
 
           if (textContainers[i - 1]) {
             const outgoingTexts = textContainers[i - 1].querySelectorAll('.story-animate-el');
@@ -182,14 +193,13 @@ export default function DestinationStorySection() {
             }, startPos);
           }
 
-          // Incoming card (i) zooms in/fades
-          tl.set(cards[i], { visibility: 'visible' }, startPos);
-          
+          // Incoming card (i) slides up from bottom
           tl.fromTo(cards[i],
-            { opacity: 0, scale: 0.96 },
+            { y: () => getVH(), scale: 1, opacity: 1 },
             {
-              opacity: 1,
+              y: 0,
               scale: 1,
+              opacity: 1,
               duration: transitionDuration,
               ease: "power2.inOut"
             },
