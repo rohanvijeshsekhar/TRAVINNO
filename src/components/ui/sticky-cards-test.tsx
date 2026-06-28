@@ -92,31 +92,20 @@ export default function StickyCardsTest() {
             overflow: 'hidden',
             zIndex: 1,
             boxShadow: '0 20px 50px rgba(0,0,0,0.5)',
-            border: '1px solid #181818'
+            border: '1px solid #181818',
+            backgroundImage: `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url(${BASE}images/destinations/dubai.webp)`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            color: '#F7F5F2',
+            fontFamily: 'sans-serif',
+            fontSize: '3rem',
+            fontWeight: 'bold'
           }}
         >
-          <img
-            src={`${BASE}images/destinations/dubai.webp`}
-            style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }}
-            alt="Dubai"
-          />
-          <div 
-            style={{ 
-              position: 'absolute', 
-              inset: 0, 
-              display: 'flex', 
-              justifyContent: 'center', 
-              alignItems: 'center', 
-              color: '#F7F5F2', 
-              fontFamily: 'sans-serif', 
-              fontSize: '3rem', 
-              fontWeight: 'bold', 
-              zIndex: 2, 
-              background: 'radial-gradient(circle at 60% 50%, transparent 10%, rgba(5,5,5,0.7) 60%, rgba(5,5,5,0.98) 100%), linear-gradient(to top, rgba(5,5,5,1) 0%, rgba(5,5,5,0.3) 40%, transparent 100%)' 
-            }}
-          >
-            Card 1
-          </div>
+          Card 1
         </div>
 
         {/* Card 2 */}
@@ -130,31 +119,20 @@ export default function StickyCardsTest() {
             overflow: 'hidden',
             zIndex: 2,
             boxShadow: '0 20px 50px rgba(0,0,0,0.5)',
-            border: '1px solid #181818'
+            border: '1px solid #181818',
+            backgroundImage: `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url(${BASE}images/destinations/malaysia.webp)`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            color: '#F7F5F2',
+            fontFamily: 'sans-serif',
+            fontSize: '3rem',
+            fontWeight: 'bold'
           }}
         >
-          <img
-            src={`${BASE}images/destinations/malaysia.webp`}
-            style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }}
-            alt="Malaysia"
-          />
-          <div 
-            style={{ 
-              position: 'absolute', 
-              inset: 0, 
-              display: 'flex', 
-              justifyContent: 'center', 
-              alignItems: 'center', 
-              color: '#F7F5F2', 
-              fontFamily: 'sans-serif', 
-              fontSize: '3rem', 
-              fontWeight: 'bold', 
-              zIndex: 2, 
-              background: 'radial-gradient(circle at 60% 50%, transparent 10%, rgba(5,5,5,0.7) 60%, rgba(5,5,5,0.98) 100%), linear-gradient(to top, rgba(5,5,5,1) 0%, rgba(5,5,5,0.3) 40%, transparent 100%)' 
-            }}
-          >
-            Card 2
-          </div>
+          Card 2
         </div>
 
         {/* Card 3 */}
@@ -168,31 +146,20 @@ export default function StickyCardsTest() {
             overflow: 'hidden',
             zIndex: 3,
             boxShadow: '0 20px 50px rgba(0,0,0,0.5)',
-            border: '1px solid #181818'
+            border: '1px solid #181818',
+            backgroundImage: `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url(${BASE}images/destinations/thailand.webp)`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            color: '#F7F5F2',
+            fontFamily: 'sans-serif',
+            fontSize: '3rem',
+            fontWeight: 'bold'
           }}
         >
-          <img
-            src={`${BASE}images/destinations/thailand.webp`}
-            style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }}
-            alt="Thailand"
-          />
-          <div 
-            style={{ 
-              position: 'absolute', 
-              inset: 0, 
-              display: 'flex', 
-              justifyContent: 'center', 
-              alignItems: 'center', 
-              color: '#F7F5F2', 
-              fontFamily: 'sans-serif', 
-              fontSize: '3rem', 
-              fontWeight: 'bold', 
-              zIndex: 2, 
-              background: 'radial-gradient(circle at 60% 50%, transparent 10%, rgba(5,5,5,0.7) 60%, rgba(5,5,5,0.98) 100%), linear-gradient(to top, rgba(5,5,5,1) 0%, rgba(5,5,5,0.3) 40%, transparent 100%)' 
-            }}
-          >
-            Card 3
-          </div>
+          Card 3
         </div>
       </div>
     </div>
