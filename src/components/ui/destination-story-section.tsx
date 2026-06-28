@@ -143,11 +143,11 @@ export default function DestinationStorySection() {
 
         // ─── Unified Timeline & ScrollTrigger ─────────────────────────────
         const transitionDuration = 1.0;
-        const holdDuration = 1.0;
+        const holdDuration = 0.2; // Speed up scroll transitions
         const totalDurationPerCard = transitionDuration + holdDuration;
         
-        // End calculation based on dynamic layout scale
-        const scrollDistance = () => getVH() * (cards.length - 1);
+        // End calculation based on dynamic layout scale - reduced to 0.6x to make transitions scroll faster
+        const scrollDistance = () => getVH() * (cards.length - 1) * 0.6;
 
         const tl = gsap.timeline({
           scrollTrigger: {
@@ -156,7 +156,7 @@ export default function DestinationStorySection() {
             end: () => `+=${scrollDistance()}`,
             pin: viewport,
             pinSpacing: true,
-            scrub: 1.5,
+            scrub: 1.2, // Reduced scrub lag for faster feedback
             invalidateOnRefresh: true,
             anticipatePin: 1
           }
@@ -178,17 +178,6 @@ export default function DestinationStorySection() {
               y: -20,
               scale: 0.98,
               duration: transitionDuration,
-              ease: "power2.inOut"
-            }, startPos);
-          }
-
-          if (textContainers[i - 1]) {
-            const outgoingTexts = textContainers[i - 1].querySelectorAll('.story-animate-el');
-            tl.to(outgoingTexts, {
-              y: -40,
-              opacity: 0,
-              stagger: 0.05,
-              duration: transitionDuration * 0.8,
               ease: "power2.inOut"
             }, startPos);
           }
