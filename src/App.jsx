@@ -9,7 +9,7 @@ import Lenis from '@studio-freight/lenis';
 
 import EditorialSection from './components/EditorialSection';
 import ExpertiseSection from './components/ExpertiseSection';
-import InteractiveSelector from './components/ui/interactive-selector';
+import DestinationStorySection from './components/ui/destination-story-section';
 import OurJourney from './components/OurJourney';
 import LogoCloudSection from './components/LogoCloudSection';
 import WhyTravinno from './components/WhyTravinno';
@@ -404,7 +404,7 @@ function App() {
               </h2>
             </div>
             <div className="destinations-cards-wrapper" style={{ position: 'relative', zIndex: 10 }}>
-              <InteractiveSelector />
+              <DestinationStorySection />
             </div>
           </div>
 
