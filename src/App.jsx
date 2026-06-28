@@ -29,7 +29,7 @@ const IS_TOUCH_DEVICE = typeof window !== 'undefined'
 
 function App() {
   const [currentView, setCurrentView] = useState('home');
-  const [showLoader, setShowLoader] = useState(false);
+  const [showLoader, setShowLoader] = useState(true);
 
   // Lock logic: disabled to allow full access when hosted
   const isLockedMode = false;
@@ -141,8 +141,6 @@ function App() {
     // Initialize Lenis smooth scroll
     // smoothTouch and syncTouch are DISABLED on real mobile — they intercept native
     // momentum scrolling and run JS-driven scroll on the main thread, causing severe jank.
-    // Temporarily disabled Lenis smooth scroll for debugging
-    /*
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -160,16 +158,15 @@ function App() {
       lenis.raf(time * 1000);
     };
     gsap.ticker.add(tickerUpdate);
-    */
 
     const ctx = gsap.context(() => {
       // Disabled section opacity fade-out animations to keep sections fully bright, readable, and premium
     });
 
     return () => {
-      // gsap.ticker.remove(tickerUpdate);
-      // lenis.destroy();
-      // window.lenis = null;
+      gsap.ticker.remove(tickerUpdate);
+      lenis.destroy();
+      window.lenis = null;
       ctx.revert();
     };
   }, [currentView, showLoader]);
@@ -403,7 +400,7 @@ function App() {
               </h2>
             </div>
             <div className="destinations-cards-wrapper" style={{ position: 'relative', zIndex: 10 }}>
-              <StickyCardsTest />
+              <DestinationStorySection />
             </div>
           </div>
 
