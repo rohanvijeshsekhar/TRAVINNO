@@ -70,8 +70,6 @@ body,
 html {
   width: 100%;
   min-height: 100vh;
-  overflow-x: hidden;
-  overflow-y: auto;
   background-color: var(--bg-color);
   color: var(--text-primary);
   font-family: var(--font-sans);
@@ -85,7 +83,6 @@ html {
   margin: 0;
   padding: 0;
   position: relative;
-  overflow-x: hidden;
 }
 
 /* Premium Ambient Lighting Utilities */
