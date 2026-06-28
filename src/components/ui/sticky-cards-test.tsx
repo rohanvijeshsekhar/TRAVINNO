@@ -100,7 +100,21 @@ export default function StickyCardsTest() {
             style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }}
             alt="Dubai"
           />
-          <div style={{ position: 'absolute', inset: 0, display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#F7F5F2', fontFamily: 'sans-serif', fontSize: '3rem', fontWeight: 'bold', zIndex: 2, background: 'rgba(0,0,0,0.3)' }}>
+          <div 
+            style={{ 
+              position: 'absolute', 
+              inset: 0, 
+              display: 'flex', 
+              justifyContent: 'center', 
+              alignItems: 'center', 
+              color: '#F7F5F2', 
+              fontFamily: 'sans-serif', 
+              fontSize: '3rem', 
+              fontWeight: 'bold', 
+              zIndex: 2, 
+              background: 'radial-gradient(circle at 60% 50%, transparent 10%, rgba(5,5,5,0.7) 60%, rgba(5,5,5,0.98) 100%), linear-gradient(to top, rgba(5,5,5,1) 0%, rgba(5,5,5,0.3) 40%, transparent 100%)' 
+            }}
+          >
             Card 1
           </div>
         </div>
@@ -124,7 +138,21 @@ export default function StickyCardsTest() {
             style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }}
             alt="Malaysia"
           />
-          <div style={{ position: 'absolute', inset: 0, display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#F7F5F2', fontFamily: 'sans-serif', fontSize: '3rem', fontWeight: 'bold', zIndex: 2, background: 'rgba(0,0,0,0.3)' }}>
+          <div 
+            style={{ 
+              position: 'absolute', 
+              inset: 0, 
+              display: 'flex', 
+              justifyContent: 'center', 
+              alignItems: 'center', 
+              color: '#F7F5F2', 
+              fontFamily: 'sans-serif', 
+              fontSize: '3rem', 
+              fontWeight: 'bold', 
+              zIndex: 2, 
+              background: 'radial-gradient(circle at 60% 50%, transparent 10%, rgba(5,5,5,0.7) 60%, rgba(5,5,5,0.98) 100%), linear-gradient(to top, rgba(5,5,5,1) 0%, rgba(5,5,5,0.3) 40%, transparent 100%)' 
+            }}
+          >
             Card 2
           </div>
         </div>
@@ -148,7 +176,21 @@ export default function StickyCardsTest() {
             style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }}
             alt="Thailand"
           />
-          <div style={{ position: 'absolute', inset: 0, display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#F7F5F2', fontFamily: 'sans-serif', fontSize: '3rem', fontWeight: 'bold', zIndex: 2, background: 'rgba(0,0,0,0.3)' }}>
+          <div 
+            style={{ 
+              position: 'absolute', 
+              inset: 0, 
+              display: 'flex', 
+              justifyContent: 'center', 
+              alignItems: 'center', 
+              color: '#F7F5F2', 
+              fontFamily: 'sans-serif', 
+              fontSize: '3rem', 
+              fontWeight: 'bold', 
+              zIndex: 2, 
+              background: 'radial-gradient(circle at 60% 50%, transparent 10%, rgba(5,5,5,0.7) 60%, rgba(5,5,5,0.98) 100%), linear-gradient(to top, rgba(5,5,5,1) 0%, rgba(5,5,5,0.3) 40%, transparent 100%)' 
+            }}
+          >
             Card 3
           </div>
         </div>
