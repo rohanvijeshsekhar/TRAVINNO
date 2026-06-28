@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-const BASE = import.meta.env.BASE_URL;
 
 export default function StickyCardsTest() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -18,10 +17,10 @@ export default function StickyCardsTest() {
     const cards = cardRefs.current.filter((c): c is HTMLDivElement => c !== null);
     if (cards.length === 0) return;
 
-    // Set initial positions: Card 1 and 2 start translated fully down with force3D enabled
-    gsap.set(cards[0], { y: 0, force3D: true });
-    gsap.set(cards[1], { y: window.innerHeight, force3D: true });
-    gsap.set(cards[2], { y: window.innerHeight, force3D: true });
+    // Set initial positions: Card 1 and 2 start translated fully down
+    gsap.set(cards[0], { y: 0 });
+    gsap.set(cards[1], { y: window.innerHeight });
+    gsap.set(cards[2], { y: window.innerHeight });
 
     // Single ScrollTrigger + timeline
     const tl = gsap.timeline({
@@ -36,20 +35,18 @@ export default function StickyCardsTest() {
       }
     });
 
-    // Card 2 slides up and overlaps Card 1 with force3D
+    // Card 2 slides up and overlaps Card 1
     tl.to(cards[1], {
       y: 0,
       duration: 1,
-      ease: "none",
-      force3D: true
+      ease: "none"
     });
 
-    // Card 3 slides up and overlaps Card 2 with force3D
+    // Card 3 slides up and overlaps Card 2
     tl.to(cards[2], {
       y: 0,
       duration: 1,
-      ease: "none",
-      force3D: true
+      ease: "none"
     });
 
     return () => {
@@ -90,14 +87,8 @@ export default function StickyCardsTest() {
             position: 'absolute',
             width: '80%',
             height: '80%',
+            backgroundColor: '#C1121F',
             borderRadius: '24px',
-            overflow: 'hidden',
-            zIndex: 1,
-            boxShadow: '0 20px 50px rgba(0,0,0,0.5)',
-            border: '1px solid #181818',
-            backgroundImage: `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url(${BASE}images/destinations/dubai.webp)`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
@@ -105,8 +96,8 @@ export default function StickyCardsTest() {
             fontFamily: 'sans-serif',
             fontSize: '3rem',
             fontWeight: 'bold',
-            backfaceVisibility: 'hidden',
-            WebkitBackfaceVisibility: 'hidden'
+            zIndex: 1,
+            boxShadow: '0 20px 50px rgba(0,0,0,0.5)'
           }}
         >
           Card 1
@@ -119,14 +110,8 @@ export default function StickyCardsTest() {
             position: 'absolute',
             width: '80%',
             height: '80%',
+            backgroundColor: '#005f73',
             borderRadius: '24px',
-            overflow: 'hidden',
-            zIndex: 2,
-            boxShadow: '0 20px 50px rgba(0,0,0,0.5)',
-            border: '1px solid #181818',
-            backgroundImage: `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url(${BASE}images/destinations/malaysia.webp)`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
@@ -134,8 +119,8 @@ export default function StickyCardsTest() {
             fontFamily: 'sans-serif',
             fontSize: '3rem',
             fontWeight: 'bold',
-            backfaceVisibility: 'hidden',
-            WebkitBackfaceVisibility: 'hidden'
+            zIndex: 2,
+            boxShadow: '0 20px 50px rgba(0,0,0,0.5)'
           }}
         >
           Card 2
@@ -148,14 +133,8 @@ export default function StickyCardsTest() {
             position: 'absolute',
             width: '80%',
             height: '80%',
+            backgroundColor: '#0a9396',
             borderRadius: '24px',
-            overflow: 'hidden',
-            zIndex: 3,
-            boxShadow: '0 20px 50px rgba(0,0,0,0.5)',
-            border: '1px solid #181818',
-            backgroundImage: `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url(${BASE}images/destinations/thailand.webp)`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
@@ -163,8 +142,8 @@ export default function StickyCardsTest() {
             fontFamily: 'sans-serif',
             fontSize: '3rem',
             fontWeight: 'bold',
-            backfaceVisibility: 'hidden',
-            WebkitBackfaceVisibility: 'hidden'
+            zIndex: 3,
+            boxShadow: '0 20px 50px rgba(0,0,0,0.5)'
           }}
         >
           Card 3
