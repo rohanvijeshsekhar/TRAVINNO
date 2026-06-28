@@ -512,8 +512,10 @@ export default function DestinationStorySection() {
         /* Responsive Mobile Layout (Tablet and Mobile stack) */
         @media (max-width: 1023px) {
           .destinations-story-viewport {
-            position: absolute;
-            height: 100%;
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            height: 100dvh;
             overflow: hidden;
             display: flex !important;
             justify-content: center !important;
