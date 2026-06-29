@@ -725,7 +725,7 @@ export default function AboutJourney() {
         className="journal-experience-container"
         style={{ 
           position: 'relative', 
-          height: isMobile ? 'auto' : '100vh',
+          height: '100vh',
           backgroundColor: '#000000',
           backgroundImage: `
             linear-gradient(rgba(245, 242, 236, 0.08) 1px, transparent 1px),
@@ -1496,10 +1496,18 @@ export default function AboutJourney() {
         .mobile-paper-stack-container {
           position: relative;
           width: min(350px, 90vw);
-          height: min(540px, 75vh);
-          margin: 15px auto 0 auto;
+          height: min(480px, 65vh);
+          margin: 0 auto;
           perspective: 1000px;
           z-index: 2;
+        }
+
+        @media (max-width: 1023px) {
+          .journal-sticky-viewport {
+            padding-top: 95px !important;
+            padding-bottom: 35px !important;
+            box-sizing: border-box;
+          }
         }
 
         .mobile-paper-card {
