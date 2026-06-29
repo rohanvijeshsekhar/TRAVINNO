@@ -329,6 +329,8 @@ export default function DestinationStorySection() {
 
         .destinations-story-card {
           position: absolute;
+          left: 0;
+          top: 0;
           width: 100%;
           height: 100%;
           background: #0B0B0B;
@@ -565,6 +567,8 @@ export default function DestinationStorySection() {
 
           .destinations-story-card {
             position: absolute !important;
+            left: 0 !important;
+            top: 0 !important;
             width: 100% !important;
             height: 100% !important;
             flex-direction: column-reverse !important;
@@ -575,20 +579,6 @@ export default function DestinationStorySection() {
             backface-visibility: hidden;
             -webkit-backface-visibility: hidden;
             -webkit-mask-image: -webkit-radial-gradient(white, black) !important;
-          }
-
-          /* Shorter height for the last card on mobile/tablet to ensure it fits and is fully visible when translated down */
-          .destinations-story-card:last-child {
-            height: calc(100% - 144px) !important;
-          }
-
-          .destinations-story-card:last-child .card-left-panel {
-            height: 66% !important;
-            padding: 10px 16px 8px 16px !important;
-          }
-
-          .destinations-story-card:last-child .card-right-panel {
-            height: 34% !important;
           }
 
           .card-left-panel {
