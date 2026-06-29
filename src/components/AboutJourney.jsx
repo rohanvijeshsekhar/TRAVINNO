@@ -207,7 +207,7 @@ export default function AboutJourney() {
 
       ScrollTrigger.create({
         trigger: container,
-        start: "top 90px",
+        start: "top top",
         end: "bottom bottom",
         pin: true,
         scrub: true,
@@ -594,23 +594,17 @@ export default function AboutJourney() {
         /* Ambient Lighting and Background Grid overlays */
         .journal-sticky-viewport {
           position: sticky;
-          top: 90px;
+          top: 0;
           left: 0;
           width: 100%;
-          height: calc(100vh - 90px);
+          height: 100vh;
           overflow: hidden;
           background-color: #050505;
           display: flex;
           justify-content: center;
           align-items: center;
           box-sizing: border-box;
-        }
-
-        @media (max-width: 1023px) {
-          .journal-sticky-viewport {
-            top: 70px;
-            height: calc(100vh - 70px);
-          }
+          padding: 30px;
         }
 
         .journal-editorial-glow {
@@ -887,7 +881,7 @@ export default function AboutJourney() {
           height: 100%;
           position: relative;
           box-sizing: border-box;
-          padding: 36px 44px;
+          padding: 24px 32px;
           display: flex;
           flex-direction: column;
           background-color: var(--color-paper);
@@ -953,7 +947,7 @@ export default function AboutJourney() {
           font-size: 1.1rem;
           font-style: italic;
           color: rgba(43, 31, 29, 0.75);
-          margin-bottom: min(20px, 2.5vh);
+          margin-bottom: 16px;
         }
 
         .metadata-city {
@@ -974,7 +968,7 @@ export default function AboutJourney() {
         .vintage-photo-container {
           position: relative;
           width: 100%;
-          height: min(250px, 32vh);
+          height: 200px;
           background: #efebdf;
           padding: 8px;
           box-sizing: border-box;
@@ -982,7 +976,7 @@ export default function AboutJourney() {
           box-shadow: 
             0 4px 15px rgba(0,0,0,0.08), 
             0 1px 3px rgba(0,0,0,0.05);
-          margin-bottom: min(24px, 3vh);
+          margin-bottom: 18px;
           transform: rotate(-1.5deg);
         }
 
