@@ -823,7 +823,7 @@ import{a as e}from"./rolldown-runtime-Cyuzqnbw.js";import{_t as t,yt as n}from".
           }
         }
 
-        /* Checked background grid layer for AboutStats */
+        /* Checked background grid layer for AboutStats matching History section opacity */
         .about-stats-grid-bg {
           position: absolute;
           top: 0;
@@ -831,8 +831,8 @@ import{a as e}from"./rolldown-runtime-Cyuzqnbw.js";import{_t as t,yt as n}from".
           width: 100%;
           height: 100%;
           background-image: 
-            linear-gradient(rgba(245, 242, 236, 0.08) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(245, 242, 236, 0.08) 1px, transparent 1px);
+            linear-gradient(rgba(245, 242, 236, 0.015) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(245, 242, 236, 0.015) 1px, transparent 1px);
           background-size: 40px 40px;
           pointer-events: none;
           z-index: 0;
