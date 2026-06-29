@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import Lenis from '@studio-freight/lenis';
 import AboutJourney from '../AboutJourney';
 import AboutStats from '../AboutStats';
 import AboutPurpose from '../AboutPurpose';
@@ -43,24 +42,11 @@ export function ParallaxComponent() {
       });
     }
 
-    const isTouchDevice = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smoothWheel: !isTouchDevice,
-      smoothTouch: false,
-      syncTouch: false,
-    });
-    lenis.on('scroll', ScrollTrigger.update);
-    gsap.ticker.add((time) => { lenis.raf(time * 1000); });
-    gsap.ticker.lagSmoothing(0);
-
     return () => {
       ScrollTrigger.getAll().forEach(st => st.kill());
       if (triggerElement) {
         gsap.killTweensOf(triggerElement);
       }
-      lenis.destroy();
     };
   }, []);
 
