@@ -131,6 +131,23 @@ export default function AboutPurpose() {
           display: inline-block;
         }
 
+        .about-heading-cursive {
+          font-family: 'Allura', cursive;
+          font-size: 1.35em;
+          font-weight: 400;
+          letter-spacing: 0.02em;
+          line-height: 1;
+          display: inline-block;
+          text-transform: none;
+          vertical-align: middle;
+          background: linear-gradient(to bottom, #F5F2EC 15%, #FF6B6B 65%, #C1121F 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          padding-left: 4px;
+          padding-right: 12px;
+        }
+
         .purpose-heading {
           font-family: var(--font-heading), 'Playfair Display', Georgia, serif;
           font-size: clamp(2rem, 3.8vw, 3rem);
@@ -276,7 +293,9 @@ export default function AboutPurpose() {
                 <span className="about-badge-dot" />
                 Driven by Excellence
               </div>
-              <h3 className="editorial-heading">Driven by Excellence</h3>
+              <h3 className="editorial-heading">
+                Driven by <span className="about-heading-cursive">Excellence</span>
+              </h3>
               <div className="editorial-divider" />
               <p className="editorial-paragraph-sub">
                 To deliver immaculate destination management services defined by unparalleled local expertise, prompt responsiveness, and custom craftsmanship. By aligning global quality standards with native insights, we empower travelers and advisors to experience the extraordinary with absolute trust and peace of mind.
@@ -318,7 +337,9 @@ export default function AboutPurpose() {
                 <span className="about-badge-dot" />
                 Beyond Tomorrow
               </div>
-              <h3 className="editorial-heading">Beyond Tomorrow</h3>
+              <h3 className="editorial-heading">
+                Beyond <span className="about-heading-cursive">Tomorrow</span>
+              </h3>
               <div className="editorial-divider" />
               <p className="editorial-paragraph-sub">
                 To establish Travinno as the definitive global benchmark for luxury destination management—renowned for setting new heights of bespoke curation, sustainable travel ethics, and service excellence across Asia and the Middle East.
