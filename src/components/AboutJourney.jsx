@@ -203,7 +203,7 @@ export default function AboutJourney() {
     }
 
     const ctx = gsap.context(() => {
-      const snapPoints = [0, 0.16, 0.32, 0.48, 0.64, 0.8, 0.95];
+      const snapPoints = [0, 0.16, 0.32, 0.48, 0.64, 0.8, 1.0];
 
       ScrollTrigger.create({
         trigger: container,

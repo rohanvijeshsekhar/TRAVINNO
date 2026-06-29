@@ -29,7 +29,7 @@ function CountUp({ to, suffix = "", duration = 1.8 }) {
 
 export default function AboutStats() {
   const sectionRef = useRef(null);
-  const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
+  const isInView = useInView(sectionRef, { once: true, margin: "-10px" });
 
   const stats = [
     {
