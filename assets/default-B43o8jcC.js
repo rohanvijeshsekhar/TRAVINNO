@@ -811,7 +811,7 @@ import{a as e}from"./rolldown-runtime-Cyuzqnbw.js";import{_t as t,yt as n}from".
         .about-stats-section {
           position: relative;
           background-color: #000000;
-          padding: 80px 24px 100px 24px;
+          padding: 80px 24px 40px 24px;
           overflow: hidden;
           width: 100%;
           box-sizing: border-box;
@@ -819,7 +819,7 @@ import{a as e}from"./rolldown-runtime-Cyuzqnbw.js";import{_t as t,yt as n}from".
 
         @media (max-width: 1023px) {
           .about-stats-section {
-            padding: 40px 20px 60px 20px;
+            padding: 40px 20px 30px 20px;
           }
         }
 
@@ -971,7 +971,7 @@ import{a as e}from"./rolldown-runtime-Cyuzqnbw.js";import{_t as t,yt as n}from".
             gap: 20px;
           }
           .about-stats-section {
-            padding: 80px 20px;
+            padding: 50px 20px 30px 20px;
           }
         }
 
@@ -1022,7 +1022,7 @@ import{a as e}from"./rolldown-runtime-Cyuzqnbw.js";import{_t as t,yt as n}from".
 
         /* Purpose Section: Centered full-width hero */
         .purpose-hero {
-          padding: 140px 24px 60px 24px;
+          padding: 60px 24px 60px 24px;
           text-align: center;
           display: flex;
           flex-direction: column;
@@ -1133,7 +1133,7 @@ import{a as e}from"./rolldown-runtime-Cyuzqnbw.js";import{_t as t,yt as n}from".
 
         @media (max-width: 1023px) {
           .purpose-hero {
-            padding: 100px 20px;
+            padding: 40px 20px;
           }
           .editorial-spread, .editorial-spread.reverse {
             grid-template-columns: 1fr;
