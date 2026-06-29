@@ -98,7 +98,7 @@ export default function AboutPurpose() {
 
         /* Purpose Section: Centered full-width hero */
         .purpose-hero {
-          padding: 140px 24px 60px 24px;
+          padding: 60px 24px 60px 24px;
           text-align: center;
           display: flex;
           flex-direction: column;
@@ -209,7 +209,7 @@ export default function AboutPurpose() {
 
         @media (max-width: 1023px) {
           .purpose-hero {
-            padding: 100px 20px;
+            padding: 40px 20px;
           }
           .editorial-spread, .editorial-spread.reverse {
             grid-template-columns: 1fr;
