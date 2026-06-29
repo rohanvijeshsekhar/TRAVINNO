@@ -207,7 +207,7 @@ export default function AboutJourney() {
 
       ScrollTrigger.create({
         trigger: container,
-        start: "top top",
+        start: "top 90px",
         end: "bottom bottom",
         pin: true,
         scrub: true,
@@ -594,17 +594,23 @@ export default function AboutJourney() {
         /* Ambient Lighting and Background Grid overlays */
         .journal-sticky-viewport {
           position: sticky;
-          top: 0;
+          top: 90px;
           left: 0;
           width: 100%;
-          height: 100vh;
+          height: calc(100vh - 90px);
           overflow: hidden;
           background-color: #050505;
           display: flex;
-          flex-direction: column;
           justify-content: center;
           align-items: center;
           box-sizing: border-box;
+        }
+
+        @media (max-width: 1023px) {
+          .journal-sticky-viewport {
+            top: 70px;
+            height: calc(100vh - 70px);
+          }
         }
 
         .journal-editorial-glow {
@@ -942,12 +948,12 @@ export default function AboutJourney() {
           font-weight: bold;
         }
 
-        .page-location-sub {
+         .page-location-sub {
           font-family: var(--font-journal-serif);
           font-size: 1.1rem;
           font-style: italic;
           color: rgba(43, 31, 29, 0.75);
-          margin-bottom: 20px;
+          margin-bottom: min(20px, 2.5vh);
         }
 
         .metadata-city {
@@ -968,7 +974,7 @@ export default function AboutJourney() {
         .vintage-photo-container {
           position: relative;
           width: 100%;
-          height: 250px;
+          height: min(250px, 32vh);
           background: #efebdf;
           padding: 8px;
           box-sizing: border-box;
@@ -976,7 +982,7 @@ export default function AboutJourney() {
           box-shadow: 
             0 4px 15px rgba(0,0,0,0.08), 
             0 1px 3px rgba(0,0,0,0.05);
-          margin-bottom: 24px;
+          margin-bottom: min(24px, 3vh);
           transform: rotate(-1.5deg);
         }
 
@@ -1369,74 +1375,136 @@ export default function AboutJourney() {
         }}
       />
 
-      {/* Sticky full-screen view wrapper */}
-      <div className="journal-sticky-viewport">
-        {/* Soft radial backdrop glow */}
-        <div className="journal-editorial-glow" />
-
-        {/* Immersive Section Heading matching the homepage spacing, fonts, and colors */}
-        <div
-          className="journal-heading-container"
+  return (
+    <>
+      {/* Scrollable heading section */}
+      <div 
+        className="about-heading-section"
+        style={{
+          width: '100%',
+          backgroundColor: '#050505',
+          padding: isMobile ? '80px 24px 40px 24px' : '120px 24px 60px 24px',
+          boxSizing: 'border-box',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          textAlign: 'center',
+          position: 'relative',
+          zIndex: 5
+        }}
+      >
+        <span
           style={{
-            textAlign: 'center',
-            display: 'flex',
-            flexDirection: 'column',
+            display: 'inline-flex',
             alignItems: 'center',
-            zIndex: 15,
-            width: '90%',
-            maxWidth: '600px',
-            marginBottom: isMobile ? '30px' : '55px'
+            gap: '6px',
+            padding: '4px 10px',
+            border: '1px solid rgba(193, 18, 31, 0.15)',
+            borderRadius: '100px',
+            fontFamily: 'var(--font-sans)',
+            fontSize: '0.72rem',
+            fontWeight: 500,
+            letterSpacing: '0.05em',
+            color: 'rgba(255, 255, 255, 0.85)',
+            marginBottom: '10px',
+            background: 'rgba(193, 18, 31, 0.05)',
+            backdropFilter: 'blur(4px)',
+            WebkitBackdropFilter: 'blur(4px)'
           }}
         >
           <span
             style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '6px',
-              padding: '4px 10px',
-              border: '1px solid rgba(193, 18, 31, 0.15)',
-              borderRadius: '100px',
-              fontFamily: 'var(--font-sans)',
-              fontSize: '0.72rem',
-              fontWeight: 500,
-              letterSpacing: '0.05em',
-              color: 'rgba(255, 255, 255, 0.85)',
-              marginBottom: '10px',
-              background: 'rgba(193, 18, 31, 0.05)',
-              backdropFilter: 'blur(4px)',
-              WebkitBackdropFilter: 'blur(4px)'
+              width: '6px',
+              height: '6px',
+              backgroundColor: '#C1121F',
+              borderRadius: '50%',
+              display: 'inline-block'
             }}
-          >
-            <span
-              style={{
-                width: '6px',
-                height: '6px',
-                backgroundColor: '#C1121F',
-                borderRadius: '50%',
-                display: 'inline-block'
-              }}
-            />
-            Our History
-          </span>
-          <h2
-            style={{
-              fontFamily: 'var(--font-heading)',
-              fontSize: isMobile ? '1.8rem' : 'clamp(2rem, 3.2vw, 2.8rem)',
-              fontWeight: 500,
-              lineHeight: 1.15,
-              letterSpacing: '0.02em',
-              color: '#F5F2EC',
-              margin: '0',
-              textAlign: 'center',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center'
-            }}
-          >
-            <span>Stories that</span>
-            <span className="about-inspire-cursive" style={{ marginTop: '2px' }}>Inspire</span>
-          </h2>
-        </div>
+          />
+          Our History
+        </span>
+        <h2
+          style={{
+            fontFamily: 'var(--font-heading)',
+            fontSize: isMobile ? '1.8rem' : 'clamp(2.2rem, 3.8vw, 3.2rem)',
+            fontWeight: 500,
+            lineHeight: 1.15,
+            letterSpacing: '0.02em',
+            color: '#F5F2EC',
+            margin: '0',
+            textAlign: 'center',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center'
+          }}
+        >
+          <span>Stories that</span>
+          <span className="about-inspire-cursive" style={{ marginTop: '2px' }}>Inspire</span>
+        </h2>
+      </div>
+
+      <div 
+        ref={containerRef} 
+        className="journal-experience-container"
+        style={{ 
+          position: 'relative', 
+          height: '500vh', // 7 spreads of scroll height
+          backgroundColor: '#050505',
+          width: '100%',
+          boxSizing: 'border-box'
+        }}
+      >
+        {/* Import vintage and handwriting fonts */}
+        <style>{`
+          @import url('https://fonts.googleapis.com/css2?family=Allura&family=Caveat:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Reenie+Beanie&display=swap');
+          
+          .journal-experience-container {
+            --color-paper: #f5f2ec;
+            --font-journal-serif: 'Playfair Display', Georgia, serif;
+            --font-journal-hand: 'Caveat', cursive, sans-serif;
+            --font-journal-note: 'Reenie Beanie', cursive, sans-serif;
+          }
+
+          .about-inspire-cursive {
+            font-family: 'Allura', cursive;
+            font-size: 1.35em;
+            font-weight: 400;
+            letter-spacing: 0.02em;
+            line-height: 1;
+            display: inline-block;
+            text-transform: none;
+            vertical-align: middle;
+            background: linear-gradient(to bottom, #F5F2EC 15%, #FF6B6B 65%, #C1121F 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+          }
+        `}</style>
+        
+        {/* Floating coordinates grid overlay behind book */}
+        <div
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundImage: `
+              linear-gradient(rgba(245, 242, 236, 0.015) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(245, 242, 236, 0.015) 1px, transparent 1px)
+            `,
+            backgroundSize: '40px 40px',
+            pointerEvents: 'none',
+            zIndex: 0,
+            maskImage: 'radial-gradient(circle at 50% 50%, black 40%, transparent 95%)',
+            WebkitMaskImage: 'radial-gradient(circle at 50% 50%, black 40%, transparent 95%)'
+          }}
+        />
+
+        {/* Sticky full-screen view wrapper */}
+        <div className="journal-sticky-viewport">
+          {/* Soft radial backdrop glow */}
+          <div className="journal-editorial-glow" />
 
         {/* Floating Progress Indicator */}
         <div
