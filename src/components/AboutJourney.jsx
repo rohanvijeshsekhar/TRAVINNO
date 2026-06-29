@@ -164,6 +164,8 @@ export default function AboutJourney() {
     }
 
     const ctx = gsap.context(() => {
+      const snapPoints = [0, 0.2, 0.35, 0.5, 0.65, 0.8, 1.0];
+
       ScrollTrigger.create({
         trigger: container,
         start: "top top",
@@ -171,14 +173,24 @@ export default function AboutJourney() {
         pin: true,
         scrub: true,
         snap: {
-          snapTo: 1 / 6,
+          snapTo: snapPoints,
           duration: { min: 0.3, max: 0.6 },
           ease: "power2.out",
           delay: 0.08
         },
         onUpdate: (self) => {
           const progress = self.progress;
-          const targetIdx = Math.min(6, Math.max(0, Math.round(progress * 6)));
+          
+          // Find the index of the closest snap point
+          let targetIdx = 0;
+          let minDiff = Infinity;
+          for (let k = 0; k < snapPoints.length; k++) {
+            const diff = Math.abs(progress - snapPoints[k]);
+            if (diff < minDiff) {
+              minDiff = diff;
+              targetIdx = k;
+            }
+          }
           
           const currentActive = activeIndexRef.current;
           const currentFlipping = isFlippingRef.current;
@@ -497,7 +509,7 @@ export default function AboutJourney() {
       className="journal-experience-container"
       style={{ 
         position: 'relative', 
-        height: '250vh', // 7 spreads of scroll height
+        height: '300vh', // 7 spreads of scroll height
         backgroundColor: '#050505',
         width: '100%',
         boxSizing: 'border-box'
