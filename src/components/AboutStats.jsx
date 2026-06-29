@@ -163,13 +163,25 @@ export default function AboutStats() {
           max-width: 800px;
         }
 
-        .about-stats-heading strong {
+        .stats-highlight {
           font-weight: 500;
-          color: #C1121F;
-          background: linear-gradient(to bottom, #F5F2EC 20%, #FF6B6B 65%, #C1121F 100%);
+          color: #F5F2EC;
+        }
+
+        .stats-cursive-highlight {
+          font-family: 'Allura', cursive;
+          font-size: 1.45em;
+          font-weight: 400;
+          letter-spacing: 0.02em;
+          line-height: 0.9;
+          display: inline-block;
+          text-transform: none;
+          vertical-align: middle;
+          background: linear-gradient(to bottom, #F5F2EC 15%, #FF6B6B 65%, #C1121F 100%);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           background-clip: text;
+          margin: 0 4px;
         }
 
         .about-stats-grid {
@@ -323,7 +335,10 @@ export default function AboutStats() {
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         >
-          Offers <strong>personalized</strong> travel solutions for <strong>UAE</strong>, <strong>Thailand</strong> and <strong>Kerala</strong>.
+          Offers <span className="stats-highlight">personalized</span> travel solutions for{' '}
+          <span className="stats-cursive-highlight">UAE</span>,{' '}
+          <span className="stats-cursive-highlight">Thailand</span> and{' '}
+          <span className="stats-cursive-highlight">Kerala</span>.
         </motion.h2>
 
         {/* Animated stats grid */}
