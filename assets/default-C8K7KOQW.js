@@ -997,7 +997,7 @@ import{a as e}from"./rolldown-runtime-Cyuzqnbw.js";import{_t as t,yt as n}from".
           color: #F5F2EC;
         }
 
-        /* Continuous checked grid pattern background with smooth fade out */
+        /* Continuous checked grid pattern background matching History section opacity */
         .about-editorial-grid-bg {
           position: absolute;
           top: 0;
@@ -1005,13 +1005,11 @@ import{a as e}from"./rolldown-runtime-Cyuzqnbw.js";import{_t as t,yt as n}from".
           width: 100%;
           height: 100%;
           background-image: 
-            linear-gradient(rgba(245, 242, 236, 0.04) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(245, 242, 236, 0.04) 1px, transparent 1px);
+            linear-gradient(rgba(245, 242, 236, 0.015) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(245, 242, 236, 0.015) 1px, transparent 1px);
           background-size: 40px 40px;
           pointer-events: none;
           z-index: 0;
-          mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.25) 50%, rgba(0, 0, 0, 0) 100%);
-          -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.25) 50%, rgba(0, 0, 0, 0) 100%);
         }
 
         /* Editorial spacing containers */
