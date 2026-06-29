@@ -1370,7 +1370,7 @@ export default function AboutJourney() {
             zIndex: 15,
             width: '90%',
             maxWidth: '600px',
-            marginBottom: isMobile ? '20px' : '32px'
+            marginBottom: isMobile ? '30px' : '55px'
           }}
         >
           <span
