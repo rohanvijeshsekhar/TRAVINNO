@@ -577,6 +577,20 @@ export default function DestinationStorySection() {
             -webkit-mask-image: -webkit-radial-gradient(white, black) !important;
           }
 
+          /* Shorter height for the last card on mobile/tablet to ensure it fits and is fully visible when translated down */
+          .destinations-story-card:last-child {
+            height: calc(100% - 144px) !important;
+          }
+
+          .destinations-story-card:last-child .card-left-panel {
+            height: 66% !important;
+            padding: 10px 16px 8px 16px !important;
+          }
+
+          .destinations-story-card:last-child .card-right-panel {
+            height: 34% !important;
+          }
+
           .card-left-panel {
             width: 100% !important;
             height: 62% !important;
