@@ -560,7 +560,7 @@ export default function AboutJourney() {
         className="about-heading-section"
         style={{
           width: '100%',
-          backgroundColor: '#050505',
+          backgroundColor: '#000000',
           padding: isMobile ? '20px 24px 0px 24px' : '24px 24px 0px 24px',
           boxSizing: 'border-box',
           display: 'flex',
@@ -571,13 +571,6 @@ export default function AboutJourney() {
           zIndex: 5
         }}
       >
-        {/* Separator line */}
-        <div style={{
-          width: '100%',
-          height: '1px',
-          background: 'linear-gradient(to right, transparent, rgba(245, 242, 236, 0.15), transparent)',
-          marginBottom: '24px'
-        }} />
         <span
           style={{
             display: 'inline-flex',
@@ -641,20 +634,6 @@ export default function AboutJourney() {
           Seven chapters of passion, purpose and discovery —<br />
           the story of Travinno, told one destination at a time.
         </p>
-
-        {/* Bottom fade blend into book section */}
-        <div
-          style={{
-            position: 'absolute',
-            bottom: 0,
-            left: 0,
-            width: '100%',
-            height: '80px',
-            background: 'linear-gradient(to bottom, transparent 0%, #050505 100%)',
-            pointerEvents: 'none',
-            zIndex: 10
-          }}
-        />
       </div>
 
       <div 
@@ -663,7 +642,7 @@ export default function AboutJourney() {
         style={{ 
           position: 'relative', 
           height: '500vh', // 7 spreads of scroll height
-          backgroundColor: '#050505',
+          backgroundColor: '#000000',
           width: '100%',
           boxSizing: 'border-box'
         }}
@@ -702,7 +681,7 @@ export default function AboutJourney() {
           width: 100%;
           height: 100vh;
           overflow: hidden;
-          background-color: #050505;
+          background-color: #000000;
           display: flex;
           justify-content: center;
           align-items: center;

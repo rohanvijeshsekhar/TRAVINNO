@@ -1692,7 +1692,7 @@ a {
 }
 
 .parallax__content {
-  padding: 140px var(--container-padding-parallax);
+  padding: 140px var(--container-padding-parallax) 0px var(--container-padding-parallax);
   justify-content: center;
   align-items: center;
   min-height: 100svh;
