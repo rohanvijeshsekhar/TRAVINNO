@@ -73,7 +73,7 @@ export default function AboutPurpose() {
           color: #F5F2EC;
         }
 
-        /* Continuous checked grid pattern background */
+        /* Continuous checked grid pattern background with smooth fade out */
         .about-editorial-grid-bg {
           position: absolute;
           top: 0;
@@ -81,11 +81,13 @@ export default function AboutPurpose() {
           width: 100%;
           height: 100%;
           background-image: 
-            linear-gradient(rgba(245, 242, 236, 0.08) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(245, 242, 236, 0.08) 1px, transparent 1px);
+            linear-gradient(rgba(245, 242, 236, 0.04) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(245, 242, 236, 0.04) 1px, transparent 1px);
           background-size: 40px 40px;
           pointer-events: none;
           z-index: 0;
+          mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.25) 50%, rgba(0, 0, 0, 0) 100%);
+          -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.25) 50%, rgba(0, 0, 0, 0) 100%);
         }
 
         /* Editorial spacing containers */
@@ -147,13 +149,27 @@ export default function AboutPurpose() {
         .editorial-spread {
           padding: 80px 24px;
           display: grid;
-          grid-template-columns: 45% 55%;
+          grid-template-columns: 4.5fr 5.5fr;
           align-items: center;
           gap: 8%;
         }
 
+        .editorial-spread .editorial-image-container {
+          order: 1;
+        }
+        .editorial-spread .editorial-text-col {
+          order: 2;
+        }
+
         .editorial-spread.reverse {
-          grid-template-columns: 55% 45%;
+          grid-template-columns: 5.5fr 4.5fr;
+        }
+
+        .editorial-spread.reverse .editorial-image-container {
+          order: 2;
+        }
+        .editorial-spread.reverse .editorial-text-col {
+          order: 1;
         }
 
         .editorial-text-col {
@@ -202,12 +218,11 @@ export default function AboutPurpose() {
             gap: 40px;
             padding: 80px 20px;
           }
-          .editorial-image-container {
-            order: 2;
-            aspect-ratio: 4/3 !important;
+          .editorial-image-container, .editorial-text-col {
+            order: 0 !important;
           }
-          .editorial-text-col {
-            order: 1;
+          .editorial-image-container {
+            aspect-ratio: 4/3 !important;
           }
           .editorial-text-col.centered {
             padding: 0;
@@ -235,12 +250,6 @@ export default function AboutPurpose() {
 
         {/* SECTION 2: Our Mission */}
         <section className="editorial-spread">
-          <div className="editorial-image-container">
-            <ParallaxImage 
-              src="https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?auto=format&fit=crop&w=1200&q=80" 
-              alt="Luxury longtail boat on turquoise water in Thailand"
-            />
-          </div>
           <div className="editorial-text-col centered">
             <FadeInContainer>
               <div className="eyebrow-label">Our Mission</div>
@@ -250,6 +259,12 @@ export default function AboutPurpose() {
                 To deliver immaculate destination management services defined by unparalleled local expertise, prompt responsiveness, and custom craftsmanship. By aligning global quality standards with native insights, we empower travelers and advisors to experience the extraordinary with absolute trust and peace of mind.
               </p>
             </FadeInContainer>
+          </div>
+          <div className="editorial-image-container">
+            <ParallaxImage 
+              src="https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?auto=format&fit=crop&w=1200&q=80" 
+              alt="Luxury longtail boat on turquoise water in Thailand"
+            />
           </div>
         </section>
 
