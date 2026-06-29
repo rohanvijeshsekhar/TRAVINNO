@@ -684,7 +684,6 @@ export default function AboutJourney() {
           background-clip: text;
         }
 
-        /* Ambient Lighting and Background Grid overlays */
         .journal-sticky-viewport {
           position: sticky;
           top: 0;
@@ -693,6 +692,10 @@ export default function AboutJourney() {
           height: 100vh;
           overflow: hidden;
           background-color: #000000;
+          background-image: 
+            linear-gradient(rgba(245, 242, 236, 0.022) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(245, 242, 236, 0.022) 1px, transparent 1px);
+          background-size: 40px 40px;
           display: flex;
           justify-content: center;
           align-items: center;
