@@ -274,9 +274,9 @@ export default function AboutPurpose() {
             <FadeInContainer>
               <div className="about-badge">
                 <span className="about-badge-dot" />
-                Our Mission
+                Driven by Excellence
               </div>
-              <h3 className="editorial-heading">Our Mission</h3>
+              <h3 className="editorial-heading">Driven by Excellence</h3>
               <div className="editorial-divider" />
               <p className="editorial-paragraph-sub">
                 To deliver immaculate destination management services defined by unparalleled local expertise, prompt responsiveness, and custom craftsmanship. By aligning global quality standards with native insights, we empower travelers and advisors to experience the extraordinary with absolute trust and peace of mind.
@@ -316,9 +316,9 @@ export default function AboutPurpose() {
             <FadeInContainer>
               <div className="about-badge">
                 <span className="about-badge-dot" />
-                Our Vision
+                Beyond Tomorrow
               </div>
-              <h3 className="editorial-heading">Our Vision</h3>
+              <h3 className="editorial-heading">Beyond Tomorrow</h3>
               <div className="editorial-divider" />
               <p className="editorial-paragraph-sub">
                 To establish Travinno as the definitive global benchmark for luxury destination management—renowned for setting new heights of bespoke curation, sustainable travel ethics, and service excellence across Asia and the Middle East.
