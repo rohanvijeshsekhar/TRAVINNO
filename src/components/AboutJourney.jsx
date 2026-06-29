@@ -561,7 +561,12 @@ export default function AboutJourney() {
         style={{
           width: '100%',
           backgroundColor: '#000000',
-          backgroundImage: 'radial-gradient(circle at 50% 50%, rgba(193, 18, 31, 0.15) 0%, transparent 75%)',
+          backgroundImage: `
+            radial-gradient(circle at 50% 0%, rgba(193, 18, 31, 0.12) 0%, transparent 70%),
+            linear-gradient(rgba(245, 242, 236, 0.02) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(245, 242, 236, 0.02) 1px, transparent 1px)
+          `,
+          backgroundSize: '100% 100%, 40px 40px, 40px 40px',
           padding: isMobile ? '20px 24px 0px 24px' : '24px 24px 0px 24px',
           boxSizing: 'border-box',
           display: 'flex',
@@ -644,6 +649,11 @@ export default function AboutJourney() {
           position: 'relative', 
           height: '500vh', // 7 spreads of scroll height
           backgroundColor: '#000000',
+          backgroundImage: `
+            linear-gradient(rgba(245, 242, 236, 0.015) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(245, 242, 236, 0.015) 1px, transparent 1px)
+          `,
+          backgroundSize: '40px 40px',
           width: '100%',
           boxSizing: 'border-box'
         }}
