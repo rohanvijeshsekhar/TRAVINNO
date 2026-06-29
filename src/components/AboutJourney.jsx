@@ -561,7 +561,7 @@ export default function AboutJourney() {
         style={{
           width: '100%',
           backgroundColor: '#050505',
-          padding: isMobile ? '80px 24px 40px 24px' : '120px 24px 60px 24px',
+          padding: isMobile ? '40px 24px 24px 24px' : '60px 24px 36px 24px',
           boxSizing: 'border-box',
           display: 'flex',
           flexDirection: 'column',
