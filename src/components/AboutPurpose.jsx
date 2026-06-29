@@ -258,12 +258,10 @@ export default function AboutPurpose() {
               </p>
             </FadeInContainer>
           </div>
-          <div className="editorial-image-container">
-            <ParallaxImage 
-              src="https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?auto=format&fit=crop&w=1200&q=80" 
-              alt="Luxury longtail boat on turquoise water in Thailand"
-            />
-          </div>
+          <ParallaxImage 
+            src="https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?auto=format&fit=crop&w=1200&q=80" 
+            alt="Luxury longtail boat on turquoise water in Thailand"
+          />
         </section>
 
         {/* SECTION 3: Our Vision */}
@@ -278,12 +276,10 @@ export default function AboutPurpose() {
               </p>
             </FadeInContainer>
           </div>
-          <div className="editorial-image-container">
-            <ParallaxImage 
-              src="https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&w=1200&q=80" 
-              alt="Cinematic desert dunes in Dubai"
-            />
-          </div>
+          <ParallaxImage 
+            src="https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&w=1200&q=80" 
+            alt="Cinematic desert dunes in Dubai"
+          />
         </section>
       </div>
     </div>
