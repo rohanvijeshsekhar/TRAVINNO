@@ -291,7 +291,7 @@ export default function AboutPurpose() {
             <FadeInContainer>
               <div className="about-badge">
                 <span className="about-badge-dot" />
-                Driven by Excellence
+                Our Mission
               </div>
               <h3 className="editorial-heading">
                 Driven by <span className="about-heading-cursive">Excellence</span>
@@ -335,7 +335,7 @@ export default function AboutPurpose() {
             <FadeInContainer>
               <div className="about-badge">
                 <span className="about-badge-dot" />
-                Beyond Tomorrow
+                Our Vision
               </div>
               <h3 className="editorial-heading">
                 Beyond <span className="about-heading-cursive">Tomorrow</span>
