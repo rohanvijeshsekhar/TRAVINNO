@@ -304,10 +304,31 @@ export default function AboutPurpose() {
               </p>
             </FadeInContainer>
           </div>
-          <ParallaxImage 
-            src="https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&w=1200&q=80" 
-            alt="Cinematic desert dunes in Dubai"
-          />
+          <FadeInContainer delay={0.15}>
+            <div 
+              className="editorial-image-container"
+              style={{
+                width: '100%',
+                aspectRatio: '4/3',
+                borderRadius: '16px',
+                overflow: 'hidden',
+                position: 'relative',
+                boxShadow: '0 20px 40px rgba(0, 0, 0, 0.4)'
+              }}
+            >
+              <img 
+                src="https://images.unsplash.com/photo-1501555088652-021faa106b9b?auto=format&fit=crop&w=1200&q=80" 
+                alt="Traveler standing on a mountain peak overlooking a vast landscape, symbolizing Travinno's vision"
+                loading="lazy"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  filter: 'grayscale(1) contrast(1.25) brightness(0.9)'
+                }}
+              />
+            </div>
+          </FadeInContainer>
         </section>
       </div>
     </div>
