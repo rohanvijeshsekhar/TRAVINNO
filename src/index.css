@@ -3209,7 +3209,8 @@ html.lenis body {
 .expertise-section,
 .journey-section,
 .logo-cloud-section,
-.why-section {
+.why-section,
+.contact-cta-section {
   padding-top: var(--section-gap) !important;
   padding-bottom: 0 !important;
   margin-top: 0 !important;
