@@ -619,6 +619,21 @@ export default function AboutJourney() {
           <span>Stories that</span>
           <span className="about-inspire-cursive" style={{ marginTop: '2px' }}>Inspire</span>
         </h2>
+        <p
+          style={{
+            fontFamily: 'var(--font-sans)',
+            fontSize: isMobile ? '0.9rem' : '1rem',
+            color: 'rgba(245, 242, 236, 0.55)',
+            lineHeight: 1.7,
+            margin: '18px 0 0 0',
+            maxWidth: '480px',
+            textAlign: 'center',
+            letterSpacing: '0.01em'
+          }}
+        >
+          Seven chapters of passion, purpose and discovery —<br />
+          the story of Travinno, told one destination at a time.
+        </p>
       </div>
 
       <div 
