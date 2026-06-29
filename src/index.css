@@ -3208,13 +3208,25 @@ html.lenis body {
 .destinations-section,
 .expertise-section,
 .journey-section,
-.logo-cloud-section,
-.why-section,
-.contact-cta-section {
+.logo-cloud-section {
   padding-top: var(--section-gap) !important;
   padding-bottom: 0 !important;
   margin-top: 0 !important;
   margin-bottom: 0 !important;
+}
+
+/* Why Travinno section - has customized bottom padding to make the transition to Contact CTA exactly equal to the standard gap */
+.why-section {
+  padding-top: var(--section-gap) !important;
+  padding-bottom: 70px !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+@media (max-width: 1023px) {
+  .why-section {
+    padding-bottom: 30px !important;
+  }
 }
 
 /* Ensure the footer also matches the section gap at the top */
