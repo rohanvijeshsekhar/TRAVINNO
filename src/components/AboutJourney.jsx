@@ -198,10 +198,6 @@ export default function AboutJourney() {
     const container = containerRef.current;
     if (!container) return;
 
-    if (window.innerWidth < 1024) {
-      return;
-    }
-
     const ctx = gsap.context(() => {
       const snapPoints = [0, 0.16, 0.32, 0.48, 0.64, 0.8, 1.0];
 
@@ -242,7 +238,8 @@ export default function AboutJourney() {
             setFlippingTo(targetIdx);
             setIsFlipping(true);
 
-            // Complete flip after 450ms (corresponds to CSS animation speed)
+            // Complete flip after duration (600ms on mobile, 450ms on desktop)
+            const duration = window.innerWidth < 1024 ? 600 : 450;
             setTimeout(() => {
               setActiveIndex(targetIdx);
               setIsFlipping(false);
@@ -257,7 +254,7 @@ export default function AboutJourney() {
                   isPage7ScrollLockedRef.current = false;
                 }, 1000);
               }
-            }, 450);
+            }, duration);
           }
         }
       });
@@ -433,63 +430,73 @@ export default function AboutJourney() {
       <div className="journal-page journal-mobile-page">
         {/* Mobile Ruled Notebook Background */}
         <div className="notebook-rulings">
-          {Array.from({ length: 30 }).map((_, i) => (
+          {Array.from({ length: 22 }).map((_, i) => (
             <div key={`mrule-${i}`} className="notebook-line" />
           ))}
         </div>
 
-        {/* Giant header */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '8px' }}>
-          <div className="page-year-giant" style={{ fontSize: '3.6rem', lineHeight: '1' }}>{data.year}</div>
-          <div className="diary-handwritten-date" style={{ margin: 0, fontSize: '0.85rem' }}>{data.date}</div>
+        {/* Lined header binding strap */}
+        <div className="notepad-header-binding" />
+
+        {/* Navigation Indicator / Header row */}
+        <div style={{ 
+          display: 'flex', 
+          justifyContent: 'space-between', 
+          alignItems: 'center', 
+          marginTop: '16px', 
+          marginBottom: '6px',
+          zIndex: 2 
+        }}>
+          <span style={{ 
+            fontFamily: 'monospace', 
+            fontSize: '0.68rem', 
+            color: 'rgba(193, 18, 31, 0.75)', 
+            fontWeight: '600',
+            letterSpacing: '0.1em'
+          }}>
+            PAGE {idx + 1} OF 07
+          </span>
+          <span style={{
+            fontFamily: 'monospace',
+            fontSize: '0.62rem',
+            color: 'rgba(0,0,0,0.35)'
+          }}>
+            {data.coordinates}
+          </span>
         </div>
 
-        <div className="page-location-sub" style={{ marginBottom: '16px' }}>
+        {/* Giant header */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '4px', zIndex: 2 }}>
+          <div className="page-year-giant" style={{ fontSize: '2.4rem', lineHeight: '1' }}>{data.year}</div>
+          <div className="diary-handwritten-date" style={{ margin: 0, fontSize: '0.8rem' }}>{data.date}</div>
+        </div>
+
+        <div className="page-location-sub" style={{ marginBottom: '8px', zIndex: 2, fontSize: '0.72rem' }}>
           <span className="metadata-city">{data.city}</span>
           <span className="metadata-divider">/</span>
           <span className="metadata-country">{data.country}</span>
         </div>
 
         {/* Vintage Image */}
-        <div className="vintage-photo-container" style={{ width: '90%', margin: '0 auto 16px auto', height: '170px' }}>
-          <div className="tape tape-tl" style={{ width: '40px', height: '15px' }} />
-          <div className="tape tape-br" style={{ width: '40px', height: '15px' }} />
-          <img src={data.photo} alt={`Vintage scrapbook photograph of ${data.city}, ${data.country} – Travinno Trusted DMC history`} loading="lazy" decoding="async" className="vintage-photo-img" />
+        <div className="vintage-photo-container" style={{ width: '85%', margin: '0 auto 10px auto', height: '110px', flexShrink: 0 }}>
+          <div className="tape tape-tl" style={{ width: '30px', height: '10px', top: '-4px', left: '-10px' }} />
+          <div className="tape tape-br" style={{ width: '30px', height: '10px', bottom: '-4px', right: '-10px' }} />
+          <img src={data.photo} alt={`Vintage scrapbook photograph of ${data.city}`} loading="lazy" decoding="async" className="vintage-photo-img" />
           <div className="photo-inner-shadow" />
         </div>
 
-        {/* Passport Stamp */}
-        <div 
-          className="passport-stamp" 
-          style={{ 
-            position: 'absolute',
-            top: '190px',
-            right: '20px',
-            borderColor: data.stampColor, 
-            color: data.stampColor,
-            transform: 'rotate(8deg) scale(0.75)',
-            zIndex: 10
-          }}
-        >
-          <div className="stamp-inner" style={{ borderColor: data.stampColor, padding: '4px' }}>
-            <span className="stamp-text-top" style={{ fontSize: '4px' }}>IMMIGRATION APPROVED</span>
-            <span className="stamp-main-code" style={{ fontSize: '10px' }}>{data.stampText}</span>
-            <span className="stamp-text-bottom" style={{ fontSize: '4px' }}>TRAVINNO EXPEDITIONS</span>
-          </div>
-        </div>
-
         {/* Title */}
-        <h3 className="diary-serif-title" style={{ fontSize: '1.4rem', margin: '0 0 4px 0' }}>
+        <h3 className="diary-serif-title" style={{ fontSize: '1.1rem', margin: '0 0 2px 0', lineHeight: '1.2' }}>
           {data.title}
-          <span className="diary-understrike" />
+          <span className="diary-understrike" style={{ width: '30px', height: '1px', marginTop: '2px' }} />
         </h3>
 
-        <div className="diary-handwritten-action" style={{ fontSize: '0.9rem', marginBottom: '12px' }}>
+        <div className="diary-handwritten-action" style={{ fontSize: '0.78rem', marginBottom: '6px' }}>
           {data.action}
         </div>
 
         {/* Story */}
-        <p className="diary-story-paragraph" style={{ fontSize: '0.85rem', lineHeight: '1.7', marginBottom: '16px' }}>
+        <p className="diary-story-paragraph" style={{ fontSize: '0.75rem', lineHeight: '1.5', marginBottom: '10px', marginTop: '0' }}>
           {data.story.split(' ').map((word, i) => {
             const cleanWord = word.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"");
             const highlightWords = ['bespoke', 'extraordinary', 'mainland', 'headquarters', 'specialists', 'satisfaction', 'discerning', 'logistics', 'fleet', 'premium', 'Southeast', 'regional', 'global', 'professionals'];
@@ -505,18 +512,36 @@ export default function AboutJourney() {
           })}
         </p>
 
-        {/* Small quote */}
-        <p className="diary-quote-text" style={{ fontSize: '0.8rem', paddingLeft: '12px', borderLeft: '2px solid rgba(193, 18, 31, 0.4)', margin: '0 0 16px 0', fontStyle: 'italic' }}>
-          {data.quote}
-        </p>
-
-        {/* Note */}
-        <div className="handwritten-note" style={{ fontSize: '0.85rem', position: 'relative', top: 'auto', left: 'auto', bottom: 'auto', right: 'auto', marginBottom: '8px' }}>
-          {data.noteRight}
+        {/* Handwritten footnote/quote in one row */}
+        <div style={{ 
+          marginTop: 'auto', 
+          display: 'flex', 
+          justifyContent: 'space-between', 
+          alignItems: 'flex-end',
+          gap: '10px',
+          zIndex: 2
+        }}>
+          {/* Lined Quote Box */}
+          <div className="diary-quote-box" style={{ paddingLeft: '8px', borderLeft: '1.5px solid rgba(193, 18, 31, 0.35)', margin: 0, maxWidth: '65%' }}>
+            <p className="diary-quote-text" style={{ fontSize: '0.65rem', lineHeight: '1.4' }}>
+              {data.quote}
+            </p>
+          </div>
+          
+          {/* Note or Signature */}
+          <div className="handwritten-note" style={{ 
+            fontSize: '0.75rem', 
+            margin: 0,
+            whiteSpace: 'nowrap',
+            transform: 'rotate(-2deg)' 
+          }}>
+            {data.noteRight.split('.')[0]}
+          </div>
         </div>
       </div>
     );
   };
+
 
   const getVisiblePages = () => {
     if (!isFlipping) {
@@ -1409,31 +1434,78 @@ export default function AboutJourney() {
         /* -------------------------------------------------------------
            MOBILE SINGLE PAGE STYLED NOTEBOOK TRANSITION
         ------------------------------------------------------------- */
+        .notepad-binder {
+          position: absolute;
+          top: -6px;
+          left: 16px;
+          right: 16px;
+          height: 16px;
+          display: flex;
+          justify-content: space-around;
+          z-index: 15;
+          pointer-events: none;
+        }
+
+        .notepad-ring {
+          width: 8px;
+          height: 20px;
+          background: linear-gradient(to right, #2a2a2a 0%, #666666 30%, #f0f0f0 45%, #888888 60%, #1e1e1e 100%);
+          border-radius: 4px;
+          box-shadow: 
+            0 3px 5px rgba(0, 0, 0, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .notepad-header-binding {
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 24px;
+          background: linear-gradient(to bottom, #2b1f1d 0%, #1e120d 100%);
+          border-top-left-radius: 4px;
+          border-top-right-radius: 4px;
+          border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+          z-index: 9;
+        }
+
         .journal-mobile-cover {
           position: relative;
-          width: 90%;
-          max-width: 440px;
-          height: 85vh;
-          background: #1e120d;
-          border-radius: 12px;
+          width: min(390px, 92vw);
+          height: min(600px, 82vh);
+          background: #150d0a;
+          background-image: 
+            radial-gradient(circle at 50% 0%, rgba(255,255,255,0.03) 0%, transparent 50%),
+            radial-gradient(circle at 50% 100%, rgba(0,0,0,0.5) 0%, transparent 60%);
+          border-radius: 14px;
           padding: 8px;
           box-sizing: border-box;
-          box-shadow: 0 15px 40px rgba(0,0,0,0.8);
+          box-shadow: 
+            0 25px 60px rgba(0,0,0,0.85),
+            0 10px 25px rgba(0,0,0,0.6),
+            inset 0 1px 0 rgba(255,255,255,0.05);
           perspective: 1500px;
           z-index: 2;
+          display: flex;
+          flex-direction: column;
+          margin-top: 10px;
         }
 
         .journal-mobile-page {
           width: 100%;
           height: 100%;
           border-radius: 4px;
-          box-shadow: inset 0 0 30px rgba(0,0,0,0.06);
-          padding: 24px 20px;
-          overflow-y: auto;
+          box-shadow: 
+            inset 0 0 35px rgba(0,0,0,0.05),
+            0 2px 4px rgba(0,0,0,0.1);
+          padding: 20px 16px;
+          box-sizing: border-box;
+          overflow-y: hidden;
           display: flex;
           flex-direction: column;
           background-color: var(--color-paper);
           color: #2b1f1d;
+          position: relative;
         }
 
         .mobile-flipping-container {
@@ -1443,18 +1515,115 @@ export default function AboutJourney() {
           top: 8px;
           bottom: 8px;
           transform-style: preserve-3d;
-          transform-origin: left center;
+          transform-origin: top center;
           z-index: 8;
+          pointer-events: none;
         }
 
         .mobile-face-front {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          backface-visibility: hidden;
           z-index: 2;
-          transform: rotateY(0deg);
+          transform: rotateX(0deg);
+          border-radius: 4px;
         }
 
         .mobile-face-back {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          backface-visibility: hidden;
           z-index: 1;
-          transform: rotateY(180deg);
+          transform: rotateX(180deg);
+          border-radius: 4px;
+          background-color: #edeae4;
+          box-shadow: inset 0 0 30px rgba(0,0,0,0.1);
+          border-top: 1px solid rgba(0,0,0,0.1);
+          overflow: hidden;
+        }
+
+        .mobile-face-back-pattern {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          opacity: 0.12;
+          pointer-events: none;
+        }
+
+        .mobile-page-fold-active-forward {
+          animation: mobileFoldPageForward 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+
+        .mobile-page-fold-active-backward {
+          animation: mobileFoldPageBackward 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+
+        @keyframes mobileFoldPageForward {
+          0% {
+            transform: rotateX(0deg) skewX(0deg) scale(1);
+          }
+          30% {
+            transform: rotateX(-55deg) skewX(1deg) scale(0.98);
+          }
+          70% {
+            transform: rotateX(-135deg) skewX(-1deg) scale(0.98);
+          }
+          100% {
+            transform: rotateX(-180deg) skewX(0deg) scale(1);
+          }
+        }
+
+        @keyframes mobileFoldPageBackward {
+          0% {
+            transform: rotateX(-180deg) skewX(0deg) scale(1);
+          }
+          30% {
+            transform: rotateX(-125deg) skewX(-1deg) scale(0.98);
+          }
+          70% {
+            transform: rotateX(-45deg) skewX(1deg) scale(0.98);
+          }
+          100% {
+            transform: rotateX(0deg) skewX(0deg) scale(1);
+          }
+        }
+
+        .mobile-curl-shadow-forward {
+          animation: mobileCurlShadowForward 0.6s linear forwards;
+        }
+        
+        .mobile-curl-shadow-backward {
+          animation: mobileCurlShadowBackward 0.6s linear forwards;
+        }
+
+        @keyframes mobileCurlShadowForward {
+          0% {
+            box-shadow: 0 0 0 rgba(0,0,0,0);
+          }
+          40% {
+            box-shadow: 0 15px 35px rgba(0,0,0,0.35);
+          }
+          100% {
+            box-shadow: 0 0 0 rgba(0,0,0,0);
+          }
+        }
+
+        @keyframes mobileCurlShadowBackward {
+          0% {
+            box-shadow: 0 0 0 rgba(0,0,0,0);
+          }
+          40% {
+            box-shadow: 0 15px 35px rgba(0,0,0,0.35);
+          }
+          100% {
+            box-shadow: 0 0 0 rgba(0,0,0,0);
+          }
         }
       `}</style>
 
@@ -1583,11 +1752,19 @@ export default function AboutJourney() {
         ) : (
           /* MOBILE MODE: Single page notepad style flipper */
           <div className="journal-mobile-cover">
-            <div className="leather-stitching" />
-            
-            <div className="book-inner-pages">
+            {/* Notepad silver ring binder design */}
+            <div className="notepad-binder">
+              <div className="notepad-ring" />
+              <div className="notepad-ring" />
+              <div className="notepad-ring" />
+              <div className="notepad-ring" />
+              <div className="notepad-ring" />
+              <div className="notepad-ring" />
+            </div>
+
+            <div className="book-inner-pages" style={{ overflow: 'visible' }}>
               {/* Underlaying static page */}
-              <div className="static-page-half static-right" style={{ width: '100%' }}>
+              <div className="static-page-half static-right" style={{ width: '100%', borderRadius: '4px' }}>
                 {renderMobilePage(pages.right)}
               </div>
 
@@ -1596,18 +1773,42 @@ export default function AboutJourney() {
                 <div 
                   className={`mobile-flipping-container ${
                     flipDirection === 'down' 
-                      ? 'page-fold-active-forward' 
-                      : 'page-fold-active-backward'
+                      ? 'mobile-page-fold-active-forward' 
+                      : 'mobile-page-fold-active-backward'
                   }`}
                   style={{ width: '100%', left: '0' }}
                 >
-                  <div className="flipping-page-face face-front" style={{ width: '100%', borderRadius: '4px' }}>
+                  {/* Front of folding page (story text) */}
+                  <div 
+                    className={`mobile-face-front ${
+                      flipDirection === 'down' 
+                        ? 'mobile-curl-shadow-forward' 
+                        : 'mobile-curl-shadow-backward'
+                    }`}
+                    style={{ width: '100%' }}
+                  >
                     {renderMobilePage(pages.flippingFront)}
-                    <div className="curl-shadow shadow-fade-forward" />
                   </div>
-                  <div className="flipping-page-face face-back" style={{ width: '100%', borderRadius: '4px' }}>
-                    {renderMobilePage(pages.flippingBack)}
-                    <div className="curl-shadow shadow-fade-forward" style={{ transform: 'scaleX(-1)' }} />
+
+                  {/* Back of folding page (clean lined paper backing) */}
+                  <div className="mobile-face-back" style={{ width: '100%' }}>
+                    {/* Lined notepad background */}
+                    <div className="notebook-rulings">
+                      {Array.from({ length: 22 }).map((_, i) => (
+                        <div key={`mrule-back-${i}`} className="notebook-line" />
+                      ))}
+                    </div>
+                    
+                    {/* Back header binding strip */}
+                    <div className="notepad-header-binding" style={{ height: '24px' }} />
+
+                    {/* Watermark logo */}
+                    <div className="mobile-face-back-pattern">
+                      <svg viewBox="0 0 100 100" style={{ width: '70px', height: '70px', opacity: 0.3 }}>
+                        <path d="M 30,50 L 50,30 L 70,50 L 50,70 Z" fill="none" stroke="rgba(0,0,0,0.5)" strokeWidth="1" />
+                        <text x="50" y="53" fill="rgba(0,0,0,0.6)" fontSize="5" fontFamily="var(--font-sans)" fontWeight="bold" textAnchor="middle" letterSpacing="0.5">TRAVINNO</text>
+                      </svg>
+                    </div>
                   </div>
                 </div>
               )}

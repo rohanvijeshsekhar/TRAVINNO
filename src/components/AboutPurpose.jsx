@@ -44,13 +44,14 @@ function ParallaxImage({ src, alt }) {
   );
 }
 
-function FadeInContainer({ children, delay = 0 }) {
+function FadeInContainer({ children, delay = 0, className }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
     <motion.div
       ref={ref}
+      className={className}
       initial={{ opacity: 0, y: 30 }}
       animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
       transition={{ duration: 0.9, delay, ease: [0.16, 1, 0.3, 1] }}
@@ -302,9 +303,8 @@ export default function AboutPurpose() {
               </p>
             </FadeInContainer>
           </div>
-          <FadeInContainer delay={0.15}>
+          <FadeInContainer delay={0.15} className="editorial-image-container">
             <div 
-              className="editorial-image-container"
               style={{
                 width: '100%',
                 aspectRatio: '4/3',
@@ -346,9 +346,8 @@ export default function AboutPurpose() {
               </p>
             </FadeInContainer>
           </div>
-          <FadeInContainer delay={0.15}>
+          <FadeInContainer delay={0.15} className="editorial-image-container">
             <div 
-              className="editorial-image-container"
               style={{
                 width: '100%',
                 aspectRatio: '4/3',
