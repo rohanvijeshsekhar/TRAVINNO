@@ -129,6 +129,17 @@ export default function AboutJourney() {
   const [flippingFrom, setFlippingFrom] = useState(0);
   const [flippingTo, setFlippingTo] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const [scrollDir, setScrollDir] = useState('forward');
+  const prevIndexRef = useRef(0);
+
+  useEffect(() => {
+    if (activeIndex > prevIndexRef.current) {
+      setScrollDir('forward');
+    } else if (activeIndex < prevIndexRef.current) {
+      setScrollDir('backward');
+    }
+    prevIndexRef.current = activeIndex;
+  }, [activeIndex]);
 
   // Refs to store activeIndex and isFlipping state to prevent duplicate ScrollTrigger rebuilding on state changes
   const activeIndexRef = useRef(activeIndex);
@@ -425,6 +436,137 @@ export default function AboutJourney() {
     );
   };
 
+  // Helper to render the about heading section symmetrically on desktop and mobile
+  const renderHeadingSection = () => {
+    return (
+      <div 
+        className="about-heading-section"
+        style={{
+          width: '100%',
+          backgroundColor: '#000000',
+          padding: isMobile ? '0px 24px 10px 24px' : '24px 24px 0px 24px',
+          boxSizing: 'border-box',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          textAlign: 'center',
+          position: 'relative',
+          zIndex: 5
+        }}
+      >
+        <span
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '6px',
+            padding: '4px 10px',
+            border: '1px solid rgba(193, 18, 31, 0.15)',
+            borderRadius: '100px',
+            fontFamily: 'var(--font-sans)',
+            fontSize: '0.72rem',
+            fontWeight: 500,
+            letterSpacing: '0.05em',
+            color: 'rgba(255, 255, 255, 0.85)',
+            marginBottom: '10px',
+            background: 'rgba(193, 18, 31, 0.05)',
+            backdropFilter: 'blur(4px)',
+            WebkitBackdropFilter: 'blur(4px)'
+          }}
+        >
+          <span
+            style={{
+              width: '6px',
+              height: '6px',
+              backgroundColor: '#C1121F',
+              borderRadius: '50%',
+              display: 'inline-block'
+            }}
+          />
+          Our History
+        </span>
+        <h2
+          style={{
+            fontFamily: 'var(--font-heading)',
+            fontSize: isMobile ? '1.7rem' : 'clamp(2.2rem, 3.8vw, 3.2rem)',
+            fontWeight: 500,
+            lineHeight: 1.15,
+            letterSpacing: '0.02em',
+            color: '#F5F2EC',
+            margin: '0',
+            textAlign: 'center',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center'
+          }}
+        >
+          <span>Stories that</span>
+          <span className="about-inspire-cursive" style={{ marginTop: '2px' }}>Inspire</span>
+        </h2>
+        <p
+          style={{
+            fontFamily: 'var(--font-sans)',
+            fontSize: isMobile ? '0.88rem' : '1rem',
+            color: 'rgba(245, 242, 236, 0.55)',
+            lineHeight: 1.6,
+            margin: '12px 0 0 0',
+            maxWidth: '480px',
+            textAlign: 'center',
+            letterSpacing: '0.01em'
+          }}
+        >
+          Seven chapters of passion, purpose and discovery —<br />
+          the story of Travinno, told one destination at a time.
+        </p>
+      </div>
+    );
+  };
+
+  // Variants for directional top active sheet transition on mobile
+  const cardVariants = {
+    enter: (direction) => {
+      if (direction === 'backward') {
+        const isEven = activeIndex % 2 === 0;
+        return {
+          x: isEven ? -400 : 400,
+          rotate: isEven ? -5 : 5,
+          opacity: 0,
+          scale: 1
+        };
+      }
+      return {
+        x: 0,
+        rotate: 0,
+        opacity: 0,
+        scale: 0.96
+      };
+    },
+    center: {
+      x: 0,
+      y: 0,
+      rotate: 0,
+      scale: 1,
+      opacity: 1,
+      boxShadow: '0 20px 40px rgba(0, 0, 0, 0.22), 0 5px 15px rgba(0, 0, 0, 0.08)'
+    },
+    exit: (direction) => {
+      if (direction === 'forward') {
+        const isEven = activeIndex % 2 === 0;
+        return {
+          x: isEven ? -400 : 400,
+          rotate: isEven ? -5 : 5,
+          opacity: 0,
+          scale: 1
+        };
+      }
+      return {
+        x: 0,
+        rotate: 0,
+        opacity: 0,
+        scale: 0.96
+      };
+    }
+  };
+
   // Render a premium paper sheet for the mobile travel journal stack
   const renderPaperCard = (data, idx) => {
     return (
@@ -635,86 +777,8 @@ export default function AboutJourney() {
 
   return (
     <>
-      {/* Scrollable heading section */}
-      <div 
-        className="about-heading-section"
-        style={{
-          width: '100%',
-          backgroundColor: '#000000',
-          padding: isMobile ? '20px 24px 0px 24px' : '24px 24px 0px 24px',
-          boxSizing: 'border-box',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          textAlign: 'center',
-          position: 'relative',
-          zIndex: 5
-        }}
-      >
-        <span
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '6px',
-            padding: '4px 10px',
-            border: '1px solid rgba(193, 18, 31, 0.15)',
-            borderRadius: '100px',
-            fontFamily: 'var(--font-sans)',
-            fontSize: '0.72rem',
-            fontWeight: 500,
-            letterSpacing: '0.05em',
-            color: 'rgba(255, 255, 255, 0.85)',
-            marginBottom: '10px',
-            background: 'rgba(193, 18, 31, 0.05)',
-            backdropFilter: 'blur(4px)',
-            WebkitBackdropFilter: 'blur(4px)'
-          }}
-        >
-          <span
-            style={{
-              width: '6px',
-              height: '6px',
-              backgroundColor: '#C1121F',
-              borderRadius: '50%',
-              display: 'inline-block'
-            }}
-          />
-          Our History
-        </span>
-        <h2
-          style={{
-            fontFamily: 'var(--font-heading)',
-            fontSize: isMobile ? '1.8rem' : 'clamp(2.2rem, 3.8vw, 3.2rem)',
-            fontWeight: 500,
-            lineHeight: 1.15,
-            letterSpacing: '0.02em',
-            color: '#F5F2EC',
-            margin: '0',
-            textAlign: 'center',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center'
-          }}
-        >
-          <span>Stories that</span>
-          <span className="about-inspire-cursive" style={{ marginTop: '2px' }}>Inspire</span>
-        </h2>
-        <p
-          style={{
-            fontFamily: 'var(--font-sans)',
-            fontSize: isMobile ? '0.9rem' : '1rem',
-            color: 'rgba(245, 242, 236, 0.55)',
-            lineHeight: 1.7,
-            margin: '18px 0 0 0',
-            maxWidth: '480px',
-            textAlign: 'center',
-            letterSpacing: '0.01em'
-          }}
-        >
-          Seven chapters of passion, purpose and discovery —<br />
-          the story of Travinno, told one destination at a time.
-        </p>
-      </div>
+      {/* Scrollable heading section - Rendered only on desktop */}
+      {!isMobile && renderHeadingSection()}
 
       <div 
         ref={containerRef} 
@@ -1492,7 +1556,7 @@ export default function AboutJourney() {
         .mobile-paper-stack-container {
           position: relative;
           width: min(350px, 90vw);
-          height: min(400px, 58vh);
+          height: min(460px, 66vh);
           margin: 0 auto;
           perspective: 1000px;
           z-index: 2;
@@ -1502,7 +1566,9 @@ export default function AboutJourney() {
           .journal-sticky-viewport {
             padding-top: 80px !important;
             padding-bottom: 20px !important;
-            align-items: flex-start !important;
+            flex-direction: column !important;
+            justify-content: flex-start !important;
+            align-items: center !important;
             box-sizing: border-box;
           }
         }
@@ -1515,13 +1581,12 @@ export default function AboutJourney() {
           border-radius: 16px;
           border: 1px solid rgba(0, 0, 0, 0.05);
           box-sizing: border-box;
-          padding: 18px 16px;
+          padding: 20px 16px;
           display: flex;
           flex-direction: column;
           color: #2b1f1d;
           transform-style: preserve-3d;
           will-change: transform, opacity;
-          overflow: hidden;
         }
 
         .paper-texture-overlay {
@@ -1662,68 +1727,86 @@ export default function AboutJourney() {
           </div>
         ) : (
           /* MOBILE MODE: Stack of premium travel journal paper sheets */
-          <div className="mobile-paper-stack-container">
-            {journalPages.map((page, idx) => {
-              const diff = idx - activeIndex;
-              const isExited = diff < 0;
+          <>
+            {renderHeadingSection()}
+            <div className="mobile-paper-stack-container" style={{ margin: '15px auto 0 auto' }}>
+              {/* Static background collage sheets (Paper 4) */}
+              <div 
+                className="mobile-paper-card"
+                style={{
+                  position: 'absolute',
+                  width: '100%',
+                  height: '100%',
+                  top: 0,
+                  left: 0,
+                  transform: 'translateY(24px) rotate(0.8deg)',
+                  zIndex: 1,
+                  boxShadow: '0 4px 10px rgba(0,0,0,0.04)',
+                  pointerEvents: 'none'
+                }}
+              >
+                <div className="paper-texture-overlay" />
+              </div>
 
-              // Exited cards drift left or right alternately, fading out as they slide
-              const xVal = isExited 
-                ? (idx % 2 === 0 ? '-130%' : '130%') 
-                : 0;
-              const yVal = isExited 
-                ? '-15%' 
-                : `${diff * 8}px`; // Vertical stack offset
-              const rotateVal = isExited
-                ? (idx % 2 === 0 ? -5 : 5)
-                : (idx === activeIndex 
-                    ? -0.5 
-                    : (idx % 2 === 0 ? 0.7 : -0.7)); // Subtle static rotation offsets for stacked sheets
-              const scaleVal = isExited 
-                ? 0.95 
-                : 1 - diff * 0.012; // Slight scale reduction for depth layering
-              const opacityVal = isExited 
-                ? 0 
-                : (diff > 3 ? 0 : 1 - diff * 0.2); // Only show top few stack sheets for clean performance
-              const zIndexVal = journalPages.length - idx;
+              {/* Static background collage sheets (Paper 3) */}
+              <div 
+                className="mobile-paper-card"
+                style={{
+                  position: 'absolute',
+                  width: '100%',
+                  height: '100%',
+                  top: 0,
+                  left: 0,
+                  transform: 'translateY(16px) rotate(-1deg)',
+                  zIndex: 2,
+                  boxShadow: '0 4px 10px rgba(0,0,0,0.05)',
+                  pointerEvents: 'none'
+                }}
+              >
+                <div className="paper-texture-overlay" />
+              </div>
 
-              // Top card gets lifted shadow, cards underneath get flat stacked shadow
-              const shadowVal = idx === activeIndex
-                ? '0 20px 40px rgba(0, 0, 0, 0.22), 0 5px 15px rgba(0, 0, 0, 0.08)'
-                : '0 4px 10px rgba(0, 0, 0, 0.06)';
+              {/* Static background collage sheets (Paper 2) */}
+              <div 
+                className="mobile-paper-card"
+                style={{
+                  position: 'absolute',
+                  width: '100%',
+                  height: '100%',
+                  top: 0,
+                  left: 0,
+                  transform: 'translateY(8px) rotate(0.7deg)',
+                  zIndex: 3,
+                  boxShadow: '0 4px 10px rgba(0,0,0,0.06)',
+                  pointerEvents: 'none'
+                }}
+              >
+                <div className="paper-texture-overlay" />
+              </div>
 
-              return (
+              {/* Dynamic active paper sheet (Paper 1) */}
+              <AnimatePresence mode="popLayout" custom={scrollDir}>
                 <motion.div
-                  key={`paper-${idx}`}
-                  style={{
-                    position: 'absolute',
-                    width: '100%',
-                    height: '100%',
-                    top: 0,
-                    left: 0,
-                    zIndex: zIndexVal,
-                    pointerEvents: isExited ? 'none' : 'auto'
-                  }}
-                  animate={{
-                    x: xVal,
-                    y: yVal,
-                    rotate: rotateVal,
-                    scale: scaleVal,
-                    opacity: opacityVal,
-                    boxShadow: shadowVal
-                  }}
+                  key={`active-paper-${activeIndex}`}
+                  custom={scrollDir}
+                  variants={cardVariants}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
                   transition={{
                     type: 'spring',
-                    stiffness: 70,
+                    stiffness: 75,
                     damping: 18,
                     mass: 0.8
                   }}
+                  className="mobile-paper-card"
+                  style={{ zIndex: 4 }}
                 >
-                  {renderPaperCard(page, idx)}
+                  {renderPaperCard(journalPages[activeIndex], activeIndex)}
                 </motion.div>
-              );
-            })}
-          </div>
+              </AnimatePresence>
+            </div>
+          </>
         )}
       </div>
     </div>

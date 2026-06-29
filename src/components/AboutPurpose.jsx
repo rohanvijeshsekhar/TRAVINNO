@@ -243,12 +243,12 @@ export default function AboutPurpose() {
 
         @media (max-width: 1023px) {
           .purpose-hero {
-            padding: 100px 20px;
+            padding: 35px 20px 20px 20px;
           }
           .editorial-spread, .editorial-spread.reverse {
             grid-template-columns: 1fr;
-            gap: 40px;
-            padding: 80px 20px;
+            gap: 20px;
+            padding: 24px 20px;
           }
           .editorial-image-container, .editorial-text-col {
             order: 0 !important;

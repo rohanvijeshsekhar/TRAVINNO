@@ -125,7 +125,7 @@ export default function AboutStats() {
 
         @media (max-width: 1023px) {
           .about-stats-section {
-            padding: 40px 20px 60px 20px;
+            padding: 30px 20px 25px 20px;
           }
         }
 
