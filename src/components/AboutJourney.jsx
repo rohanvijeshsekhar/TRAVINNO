@@ -207,11 +207,13 @@ export default function AboutJourney() {
         end: "+=2200",
         pin: true,
         scrub: true,
+        anticipatePin: 1,
+        invalidateOnRefresh: true,
         snap: {
           snapTo: snapPoints,
-          duration: { min: 0.3, max: 0.6 },
-          ease: "power2.out",
-          delay: 0.08
+          duration: { min: 0.25, max: 0.5 },
+          ease: "power1.out",
+          delay: 0.15
         },
         onUpdate: (self) => {
           const progress = self.progress;
