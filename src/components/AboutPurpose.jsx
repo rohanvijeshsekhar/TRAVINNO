@@ -220,7 +220,10 @@ export default function AboutPurpose() {
             order: 0 !important;
           }
           .editorial-image-container {
+            width: 100% !important;
+            max-width: 100% !important;
             aspect-ratio: 4/3 !important;
+            margin: 0 !important;
           }
           .editorial-text-col.centered {
             padding: 0;
