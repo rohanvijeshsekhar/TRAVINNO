@@ -561,7 +561,7 @@ export default function AboutJourney() {
         style={{
           width: '100%',
           backgroundColor: '#050505',
-          padding: isMobile ? '20px 24px 20px 24px' : '24px 24px 24px 24px',
+          padding: isMobile ? '20px 24px 0px 24px' : '24px 24px 0px 24px',
           boxSizing: 'border-box',
           display: 'flex',
           flexDirection: 'column',
@@ -686,7 +686,7 @@ export default function AboutJourney() {
           justify-content: center;
           align-items: center;
           box-sizing: border-box;
-          padding: 30px;
+          padding: 20px 30px 30px 30px;
         }
 
         .journal-editorial-glow {
