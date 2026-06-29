@@ -208,7 +208,7 @@ export default function AboutJourney() {
       ScrollTrigger.create({
         trigger: container,
         start: "top top",
-        end: "bottom bottom",
+        end: "+=2200",
         pin: true,
         scrub: true,
         snap: {
@@ -641,7 +641,7 @@ export default function AboutJourney() {
         className="journal-experience-container"
         style={{ 
           position: 'relative', 
-          height: '400vh', // 7 spreads of scroll height
+          height: isMobile ? 'auto' : '100vh',
           backgroundColor: '#000000',
           backgroundImage: `
             linear-gradient(rgba(245, 242, 236, 0.08) 1px, transparent 1px),
