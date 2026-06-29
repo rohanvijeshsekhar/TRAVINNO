@@ -203,7 +203,7 @@ export default function AboutJourney() {
     }
 
     const ctx = gsap.context(() => {
-      const snapPoints = [0, 0.15, 0.3, 0.45, 0.6, 0.75, 0.88];
+      const snapPoints = [0, 0.16, 0.32, 0.48, 0.64, 0.8, 0.95];
 
       ScrollTrigger.create({
         trigger: container,
@@ -641,7 +641,7 @@ export default function AboutJourney() {
         className="journal-experience-container"
         style={{ 
           position: 'relative', 
-          height: '500vh', // 7 spreads of scroll height
+          height: '400vh', // 7 spreads of scroll height
           backgroundColor: '#000000',
           backgroundImage: `
             linear-gradient(rgba(245, 242, 236, 0.08) 1px, transparent 1px),
