@@ -594,7 +594,7 @@ function Footer() {
               { name: 'Our Expertise', href: '#services' },
               { name: 'Our Journey', href: '#journey' },
               { name: 'Why Travinno', href: '#why' },
-              { name: 'Careers', href: '#company' },
+              { name: 'Careers', href: '#careers' },
               { name: 'Get in Touch', href: '#contact' }
             ].map((link, idx) => (
               <li key={idx}>

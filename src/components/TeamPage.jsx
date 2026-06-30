@@ -899,7 +899,7 @@ export default function TeamPage() {
         </p>
 
         <a 
-          href="#contact"
+          href="#careers"
           style={{
             fontFamily: 'var(--font-sans)',
             fontSize: '0.75rem',
