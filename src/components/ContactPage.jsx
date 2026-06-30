@@ -289,7 +289,7 @@ export default function ContactPage() {
             transition={{ ...faderTransition, delay: 0.3 }}
             style={{
               position: 'relative',
-              background: 'linear-gradient(135deg, rgba(20, 20, 22, 0.45) 0%, rgba(193, 18, 31, 0.05) 50%, rgba(10, 10, 12, 0.8) 100%)',
+              background: 'linear-gradient(135deg, rgba(20, 20, 22, 0.45) 0%, rgba(10, 10, 12, 0.8) 100%)',
               backdropFilter: 'blur(30px)',
               WebkitBackdropFilter: 'blur(30px)',
               border: '1px solid rgba(245, 242, 236, 0.07)',
@@ -311,7 +311,7 @@ export default function ContactPage() {
                 width: '350px',
                 height: '350px',
                 borderRadius: '50%',
-                background: 'radial-gradient(circle, rgba(193, 18, 31, 0.2) 0%, rgba(234, 28, 41, 0.02) 60%, transparent 100%)',
+                background: 'radial-gradient(circle, rgba(193, 18, 31, 0.06) 0%, rgba(234, 28, 41, 0.005) 60%, transparent 100%)',
                 filter: 'blur(50px)',
                 pointerEvents: 'none',
                 zIndex: 1
@@ -420,7 +420,7 @@ export default function ContactPage() {
             transition={{ ...faderTransition, delay: 0.4 }}
             style={{
               position: 'relative',
-              background: 'linear-gradient(135deg, rgba(20, 20, 22, 0.45) 0%, rgba(193, 18, 31, 0.05) 50%, rgba(10, 10, 12, 0.8) 100%)',
+              background: 'linear-gradient(135deg, rgba(20, 20, 22, 0.45) 0%, rgba(10, 10, 12, 0.8) 100%)',
               backdropFilter: 'blur(30px)',
               WebkitBackdropFilter: 'blur(30px)',
               border: '1px solid rgba(245, 242, 236, 0.07)',
@@ -440,7 +440,7 @@ export default function ContactPage() {
                 width: '450px',
                 height: '450px',
                 borderRadius: '50%',
-                background: 'radial-gradient(circle, rgba(193, 18, 31, 0.22) 0%, rgba(234, 28, 41, 0.025) 60%, transparent 100%)',
+                background: 'radial-gradient(circle, rgba(193, 18, 31, 0.07) 0%, rgba(234, 28, 41, 0.005) 60%, transparent 100%)',
                 filter: 'blur(60px)',
                 pointerEvents: 'none',
                 zIndex: 1
