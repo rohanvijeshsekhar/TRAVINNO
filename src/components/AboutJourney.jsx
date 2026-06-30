@@ -209,18 +209,21 @@ export default function AboutJourney() {
     const container = containerRef.current;
     if (!container) return;
 
-    const ctx = gsap.context(() => {
-      const snapPoints = [0, 0.16, 0.32, 0.48, 0.64, 0.8, 1.0];
+    const isMobileViewport = window.innerWidth < 1024;
+    const snapPoints = isMobileViewport
+      ? [0, 0.14, 0.28, 0.42, 0.56, 0.70, 0.84, 1.0]
+      : [0, 0.16, 0.32, 0.48, 0.64, 0.80, 1.0];
 
+    const ctx = gsap.context(() => {
       ScrollTrigger.create({
         trigger: container,
         start: "top top",
-        end: "+=2200",
+        end: isMobileViewport ? "+=2600" : "+=2200",
         pin: true,
         scrub: true,
-        anticipatePin: 1,
+        anticipatePin: isMobileViewport ? 0 : 1,
         invalidateOnRefresh: true,
-        snap: window.innerWidth < 1024 ? false : {
+        snap: isMobileViewport ? false : {
           snapTo: snapPoints,
           duration: { min: 0.25, max: 0.5 },
           ease: "power1.out",
@@ -239,25 +242,19 @@ export default function AboutJourney() {
               targetIdx = k;
             }
           }
+
+          // Clamp targetIdx to active milestones range (0 to 6)
+          if (targetIdx >= 7) {
+            targetIdx = 6;
+          }
           
           const currentActive = activeIndexRef.current;
           const currentFlipping = isFlippingRef.current;
 
-          // Trigger page flip animation if scroll crosses a boundary and not already flipping
-          if (targetIdx !== currentActive && !currentFlipping) {
-            const dir = targetIdx > currentActive ? 'down' : 'up';
-            setFlipDirection(dir);
-            setFlippingFrom(currentActive);
-            setFlippingTo(targetIdx);
-            setIsFlipping(true);
-
-            // Complete flip after duration (600ms on mobile, 450ms on desktop)
-            const duration = window.innerWidth < 1024 ? 600 : 450;
-            setTimeout(() => {
+          if (targetIdx !== currentActive) {
+            if (isMobileViewport) {
+              // Update state immediately on mobile touch scroll to ensure high responsiveness
               setActiveIndex(targetIdx);
-              setIsFlipping(false);
-
-              // If we just flipped to the last page (Vietnam, index 6), lock scroll down for 1 second
               if (targetIdx === 6) {
                 isPage7ScrollLockedRef.current = true;
                 if (page7LockTimeoutRef.current) {
@@ -267,14 +264,46 @@ export default function AboutJourney() {
                   isPage7ScrollLockedRef.current = false;
                 }, 1000);
               }
-            }, duration);
+            } else if (!currentFlipping) {
+              // Standard timed 3D flip flow for desktop viewports
+              const dir = targetIdx > currentActive ? 'down' : 'up';
+              setFlipDirection(dir);
+              setFlippingFrom(currentActive);
+              setFlippingTo(targetIdx);
+              setIsFlipping(true);
+
+              const duration = 450;
+              setTimeout(() => {
+                setActiveIndex(targetIdx);
+                setIsFlipping(false);
+              }, duration);
+            }
           }
         }
       });
     }, container);
 
+    // Refresh ScrollTrigger to calculate correct layout offsets after assets and fonts are ready
+    const handleLayoutRefresh = () => {
+      ScrollTrigger.refresh();
+    };
+
+    window.addEventListener('load', handleLayoutRefresh);
+    if (document.fonts) {
+      document.fonts.ready.then(handleLayoutRefresh);
+    }
+
+    // Backup timeouts to catch delayed DOM reflows and render cycles
+    const t1 = setTimeout(handleLayoutRefresh, 150);
+    const t2 = setTimeout(handleLayoutRefresh, 600);
+    const t3 = setTimeout(handleLayoutRefresh, 1500);
+
     return () => {
       ctx.revert();
+      window.removeEventListener('load', handleLayoutRefresh);
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
     };
   }, []);
 
