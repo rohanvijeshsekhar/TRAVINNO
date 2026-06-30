@@ -72,7 +72,7 @@ export default function ContactPage() {
         .premium-input-field:focus {
           border-color: #C1121F !important;
           background-color: rgba(245, 242, 236, 0.02) !important;
-          box-shadow: 0 0 16px rgba(193, 18, 31, 0.08) !important;
+          box-shadow: 0 0 16px rgba(193, 18, 31, 0.12) !important;
         }
 
         .premium-input-field::placeholder {
@@ -83,15 +83,14 @@ export default function ContactPage() {
         .contact-layout-grid {
           display: grid;
           grid-template-columns: 4.2fr 5.8fr;
-          gap: 72px;
-          position: relative;
-          z-index: 2;
+          gap: 40px;
+          margin-top: 48px;
         }
 
         @media (max-width: 1023px) {
           .contact-layout-grid {
             grid-template-columns: 1fr;
-            gap: 60px;
+            gap: 40px;
           }
           
           /* Order stack: Office info first, then form */
@@ -108,6 +107,8 @@ export default function ContactPage() {
         .office-section {
           padding: 32px 0;
           border-bottom: 1px solid rgba(245, 242, 236, 0.08);
+          position: relative;
+          z-index: 2;
         }
 
         .office-section:first-of-type {
@@ -134,7 +135,7 @@ export default function ContactPage() {
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '160px 24px 100px 24px', boxSizing: 'border-box' }}>
         
         {/* HERO SECTION */}
-        <section style={{ marginBottom: '40px' }}>
+        <section style={{ marginBottom: '16px' }}>
           <motion.span
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 0.45, y: 0 }}
@@ -186,142 +187,176 @@ export default function ContactPage() {
           </motion.p>
         </section>
 
-        {/* Unified Premium Glassmorphic Container Box */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ ...faderTransition, delay: 0.3 }}
-          style={{
-            position: 'relative',
-            background: 'linear-gradient(135deg, rgba(20, 20, 22, 0.45) 0%, rgba(193, 18, 31, 0.02) 50%, rgba(10, 10, 12, 0.8) 100%)',
-            backdropFilter: 'blur(30px)',
-            WebkitBackdropFilter: 'blur(30px)',
-            border: '1px solid rgba(245, 242, 236, 0.07)',
-            boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 24px 80px rgba(0, 0, 0, 0.55)',
-            borderRadius: '24px',
-            padding: 'clamp(24px, 5vw, 64px)',
-            overflow: 'hidden',
-            boxSizing: 'border-box'
-          }}
-        >
-          {/* Subtle Reddish Gradient Wash inside the box */}
-          <div
+        {/* LAYOUT GRID */}
+        <div className="contact-layout-grid">
+
+          {/* LEFT COLUMN: OFFICE INFORMATION BOX */}
+          <motion.div 
+            className="office-info-col"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ ...faderTransition, delay: 0.3 }}
             style={{
-              position: 'absolute',
-              top: '-15%',
-              right: '-10%',
-              width: '450px',
-              height: '450px',
-              borderRadius: '50%',
-              background: 'radial-gradient(circle, rgba(193, 18, 31, 0.07) 0%, rgba(234, 28, 41, 0.008) 60%, transparent 100%)',
-              filter: 'blur(50px)',
-              pointerEvents: 'none',
-              zIndex: 0
+              position: 'relative',
+              background: 'linear-gradient(135deg, rgba(20, 20, 22, 0.45) 0%, rgba(193, 18, 31, 0.03) 50%, rgba(10, 10, 12, 0.8) 100%)',
+              backdropFilter: 'blur(30px)',
+              WebkitBackdropFilter: 'blur(30px)',
+              border: '1px solid rgba(245, 242, 236, 0.07)',
+              boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 24px 80px rgba(0, 0, 0, 0.55)',
+              borderRadius: '24px',
+              padding: 'clamp(24px, 4vw, 48px)',
+              overflow: 'hidden',
+              boxSizing: 'border-box',
+              display: 'flex',
+              flexDirection: 'column'
             }}
-          />
+          >
+            {/* Enhanced Reddish Gradient Wash inside Office Box */}
+            <div
+              style={{
+                position: 'absolute',
+                bottom: '-15%',
+                left: '-10%',
+                width: '350px',
+                height: '350px',
+                borderRadius: '50%',
+                background: 'radial-gradient(circle, rgba(193, 18, 31, 0.16) 0%, rgba(234, 28, 41, 0.015) 60%, transparent 100%)',
+                filter: 'blur(50px)',
+                pointerEvents: 'none',
+                zIndex: 1
+              }}
+            />
 
-          {/* LAYOUT GRID */}
-          <div className="contact-layout-grid">
-
-            {/* LEFT COLUMN: OFFICE INFORMATION */}
-            <div className="office-info-col" style={{ display: 'flex', flexDirection: 'column' }}>
+            {/* Dubai Office */}
+            <div className="office-section">
+              <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.5rem', fontWeight: 500, color: '#F5F2EC', margin: '0 0 16px 0' }}>Dubai Office</h2>
+              <p style={{ fontFamily: 'var(--font-sans)', fontSize: '0.75rem', fontWeight: 600, color: 'rgba(245, 242, 236, 0.45)', textTransform: 'uppercase', letterSpacing: '1px', margin: '0 0 4px 0' }}>Travinno Tourism LLC</p>
               
-              {/* Dubai Office */}
-              <div className="office-section">
-                <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.5rem', fontWeight: 500, color: '#F5F2EC', margin: '0 0 16px 0' }}>Dubai Office</h2>
-                <p style={{ fontFamily: 'var(--font-sans)', fontSize: '0.75rem', fontWeight: 600, color: 'rgba(245, 242, 236, 0.45)', textTransform: 'uppercase', letterSpacing: '1px', margin: '0 0 4px 0' }}>Travinno Tourism LLC</p>
-                
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '16px' }}>
-                  <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
-                    <MapPin size={15} style={{ color: 'rgba(245, 242, 236, 0.4)', marginTop: '3px', flexShrink: 0 }} />
-                    <span style={{ fontSize: '0.86rem', lineHeight: 1.5, color: 'rgba(245, 242, 236, 0.75)' }}>
-                      Room no: A1A, Al Rubaya Building, P. O Box: 22595, Damascus Street, Al Qusais, Dubai, UAE
-                    </span>
-                  </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '16px' }}>
+                <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
+                  <MapPin size={15} style={{ color: 'rgba(245, 242, 236, 0.4)', marginTop: '3px', flexShrink: 0 }} />
+                  <span style={{ fontSize: '0.86rem', lineHeight: 1.5, color: 'rgba(245, 242, 236, 0.75)' }}>
+                    Room no: A1A, Al Rubaya Building, P. O Box: 22595, Damascus Street, Al Qusais, Dubai, UAE
+                  </span>
+                </div>
 
-                  <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-                    <Phone size={15} style={{ color: 'rgba(245, 242, 236, 0.4)', flexShrink: 0 }} />
-                    <div style={{ display: 'flex', gap: '12px', fontSize: '0.86rem' }}>
-                      <a href="tel:+971042955141" className="editorial-contact-link">+971 (04) 2955141</a>
-                      <span style={{ color: 'rgba(245, 242, 236, 0.2)' }}>|</span>
-                      <a href="tel:+971507481902" className="editorial-contact-link">+971 (0) 507481902</a>
-                    </div>
-                  </div>
-
-                  <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-                    {/* WhatsApp monochrome outline SVG */}
-                    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, opacity: 0.4 }}>
-                      <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
-                    </svg>
-                    <a href="https://wa.me/+971507481902" target="_blank" rel="noopener noreferrer" className="editorial-contact-link" style={{ fontSize: '0.86rem' }}>
-                      +971 50 748 1902 (WhatsApp)
-                    </a>
+                <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                  <Phone size={15} style={{ color: 'rgba(245, 242, 236, 0.4)', flexShrink: 0 }} />
+                  <div style={{ display: 'flex', gap: '12px', fontSize: '0.86rem' }}>
+                    <a href="tel:+971042955141" className="editorial-contact-link">+971 (04) 2955141</a>
+                    <span style={{ color: 'rgba(245, 242, 236, 0.2)' }}>|</span>
+                    <a href="tel:+971507481902" className="editorial-contact-link">+971 (0) 507481902</a>
                   </div>
                 </div>
-              </div>
 
-              {/* Thailand Office */}
-              <div className="office-section">
-                <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.5rem', fontWeight: 500, color: '#F5F2EC', margin: '0 0 16px 0' }}>Thailand Office</h2>
-                <p style={{ fontFamily: 'var(--font-sans)', fontSize: '0.75rem', fontWeight: 600, color: 'rgba(245, 242, 236, 0.45)', textTransform: 'uppercase', letterSpacing: '1px', margin: '0 0 4px 0' }}>Travinno Co Ltd</p>
-
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '16px' }}>
-                  <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
-                    <MapPin size={15} style={{ color: 'rgba(245, 242, 236, 0.4)', marginTop: '3px', flexShrink: 0 }} />
-                    <span style={{ fontSize: '0.86rem', lineHeight: 1.5, color: 'rgba(245, 242, 236, 0.75)' }}>
-                      Room Number P01 P Floor, Soi Sukhumvit 25, Sukhumvit Rd, Klongtoey Nua Sub-district, Wattana District, Bangkok 10110
-                    </span>
-                  </div>
-
-                  <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-                    <Phone size={15} style={{ color: 'rgba(245, 242, 236, 0.4)', flexShrink: 0 }} />
-                    <a href="tel:+660968639332" className="editorial-contact-link" style={{ fontSize: '0.86rem' }}>+66 (0) 9686 39332</a>
-                  </div>
-
-                  <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-                    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, opacity: 0.4 }}>
-                      <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
-                    </svg>
-                    <a href="https://wa.me/+66622800621" target="_blank" rel="noopener noreferrer" className="editorial-contact-link" style={{ fontSize: '0.86rem' }}>
-                      +66 62 280 0621 (WhatsApp)
-                    </a>
-                  </div>
+                <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                  {/* WhatsApp monochrome outline SVG */}
+                  <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, opacity: 0.4 }}>
+                    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+                  </svg>
+                  <a href="https://wa.me/+971507481902" target="_blank" rel="noopener noreferrer" className="editorial-contact-link" style={{ fontSize: '0.86rem' }}>
+                    +971 50 748 1902 (WhatsApp)
+                  </a>
                 </div>
               </div>
-
-              {/* India Office */}
-              <div className="office-section">
-                <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.5rem', fontWeight: 500, color: '#F5F2EC', margin: '0 0 16px 0' }}>India Office</h2>
-                <p style={{ fontFamily: 'var(--font-sans)', fontSize: '0.75rem', fontWeight: 600, color: 'rgba(245, 242, 236, 0.45)', textTransform: 'uppercase', letterSpacing: '1px', margin: '0 0 4px 0' }}>Travinno</p>
-
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '16px' }}>
-                  <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
-                    <MapPin size={15} style={{ color: 'rgba(245, 242, 236, 0.4)', marginTop: '3px', flexShrink: 0 }} />
-                    <span style={{ fontSize: '0.86rem', lineHeight: 1.5, color: 'rgba(245, 242, 236, 0.75)' }}>
-                      2nd Floor, Kailas Building, Karshaka Road, Cochin-16, Kerala
-                    </span>
-                  </div>
-
-                  <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-                    <Phone size={15} style={{ color: 'rgba(245, 242, 236, 0.4)', flexShrink: 0 }} />
-                    <a href="tel:+919048818862" className="editorial-contact-link" style={{ fontSize: '0.86rem' }}>+91 90488 18862</a>
-                  </div>
-
-                  <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-                    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, opacity: 0.4 }}>
-                      <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
-                    </svg>
-                    <a href="https://wa.me/+919048800567" target="_blank" rel="noopener noreferrer" className="editorial-contact-link" style={{ fontSize: '0.86rem' }}>
-                      +91 90488 00567 (WhatsApp)
-                    </a>
-                  </div>
-                </div>
-              </div>
-
             </div>
 
-            {/* RIGHT COLUMN: CONTACT FORM */}
-            <div className="contact-form-col">
+            {/* Thailand Office */}
+            <div className="office-section">
+              <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.5rem', fontWeight: 500, color: '#F5F2EC', margin: '0 0 16px 0' }}>Thailand Office</h2>
+              <p style={{ fontFamily: 'var(--font-sans)', fontSize: '0.75rem', fontWeight: 600, color: 'rgba(245, 242, 236, 0.45)', textTransform: 'uppercase', letterSpacing: '1px', margin: '0 0 4px 0' }}>Travinno Co Ltd</p>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '16px' }}>
+                <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
+                  <MapPin size={15} style={{ color: 'rgba(245, 242, 236, 0.4)', marginTop: '3px', flexShrink: 0 }} />
+                  <span style={{ fontSize: '0.86rem', lineHeight: 1.5, color: 'rgba(245, 242, 236, 0.75)' }}>
+                    Room Number P01 P Floor, Soi Sukhumvit 25, Sukhumvit Rd, Klongtoey Nua Sub-district, Wattana District, Bangkok 10110
+                  </span>
+                </div>
+
+                <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                  <Phone size={15} style={{ color: 'rgba(245, 242, 236, 0.4)', flexShrink: 0 }} />
+                  <a href="tel:+660968639332" className="editorial-contact-link" style={{ fontSize: '0.86rem' }}>+66 (0) 9686 39332</a>
+                </div>
+
+                <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                  <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, opacity: 0.4 }}>
+                    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+                  </svg>
+                  <a href="https://wa.me/+66622800621" target="_blank" rel="noopener noreferrer" className="editorial-contact-link" style={{ fontSize: '0.86rem' }}>
+                    +66 62 280 0621 (WhatsApp)
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {/* India Office */}
+            <div className="office-section">
+              <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.5rem', fontWeight: 500, color: '#F5F2EC', margin: '0 0 16px 0' }}>India Office</h2>
+              <p style={{ fontFamily: 'var(--font-sans)', fontSize: '0.75rem', fontWeight: 600, color: 'rgba(245, 242, 236, 0.45)', textTransform: 'uppercase', letterSpacing: '1px', margin: '0 0 4px 0' }}>Travinno</p>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '16px' }}>
+                <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
+                  <MapPin size={15} style={{ color: 'rgba(245, 242, 236, 0.4)', marginTop: '3px', flexShrink: 0 }} />
+                  <span style={{ fontSize: '0.86rem', lineHeight: 1.5, color: 'rgba(245, 242, 236, 0.75)' }}>
+                    2nd Floor, Kailas Building, Karshaka Road, Cochin-16, Kerala
+                  </span>
+                </div>
+
+                <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                  <Phone size={15} style={{ color: 'rgba(245, 242, 236, 0.4)', flexShrink: 0 }} />
+                  <a href="tel:+919048818862" className="editorial-contact-link" style={{ fontSize: '0.86rem' }}>+91 90488 18862</a>
+                </div>
+
+                <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                  <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, opacity: 0.4 }}>
+                    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+                  </svg>
+                  <a href="https://wa.me/+919048800567" target="_blank" rel="noopener noreferrer" className="editorial-contact-link" style={{ fontSize: '0.86rem' }}>
+                    +91 90488 00567 (WhatsApp)
+                  </a>
+                </div>
+              </div>
+            </div>
+
+          </motion.div>
+
+          {/* RIGHT COLUMN: CONTACT FORM BOX */}
+          <motion.div 
+            className="contact-form-col"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ ...faderTransition, delay: 0.4 }}
+            style={{
+              position: 'relative',
+              background: 'linear-gradient(135deg, rgba(20, 20, 22, 0.45) 0%, rgba(193, 18, 31, 0.03) 50%, rgba(10, 10, 12, 0.8) 100%)',
+              backdropFilter: 'blur(30px)',
+              WebkitBackdropFilter: 'blur(30px)',
+              border: '1px solid rgba(245, 242, 236, 0.07)',
+              boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 24px 80px rgba(0, 0, 0, 0.55)',
+              borderRadius: '24px',
+              padding: 'clamp(24px, 4vw, 48px)',
+              overflow: 'hidden',
+              boxSizing: 'border-box'
+            }}
+          >
+            {/* Enhanced Reddish Gradient Wash inside Form Box */}
+            <div
+              style={{
+                position: 'absolute',
+                top: '-15%',
+                right: '-10%',
+                width: '450px',
+                height: '450px',
+                borderRadius: '50%',
+                background: 'radial-gradient(circle, rgba(193, 18, 31, 0.18) 0%, rgba(234, 28, 41, 0.02) 60%, transparent 100%)',
+                filter: 'blur(60px)',
+                pointerEvents: 'none',
+                zIndex: 1
+              }}
+            />
+
+            <div style={{ position: 'relative', zIndex: 2 }}>
               <AnimatePresence mode="wait">
                 {!isSubmitted ? (
                   <motion.form 
@@ -476,9 +511,9 @@ export default function ContactPage() {
                 )}
               </AnimatePresence>
             </div>
+          </motion.div>
 
-          </div>
-        </motion.div>
+        </div>
 
       </div>
     </div>
