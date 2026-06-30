@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MapPin, Phone, Mail, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { MapPin, Phone, Mail, ArrowRight, CheckCircle2, ChevronDown } from 'lucide-react';
 
 const faderTransition = { duration: 1.2, ease: [0.25, 1, 0.5, 1] };
 
@@ -15,6 +15,42 @@ export default function ContactPage() {
 
   const [errors, setErrors] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [openIndex, setOpenIndex] = useState(null);
+
+  const faqs = [
+    {
+      q: "What services does Travinno offer?",
+      a: "Travinno is a leading B2B travel solutions provider, specializing in customized tour packages, corporate travel management, destination marketing, and MICE (Meetings, Incentives, Conferences, and Exhibitions) services. Our goal is to deliver seamless travel experiences while securing our partners interests."
+    },
+    {
+      q: "How can I book a tour or hotel through Travinno?",
+      a: "You can book by contacting our team via email, phone, or through our website. Our travel experts will assist in customizing your itinerary and ensuring the best deals for you and your clients."
+    },
+    {
+      q: "Does Travinno offer B2B travel solutions?",
+      a: "Yes! We specialize in B2B travel partnerships, providing hotel contracting, destination representation, and exclusive collaborations with travel agencies & tour operators worldwide."
+    },
+    {
+      q: "Which destinations does Travinno handle?",
+      a: "We focus on key travel destinations such as Dubai (UAE), Thailand, and Kerala, offering well-curated experiences for leisure, business, and group travelers."
+    },
+    {
+      q: "Can Travinno handle large group bookings and MICE events?",
+      a: "Absolutely! We have extensive experience managing group tours, corporate retreats, meetings, incentives, conferences, and exhibitions (MICE) with fully customized solutions tailored to specific requirements."
+    },
+    {
+      q: "Why should I choose Travinno over other travel service providers?",
+      a: "Travinno is trusted by a global network of travel partners, ensuring reliable services, competitive pricing, and seamless operations. Our industry expertise and strong connections help travel agencies and tour operators maximize profitability while delivering exceptional experiences to their clients."
+    },
+    {
+      q: "Where are Travinno’s offices located?",
+      a: "Travinno has a strong presence with own offices in Dubai, India, and Thailand. With a dedicated team of over 70 professionals, we ensure seamless operations and exceptional service across these key destinations."
+    },
+    {
+      q: "Does Travinno have its own fleet for operations?",
+      a: "Yes! Travinno operates a diverse fleet of vehicles, ranging from premium saloon cars to luxury coaches, catering to different travel needs, whether it's airport transfers, city tours, corporate travel, or large group operations."
+    }
+  ];
 
   const validate = () => {
     let tempErrors = {};
@@ -130,9 +166,31 @@ export default function ContactPage() {
         .editorial-contact-link:hover {
           color: #C1121F;
         }
+
+        /* FAQ Accordion Transitions */
+        .faq-item-container {
+          border-bottom: 1px solid rgba(245, 242, 236, 0.08);
+          border-radius: 0px;
+          background-color: transparent;
+          border: none;
+          padding: 20px 0;
+          transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+          overflow: hidden;
+          box-sizing: border-box;
+        }
+
+        .faq-item-container.is-open {
+          background: linear-gradient(135deg, rgba(20, 20, 22, 0.5) 0%, rgba(193, 18, 31, 0.035) 50%, rgba(10, 10, 12, 0.8) 100%);
+          backdrop-filter: blur(20px);
+          -webkit-backdrop-filter: blur(20px);
+          border: 1px solid rgba(245, 242, 236, 0.07);
+          box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 12px 30px rgba(0, 0, 0, 0.35);
+          border-radius: 16px;
+          padding: 24px;
+        }
       `}</style>
 
-      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '160px 24px 100px 24px', boxSizing: 'border-box' }}>
+      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '160px 24px 120px 24px', boxSizing: 'border-box' }}>
         
         {/* HERO SECTION */}
         <section style={{ marginBottom: '16px' }}>
@@ -198,7 +256,7 @@ export default function ContactPage() {
             transition={{ ...faderTransition, delay: 0.3 }}
             style={{
               position: 'relative',
-              background: 'linear-gradient(135deg, rgba(20, 20, 22, 0.45) 0%, rgba(193, 18, 31, 0.03) 50%, rgba(10, 10, 12, 0.8) 100%)',
+              background: 'linear-gradient(135deg, rgba(20, 20, 22, 0.45) 0%, rgba(193, 18, 31, 0.05) 50%, rgba(10, 10, 12, 0.8) 100%)',
               backdropFilter: 'blur(30px)',
               WebkitBackdropFilter: 'blur(30px)',
               border: '1px solid rgba(245, 242, 236, 0.07)',
@@ -220,7 +278,7 @@ export default function ContactPage() {
                 width: '350px',
                 height: '350px',
                 borderRadius: '50%',
-                background: 'radial-gradient(circle, rgba(193, 18, 31, 0.16) 0%, rgba(234, 28, 41, 0.015) 60%, transparent 100%)',
+                background: 'radial-gradient(circle, rgba(193, 18, 31, 0.2) 0%, rgba(234, 28, 41, 0.02) 60%, transparent 100%)',
                 filter: 'blur(50px)',
                 pointerEvents: 'none',
                 zIndex: 1
@@ -329,7 +387,7 @@ export default function ContactPage() {
             transition={{ ...faderTransition, delay: 0.4 }}
             style={{
               position: 'relative',
-              background: 'linear-gradient(135deg, rgba(20, 20, 22, 0.45) 0%, rgba(193, 18, 31, 0.03) 50%, rgba(10, 10, 12, 0.8) 100%)',
+              background: 'linear-gradient(135deg, rgba(20, 20, 22, 0.45) 0%, rgba(193, 18, 31, 0.05) 50%, rgba(10, 10, 12, 0.8) 100%)',
               backdropFilter: 'blur(30px)',
               WebkitBackdropFilter: 'blur(30px)',
               border: '1px solid rgba(245, 242, 236, 0.07)',
@@ -349,7 +407,7 @@ export default function ContactPage() {
                 width: '450px',
                 height: '450px',
                 borderRadius: '50%',
-                background: 'radial-gradient(circle, rgba(193, 18, 31, 0.18) 0%, rgba(234, 28, 41, 0.02) 60%, transparent 100%)',
+                background: 'radial-gradient(circle, rgba(193, 18, 31, 0.22) 0%, rgba(234, 28, 41, 0.025) 60%, transparent 100%)',
                 filter: 'blur(60px)',
                 pointerEvents: 'none',
                 zIndex: 1
@@ -514,6 +572,87 @@ export default function ContactPage() {
           </motion.div>
 
         </div>
+
+        {/* FAQ ACCORDION SECTION */}
+        <section style={{ maxWidth: '900px', margin: '140px auto 0 auto', position: 'relative', zIndex: 5 }}>
+          <div style={{ textAlign: 'center', marginBottom: '56px' }}>
+            <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(2.1rem, 5vw, 3rem)', fontWeight: 500, color: '#F5F2EC', margin: '0 0 12px 0' }}>
+              Your questions, answered
+            </h2>
+            <p style={{ fontFamily: 'var(--font-sans)', fontSize: '1rem', color: 'rgba(245, 242, 236, 0.55)', margin: 0 }}>
+              Answers to the most frequently asked questions.
+            </p>
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            {faqs.map((faq, index) => {
+              const isOpen = openIndex === index;
+              return (
+                <div 
+                  key={index}
+                  className={`faq-item-container ${isOpen ? 'is-open' : ''}`}
+                >
+                  <button
+                    onClick={() => setOpenIndex(isOpen ? null : index)}
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      width: '100%',
+                      background: 'transparent',
+                      border: 'none',
+                      color: '#F5F2EC',
+                      cursor: 'pointer',
+                      textAlign: 'left',
+                      padding: 0,
+                      outline: 'none'
+                    }}
+                  >
+                    <span style={{ 
+                      fontFamily: 'var(--font-sans)', 
+                      fontSize: '1.04rem', 
+                      fontWeight: 500, 
+                      color: isOpen ? '#F5F2EC' : 'rgba(245, 242, 236, 0.85)', 
+                      transition: 'color 0.3s' 
+                    }}>
+                      {faq.q}
+                    </span>
+                    <span style={{ 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)', 
+                      transition: 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)' 
+                    }}>
+                      <ChevronDown size={18} style={{ color: isOpen ? '#C1121F' : 'rgba(245, 242, 236, 0.4)' }} />
+                    </span>
+                  </button>
+
+                  <AnimatePresence initial={false}>
+                    {isOpen && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0, marginTop: 0 }}
+                        animate={{ height: 'auto', opacity: 1, marginTop: 16 }}
+                        exit={{ height: 0, opacity: 0, marginTop: 0 }}
+                        transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                        style={{ overflow: 'hidden' }}
+                      >
+                        <p style={{ 
+                          fontFamily: 'var(--font-sans)', 
+                          fontSize: '0.94rem', 
+                          lineHeight: 1.65, 
+                          color: 'rgba(245, 242, 236, 0.65)', 
+                          margin: 0 
+                        }}>
+                          {faq.a}
+                        </p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              );
+            })}
+          </div>
+        </section>
 
       </div>
     </div>
