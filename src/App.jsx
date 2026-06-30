@@ -21,6 +21,7 @@ const ParallaxDemo = lazy(() => import('./demos/default'));
 const TeamPage = lazy(() => import('./components/TeamPage'));
 const ServicesPage = lazy(() => import('./components/ServicesPage'));
 const ContactPage = lazy(() => import('./components/ContactPage'));
+const CareersPage = lazy(() => import('./components/CareersPage'));
 
 
 
@@ -93,6 +94,8 @@ function App() {
           setCurrentView('services');
         } else if (hash === '#contact') {
           setCurrentView('contact');
+        } else if (hash === '#careers') {
+          setCurrentView('careers');
         } else {
           setCurrentView('home');
           if (hash) {
@@ -215,6 +218,8 @@ function App() {
         <Suspense fallback={null}><ServicesPage /></Suspense>
       ) : currentView === 'contact' ? (
         <Suspense fallback={null}><ContactPage /></Suspense>
+      ) : currentView === 'careers' ? (
+        <Suspense fallback={null}><CareersPage /></Suspense>
       ) : (
         <>
           {/* Hero Section Container (100% Viewport Height) */}

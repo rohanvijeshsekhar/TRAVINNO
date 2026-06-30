@@ -1,0 +1,726 @@
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { MapPin, Briefcase, Clock, Upload, X, CheckCircle, ArrowRight } from 'lucide-react';
+
+// Future-proof, modifiable job listings data structure
+const INITIAL_JOBS = [
+  {
+    id: 1,
+    title: 'Senior Travel Consultant',
+    location: 'Dubai, UAE',
+    type: 'Full-Time',
+    description: 'Help design premium leisure and corporate travel experiences for global clients.',
+    status: 'Open'
+  },
+  {
+    id: 2,
+    title: 'Operations & Destination Coordinator',
+    location: 'Cochin, India',
+    type: 'Full-Time',
+    description: 'Coordinate ground logistics, hotel contracts, and transit operations for luxury tours.',
+    status: 'Open'
+  },
+  {
+    id: 3,
+    title: 'Luxury Travel Representative',
+    location: 'Bangkok, Thailand',
+    type: 'Contract',
+    description: 'Deliver bespoke local guiding, transfer coordination, and VIP guest relations.',
+    status: 'Open'
+  }
+];
+
+export default function CareersPage() {
+  const [jobs] = useState(INITIAL_JOBS);
+  const [selectedJob, setSelectedJob] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [formSubmitted, setFormSubmitted] = useState(false);
+
+  // Form State
+  const [formData, setFormData] = useState({
+    fullName: '',
+    email: '',
+    phone: '',
+    coverLetter: ''
+  });
+
+  const [errors, setErrors] = useState({});
+
+  // Filter only open positions
+  const openPositions = jobs.filter(job => job.status === 'Open');
+
+  // Prevent scroll when modal is open
+  useEffect(() => {
+    if (isModalOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isModalOpen]);
+
+  // Escape key close handler
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape' && isModalOpen) {
+        closeModal();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isModalOpen]);
+
+  const openApplyModal = (job = null) => {
+    setSelectedJob(job);
+    setIsModalOpen(true);
+    setFormSubmitted(false);
+    setSelectedFile(null);
+    setFormData({
+      fullName: '',
+      email: '',
+      phone: '',
+      coverLetter: ''
+    });
+    setErrors({});
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedJob(null);
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        setErrors(prev => ({ ...prev, file: 'File exceeds the maximum size limit of 5MB.' }));
+        setSelectedFile(null);
+      } else {
+        setSelectedFile(file);
+        setErrors(prev => {
+          const copy = { ...prev };
+          delete copy.file;
+          return copy;
+        });
+      }
+    }
+  };
+
+  const handleInputChange = (field, value) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+    if (errors[field]) {
+      setErrors(prev => {
+        const copy = { ...prev };
+        delete copy[field];
+        return copy;
+      });
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const newErrors = {};
+
+    if (!formData.fullName.trim()) newErrors.fullName = 'Full Name is required.';
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email Address is required.';
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = 'Invalid email formatting.';
+    }
+    if (!formData.phone.trim()) newErrors.phone = 'Phone Number is required.';
+    if (!selectedFile) newErrors.file = 'Please upload your CV/Resume.';
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    // Mock successful submission
+    setFormSubmitted(true);
+  };
+
+  const faderTransition = { duration: 0.6, ease: [0.16, 1, 0.3, 1] };
+
+  return (
+    <div style={{ backgroundColor: '#050505', color: '#F5F2EC', width: '100%', minHeight: '100vh', position: 'relative', overflowX: 'hidden', boxSizing: 'border-box' }}>
+      <style>{`
+        /* Local Careers Section styling to keep index.css lean */
+        .careers-container {
+          position: relative; 
+          zIndex: 2; 
+          maxWidth: 1200px; 
+          margin: 0 auto; 
+          padding: 160px 24px 120px 24px; 
+          boxSizing: border-box;
+        }
+
+        .job-card-grid {
+          display: flex;
+          flex-direction: column;
+          gap: 24px;
+          margin-top: 48px;
+        }
+
+        .premium-job-card {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 32px;
+          background: rgba(255, 255, 255, 0.015);
+          border: 1px solid rgba(245, 242, 236, 0.06);
+          border-radius: 16px;
+          padding: 36px 40px;
+          transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+          box-sizing: border-box;
+        }
+
+        .premium-job-card:hover {
+          border-color: #C1121F;
+          background-color: rgba(255, 255, 255, 0.03);
+          transform: translateY(-4px);
+          box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .job-card-info {
+          flex: 0 0 300px;
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+        }
+
+        .job-card-meta {
+          display: flex;
+          align-items: center;
+          gap: 16px;
+          color: rgba(245, 242, 236, 0.45);
+          font-family: var(--font-sans);
+          font-size: 0.72rem;
+          font-weight: 500;
+          letter-spacing: 1px;
+          text-transform: uppercase;
+        }
+
+        .meta-item {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+        }
+
+        .meta-item svg {
+          stroke-width: 2px;
+        }
+
+        .job-card-title {
+          font-family: var(--font-heading);
+          font-size: 1.45rem;
+          font-weight: 500;
+          color: #F5F2EC;
+          margin: 4px 0 0 0;
+          letter-spacing: -0.2px;
+        }
+
+        .job-card-desc {
+          flex: 1;
+          font-family: var(--font-sans);
+          font-size: 0.94rem;
+          line-height: 1.65;
+          color: rgba(245, 242, 236, 0.65);
+          font-weight: 300;
+          max-width: 480px;
+        }
+
+        .job-card-action {
+          flex: 0 0 auto;
+        }
+
+        .premium-apply-btn {
+          background: transparent;
+          border: 1px solid rgba(245, 242, 236, 0.15);
+          padding: 12px 28px;
+          border-radius: 100px;
+          font-family: var(--font-sans);
+          font-size: 0.8rem;
+          font-weight: 600;
+          color: #F5F2EC;
+          letter-spacing: 1px;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          transition: all 0.3s ease;
+        }
+
+        .premium-job-card:hover .premium-apply-btn {
+          background-color: #C1121F;
+          border-color: #C1121F;
+          color: #F5F2EC;
+          box-shadow: 0 4px 16px rgba(193, 18, 31, 0.25);
+        }
+
+        /* Form Inputs */
+        .premium-input-field {
+          background-color: rgba(255, 255, 255, 0.015) !important;
+          border: 1px solid rgba(245, 242, 236, 0.08) !important;
+          border-radius: 14px !important;
+          color: #F5F2EC !important;
+          font-family: var(--font-sans) !important;
+          font-size: 0.98rem !important;
+          padding: 16px 20px !important;
+          width: 100% !important;
+          box-sizing: border-box !important;
+          transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+          outline: none !important;
+        }
+
+        .premium-input-field:focus {
+          border-color: #C1121F !important;
+          background-color: rgba(245, 242, 236, 0.02) !important;
+          box-shadow: 0 0 16px rgba(193, 18, 31, 0.12) !important;
+        }
+
+        .premium-input-field::placeholder {
+          color: rgba(245, 242, 236, 0.25) !important;
+        }
+
+        /* File Upload */
+        .premium-file-upload {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 12px;
+          padding: 24px 20px;
+          background: rgba(255, 255, 255, 0.012);
+          border: 1px dashed rgba(245, 242, 236, 0.15);
+          border-radius: 14px;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          text-align: center;
+        }
+
+        .premium-file-upload:hover {
+          border-color: #C1121F;
+          background-color: rgba(245, 242, 236, 0.015);
+        }
+
+        /* Glassmorphic Form Submit Button */
+        .glassy-submit-btn {
+          background: rgba(255, 255, 255, 0.03);
+          backdrop-filter: blur(8px);
+          -webkit-backdrop-filter: blur(8px);
+          border: 1px solid rgba(245, 242, 236, 0.1);
+          padding: 16px 36px;
+          border-radius: 100px;
+          font-family: var(--font-sans);
+          font-size: 0.85rem;
+          font-weight: 600;
+          color: #F5F2EC;
+          letter-spacing: 1.5px;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+          transition: all 0.3s ease;
+          width: 100%;
+        }
+
+        .glassy-submit-btn:hover {
+          background-color: rgba(193, 18, 31, 0.1);
+          border-color: #C1121F;
+          box-shadow: 0 6px 24px rgba(193, 18, 31, 0.25);
+          transform: translateY(-1px);
+        }
+
+        /* Modal Overlay and Window */
+        .modal-overlay {
+          position: fixed;
+          inset: 0;
+          background-color: rgba(5, 5, 5, 0.85);
+          backdrop-filter: blur(16px);
+          -webkit-backdrop-filter: blur(16px);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          z-index: 9999;
+          padding: 20px;
+        }
+
+        .modal-content {
+          background-color: #0c0c0e;
+          border: 1px solid rgba(245, 242, 236, 0.08);
+          border-radius: 20px;
+          max-width: 600px;
+          width: 100%;
+          max-height: 90vh;
+          overflow-y: auto;
+          position: relative;
+          padding: 40px;
+          box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8);
+          box-sizing: border-box;
+        }
+
+        .modal-close-btn {
+          position: absolute;
+          top: 24px;
+          right: 24px;
+          background: transparent;
+          border: none;
+          color: rgba(245, 242, 236, 0.4);
+          cursor: pointer;
+          padding: 4px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: all 0.25s ease;
+        }
+
+        .modal-close-btn:hover {
+          color: #F5F2EC;
+          transform: scale(1.1);
+        }
+
+        @media (max-width: 991px) {
+          .premium-job-card {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 24px;
+            padding: 30px;
+          }
+          .job-card-info {
+            flex: none;
+            width: 100%;
+          }
+          .job-card-desc {
+            max-width: 100%;
+          }
+          .job-card-action {
+            width: 100%;
+          }
+          .premium-apply-btn {
+            width: 100%;
+            justify-content: center;
+          }
+        }
+        
+        @media (max-width: 576px) {
+          .modal-content {
+            padding: 32px 24px;
+          }
+        }
+      `}</style>
+
+      {/* Grid check pattern background */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          backgroundImage: `
+            linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px)
+          `,
+          backgroundSize: '50px 50px',
+          backgroundRepeat: 'repeat',
+          backgroundColor: '#050505',
+          zIndex: 1,
+          pointerEvents: 'none'
+        }}
+      />
+
+      <div className="careers-container">
+        
+        {/* HERO SECTION */}
+        <section style={{ marginBottom: '64px', position: 'relative' }}>
+          <motion.span
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 0.45, y: 0 }}
+            transition={faderTransition}
+            style={{
+              display: 'inline-block',
+              fontFamily: 'var(--font-sans)',
+              fontSize: '0.75rem',
+              fontWeight: 600,
+              letterSpacing: '2px',
+              color: 'rgba(245, 242, 236, 0.8)',
+              textTransform: 'uppercase',
+              marginBottom: '16px'
+            }}
+          >
+            Careers
+          </motion.span>
+          
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ ...faderTransition, delay: 0.1 }}
+            style={{
+              fontFamily: 'var(--font-heading)',
+              fontSize: 'clamp(2rem, 5vw, 3.5rem)',
+              fontWeight: 400,
+              lineHeight: 1.15,
+              color: '#F5F2EC',
+              margin: '0 0 24px 0',
+              textTransform: 'uppercase',
+              letterSpacing: '-0.5px'
+            }}
+          >
+            Build Extraordinary <br />Journeys With Us
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.75 }}
+            transition={{ ...faderTransition, delay: 0.2 }}
+            style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: 'clamp(1rem, 1.8vw, 1.2rem)',
+              lineHeight: 1.65,
+              color: '#F5F2EC',
+              margin: 0,
+              maxWidth: '680px',
+              fontWeight: 300
+            }}
+          >
+            Join a passionate team creating exceptional travel experiences across global destinations. At Travinno, every role contributes to unforgettable journeys.
+          </motion.p>
+        </section>
+
+        {/* OPEN POSITIONS / AVAILABLE OPPORTUNITIES */}
+        <section style={{ position: 'relative' }}>
+          <motion.h2
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 0.55, y: 0 }}
+            transition={{ ...faderTransition, delay: 0.3 }}
+            style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '0.75rem',
+              fontWeight: 600,
+              letterSpacing: '2px',
+              color: 'rgba(245, 242, 236, 0.8)',
+              textTransform: 'uppercase',
+              borderBottom: '1px solid rgba(245, 242, 236, 0.08)',
+              paddingBottom: '16px',
+              margin: '0 0 32px 0'
+            }}
+          >
+            Available Opportunities
+          </motion.h2>
+
+          {openPositions.length > 0 ? (
+            <div className="job-card-grid">
+              {openPositions.map((job, idx) => (
+                <motion.div
+                  key={job.id}
+                  className="premium-job-card"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ ...faderTransition, delay: 0.3 + (idx * 0.1) }}
+                >
+                  <div className="job-card-info">
+                    <div className="job-card-meta">
+                      <div className="meta-item">
+                        <MapPin size={13} style={{ color: '#C1121F' }} />
+                        <span>{job.location}</span>
+                      </div>
+                      <span>•</span>
+                      <div className="meta-item">
+                        <Briefcase size={13} style={{ color: 'rgba(245, 242, 236, 0.5)' }} />
+                        <span>{job.type}</span>
+                      </div>
+                    </div>
+                    <h3 className="job-card-title">{job.title}</h3>
+                  </div>
+
+                  <p className="job-card-desc">{job.description}</p>
+
+                  <div className="job-card-action">
+                    <button onClick={() => openApplyModal(job)} className="premium-apply-btn">
+                      Apply Now <ArrowRight size={13} />
+                    </button>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          ) : (
+            /* EMPTY STATE */
+            <motion.div
+              initial={{ opacity: 0, scale: 0.98 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ ...faderTransition, delay: 0.3 }}
+              style={{
+                textAlign: 'center',
+                padding: '80px 40px',
+                border: '1px solid rgba(245, 242, 236, 0.06)',
+                borderRadius: '20px',
+                background: 'rgba(255, 255, 255, 0.005)'
+              }}
+            >
+              <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.8rem', fontWeight: 500, margin: '0 0 12px 0', color: '#F5F2EC' }}>No Current Openings</h3>
+              <p style={{ fontFamily: 'var(--font-sans)', fontSize: '0.96rem', color: 'rgba(245, 242, 236, 0.55)', margin: '0 0 32px 0', fontWeight: 300 }}>
+                We’re always looking for exceptional talent. Check back soon for future opportunities.
+              </p>
+              <button onClick={() => openApplyModal(null)} className="premium-apply-btn" style={{ margin: '0 auto' }}>
+                Send Your Resume <ArrowRight size={13} />
+              </button>
+            </motion.div>
+          )}
+        </section>
+
+      </div>
+
+      {/* APPLICATION MODAL */}
+      <AnimatePresence>
+        {isModalOpen && (
+          <div className="modal-overlay" onClick={closeModal}>
+            <motion.div
+              className="modal-content"
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 15 }}
+              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Close Button */}
+              <button className="modal-close-btn" onClick={closeModal} aria-label="Close Modal">
+                <X size={20} />
+              </button>
+
+              {!formSubmitted ? (
+                <>
+                  <div style={{ marginBottom: '32px' }}>
+                    <span style={{ fontFamily: 'var(--font-sans)', fontSize: '0.72rem', fontWeight: 600, letterSpacing: '1px', color: 'rgba(245, 242, 236, 0.4)', textTransform: 'uppercase' }}>
+                      {selectedJob ? 'Applying for' : 'Submit Your Application'}
+                    </span>
+                    <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.8rem', fontWeight: 500, color: '#F5F2EC', margin: '4px 0 0 0' }}>
+                      {selectedJob ? selectedJob.title : 'General Application'}
+                    </h2>
+                  </div>
+
+                  <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                    {/* Position Applied For */}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                      <label style={{ fontFamily: 'var(--font-sans)', fontSize: '0.72rem', fontWeight: 600, letterSpacing: '1.5px', color: 'rgba(245, 242, 236, 0.45)', textTransform: 'uppercase' }}>Position Applied For</label>
+                      <input
+                        type="text"
+                        className="premium-input-field"
+                        value={selectedJob ? selectedJob.title : 'General Application'}
+                        disabled
+                        style={{ opacity: 0.6, cursor: 'not-allowed', backgroundColor: 'rgba(255, 255, 255, 0.005) !important' }}
+                      />
+                    </div>
+
+                    {/* Full Name */}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                      <label style={{ fontFamily: 'var(--font-sans)', fontSize: '0.72rem', fontWeight: 600, letterSpacing: '1.5px', color: 'rgba(245, 242, 236, 0.45)', textTransform: 'uppercase' }}>Full Name *</label>
+                      <input
+                        type="text"
+                        placeholder="e.g. Alexander Mercer"
+                        className="premium-input-field"
+                        value={formData.fullName}
+                        onChange={(e) => handleInputChange('fullName', e.target.value)}
+                      />
+                      {errors.fullName && <span style={{ color: '#C1121F', fontSize: '0.75rem', fontFamily: 'var(--font-sans)' }}>{errors.fullName}</span>}
+                    </div>
+
+                    {/* Email Address */}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                      <label style={{ fontFamily: 'var(--font-sans)', fontSize: '0.72rem', fontWeight: 600, letterSpacing: '1.5px', color: 'rgba(245, 242, 236, 0.45)', textTransform: 'uppercase' }}>Email Address *</label>
+                      <input
+                        type="email"
+                        placeholder="alexander@mercer.com"
+                        className="premium-input-field"
+                        value={formData.email}
+                        onChange={(e) => handleInputChange('email', e.target.value)}
+                      />
+                      {errors.email && <span style={{ color: '#C1121F', fontSize: '0.75rem', fontFamily: 'var(--font-sans)' }}>{errors.email}</span>}
+                    </div>
+
+                    {/* Phone Number */}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                      <label style={{ fontFamily: 'var(--font-sans)', fontSize: '0.72rem', fontWeight: 600, letterSpacing: '1.5px', color: 'rgba(245, 242, 236, 0.45)', textTransform: 'uppercase' }}>Phone Number *</label>
+                      <input
+                        type="tel"
+                        placeholder="+971 50 123 4567"
+                        className="premium-input-field"
+                        value={formData.phone}
+                        onChange={(e) => handleInputChange('phone', e.target.value)}
+                      />
+                      {errors.phone && <span style={{ color: '#C1121F', fontSize: '0.75rem', fontFamily: 'var(--font-sans)' }}>{errors.phone}</span>}
+                    </div>
+
+                    {/* Upload CV / Resume */}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                      <label style={{ fontFamily: 'var(--font-sans)', fontSize: '0.72rem', fontWeight: 600, letterSpacing: '1.5px', color: 'rgba(245, 242, 236, 0.45)', textTransform: 'uppercase' }}>Upload CV / Resume *</label>
+                      <label className="premium-file-upload">
+                        <input
+                          type="file"
+                          accept=".pdf,.doc,.docx"
+                          style={{ display: 'none' }}
+                          onChange={handleFileChange}
+                        />
+                        <Upload size={18} style={{ color: selectedFile ? '#C1121F' : 'rgba(245, 242, 236, 0.4)' }} />
+                        <span style={{ fontSize: '0.86rem', color: selectedFile ? '#F5F2EC' : 'rgba(245, 242, 236, 0.6)', fontWeight: 500 }}>
+                          {selectedFile ? selectedFile.name : 'Select PDF, DOC, or DOCX'}
+                        </span>
+                        <span style={{ fontSize: '0.72rem', color: 'rgba(245, 242, 236, 0.3)' }}>Max file size 5MB</span>
+                      </label>
+                      {errors.file && <span style={{ color: '#C1121F', fontSize: '0.75rem', fontFamily: 'var(--font-sans)', marginTop: '4px' }}>{errors.file}</span>}
+                    </div>
+
+                    {/* Cover Letter */}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                      <label style={{ fontFamily: 'var(--font-sans)', fontSize: '0.72rem', fontWeight: 600, letterSpacing: '1.5px', color: 'rgba(245, 242, 236, 0.45)', textTransform: 'uppercase' }}>Cover Letter (Optional)</label>
+                      <textarea
+                        rows={4}
+                        placeholder="Tell us why you want to design luxury travel experiences with us..."
+                        className="premium-input-field"
+                        style={{ resize: 'vertical', minHeight: '100px' }}
+                        value={formData.coverLetter}
+                        onChange={(e) => handleInputChange('coverLetter', e.target.value)}
+                      />
+                    </div>
+
+                    <button type="submit" className="glassy-submit-btn" style={{ marginTop: '8px' }}>
+                      Submit Application
+                    </button>
+                  </form>
+                </>
+              ) : (
+                /* SUCCESS STATE */
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.97 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  style={{
+                    textAlign: 'center',
+                    padding: '30px 10px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: '20px'
+                  }}
+                >
+                  <CheckCircle size={56} style={{ color: '#C1121F' }} />
+                  <div>
+                    <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.8rem', fontWeight: 500, color: '#F5F2EC', margin: '0 0 10px 0' }}>
+                      Application Received
+                    </h2>
+                    <p style={{ fontFamily: 'var(--font-sans)', fontSize: '0.94rem', color: 'rgba(245, 242, 236, 0.65)', lineHeight: 1.6, maxWidth: '380px', margin: '0 auto', fontWeight: 300 }}>
+                      Thank you for applying. A member of our luxury coordination team will review your CV and be in touch soon.
+                    </p>
+                  </div>
+                  <button onClick={closeModal} className="premium-apply-btn" style={{ marginTop: '12px' }}>
+                    Close Window
+                  </button>
+                </motion.div>
+              )}
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
