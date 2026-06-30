@@ -10,12 +10,15 @@ function Footer() {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 1024);
     };
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
     const checkScrollTop = () => {
       if (window.scrollY > 400) {
         setShowScrollTop(true);
@@ -24,11 +27,7 @@ function Footer() {
       }
     };
     window.addEventListener('scroll', checkScrollTop);
-    
-    return () => {
-      window.removeEventListener('resize', checkMobile);
-      window.removeEventListener('scroll', checkScrollTop);
-    };
+    return () => window.removeEventListener('scroll', checkScrollTop);
   }, []);
 
   const scrollToTop = () => {
@@ -50,6 +49,25 @@ function Footer() {
         boxSizing: 'border-box'
       }}
     >
+      <style>{`
+        @keyframes drawRoute {
+          0% {
+            stroke-dashoffset: 1500;
+          }
+          70% {
+            stroke-dashoffset: 0;
+            opacity: 1;
+          }
+          85% {
+            stroke-dashoffset: 0;
+            opacity: 0;
+          }
+          100% {
+            stroke-dashoffset: 1500;
+            opacity: 0;
+          }
+        }
+      `}</style>
       {/* Background Graphic Illustrations */}
       <div
         style={{
@@ -82,7 +100,6 @@ function Footer() {
         {/* Bespoke Luxury Travel Illustration SVG */}
         <svg
           viewBox="0 0 1000 600"
-          preserveAspectRatio={isMobile ? "xMidYMin slice" : "xMidYMid meet"}
           style={{
             position: 'absolute',
             top: 0,
@@ -99,241 +116,260 @@ function Footer() {
             <line x1="20" y1="60" x2="980" y2="60" />
             <line x1="20" y1="160" x2="980" y2="160" />
             <line x1="20" y1="260" x2="980" y2="260" />
-            <line x1="20" y1="360" x2="980" y2="360" />
-            <line x1="20" y1="460" x2="980" y2="460" />
-            <line x1="20" y1="560" x2="980" y2="560" />
-            {/* Longitudes */}
-            <line x1="100" y1="20" x2="100" y2="580" />
-            <line x1="250" y1="20" x2="250" y2="580" />
-            <line x1="400" y1="20" x2="400" y2="580" />
-            <line x1="550" y1="20" x2="550" y2="580" />
-            <line x1="700" y1="20" x2="700" y2="580" />
-            <line x1="850" y1="20" x2="850" y2="580" />
-          </g>
-
-          {/* 2. Star Constellations and Coordinate Ticks (increased opacity) */}
-          <g stroke="rgba(245, 242, 236, 0.12)" strokeWidth="0.5" fill="none">
-            {/* Constellation A (Left Side) */}
-            <polyline points="70,120 100,105 130,125 155,100" />
-            <circle cx="70" cy="120" r="1.5" fill="rgba(245, 242, 236, 0.35)" stroke="none" />
-            <circle cx="100" cy="105" r="1" fill="rgba(245, 242, 236, 0.25)" stroke="none" />
-            <circle cx="130" cy="125" r="2.2" fill="#C82D2D" fillOpacity="0.4" stroke="none" />
-            <circle cx="155" cy="100" r="1" fill="rgba(245, 242, 236, 0.25)" stroke="none" />
-
-            {/* Constellation B (Right Side) */}
-            <polyline points="800,70 825,95 860,85 885,115" />
-            <circle cx="800" cy="70" r="1" fill="rgba(245, 242, 236, 0.25)" stroke="none" />
-            <circle cx="825" cy="95" r="1.8" fill="rgba(245, 242, 236, 0.45)" stroke="none" />
-            <circle cx="860" cy="85" r="1.2" fill="rgba(245, 242, 236, 0.25)" stroke="none" />
-            <circle cx="885" cy="115" r="2" fill="#C82D2D" fillOpacity="0.4" stroke="none" />
-          </g>
-
-          {/* 3. Passport stamps & Travel Marks (increased opacity) */}
-          {/* Dubai Stamp (Top Left) */}
-          <g transform="translate(100, 70) rotate(-12)" opacity="0.14" stroke="rgba(245, 242, 236, 0.9)" strokeWidth="0.6" fill="none">
-            <circle cx="0" cy="0" r="24" />
-            <circle cx="0" cy="0" r="21" strokeDasharray="1.5 1.5" />
-            <text x="0" y="-8" textAnchor="middle" fontSize="4.5" fill="#F5F2EC" stroke="none" letterSpacing="0.08em" fontFamily="var(--font-sans)">TRAVINNO</text>
-            <text x="0" y="1" textAnchor="middle" fontSize="4" fill="#C82D2D" stroke="none" letterSpacing="0.05em" fontFamily="var(--font-sans)">★ DXB ★</text>
-            <text x="0" y="8" textAnchor="middle" fontSize="4" fill="#F5F2EC" stroke="none" letterSpacing="0.05em" fontFamily="var(--font-mono)">ENTRY 2026</text>
-          </g>
-          {/* Bangkok Stamp (Bottom Left) */}
-          <g transform="translate(120, 480) rotate(15)" opacity="0.12" stroke="rgba(245, 242, 236, 0.9)" strokeWidth="0.6" fill="none">
-            <polygon points="-20,-20 20,-20 28,-10 28,10 20,20 -20,20 -28,10 -28,-10" />
-            <text x="0" y="-7" textAnchor="middle" fontSize="4" fill="#F5F2EC" stroke="none" letterSpacing="0.1em" fontFamily="var(--font-sans)">MANAGEMENT</text>
-            <text x="0" y="2" textAnchor="middle" fontSize="5" fill="#C82D2D" stroke="none" letterSpacing="0.08em" fontFamily="var(--font-sans)">PASSED</text>
-            <text x="0" y="10" textAnchor="middle" fontSize="3.5" fill="#F5F2EC" stroke="none" letterSpacing="0.05em" fontFamily="var(--font-mono)">BKK / CUSTOMS</text>
-          </g>
-
-          {/* 4. Left Side: Compas Illustration (Slowly rotates 2° back and forth) */}
-          <motion.g
-            animate={{ rotate: [0, 2, 0] }}
-            transition={{
-              duration: 20,
-              ease: "easeInOut",
-              repeat: Infinity
-            }}
-            style={{ originX: '250px', originY: '300px' }}
-          >
-            {/* Outer coordinate ring (increased opacity) */}
-            <circle cx="250" cy="300" r="130" stroke="rgba(245, 242, 236, 0.22)" strokeWidth="0.8" fill="none" />
-            {/* Dotted scale ring */}
-            <circle cx="250" cy="300" r="118" stroke="rgba(245, 242, 236, 0.16)" strokeWidth="0.6" strokeDasharray="3 3" fill="none" />
-            {/* Inner ring */}
-            <circle cx="250" cy="300" r="80" stroke="rgba(245, 242, 236, 0.16)" strokeWidth="0.8" fill="none" />
-
-            {/* Radial Ticks */}
-            <g transform="translate(250, 300)" stroke="rgba(245, 242, 236, 0.18)" strokeWidth="0.8" fill="none">
-              <line x1="0" y1="-122" x2="0" y2="-130" />
-              <line x1="0" y1="122" x2="0" y2="130" />
-              <line x1="-122" y1="0" x2="-130" y2="0" />
-              <line x1="122" y1="0" x2="130" y2="0" />
-              {/* Diagonals */}
-              <line x1="-86" y1="-86" x2="-92" y2="-92" />
-              <line x1="86" y1="-86" x2="92" y2="-92" />
-              <line x1="-86" y1="86" x2="-92" y2="92" />
-              <line x1="86" y1="86" x2="92" y2="92" />
+              <line x1="20" y1="360" x2="980" y2="360" />
+              <line x1="20" y1="460" x2="980" y2="460" />
+              <line x1="20" y1="560" x2="980" y2="560" />
+              {/* Longitudes */}
+              <line x1="100" y1="20" x2="100" y2="580" />
+              <line x1="250" y1="20" x2="250" y2="580" />
+              <line x1="400" y1="20" x2="400" y2="580" />
+              <line x1="550" y1="20" x2="550" y2="580" />
+              <line x1="700" y1="20" x2="700" y2="580" />
+              <line x1="850" y1="20" x2="850" y2="580" />
             </g>
 
-            {/* Cardinal Letters */}
-            <text x="250" y="180" textAnchor="middle" fontSize="10" fill="rgba(245, 242, 236, 0.45)" fontFamily="var(--font-sans)" fontWeight="400" letterSpacing="0.05em" stroke="none">N</text>
-            <text x="250" y="430" textAnchor="middle" fontSize="10" fill="rgba(245, 242, 236, 0.45)" fontFamily="var(--font-sans)" fontWeight="400" letterSpacing="0.05em" stroke="none">S</text>
-            <text x="130" y="303" textAnchor="middle" fontSize="10" fill="rgba(245, 242, 236, 0.45)" fontFamily="var(--font-sans)" fontWeight="400" letterSpacing="0.05em" stroke="none">W</text>
-            <text x="370" y="303" textAnchor="middle" fontSize="10" fill="rgba(245, 242, 236, 0.45)" fontFamily="var(--font-sans)" fontWeight="400" letterSpacing="0.05em" stroke="none">E</text>
+            {/* 2. Star Constellations and Coordinate Ticks (increased opacity) */}
+            <g stroke="rgba(245, 242, 236, 0.12)" strokeWidth="0.5" fill="none">
+              {/* Constellation A (Left Side) */}
+              <polyline points="70,120 100,105 130,125 155,100" />
+              <circle cx="70" cy="120" r="1.5" fill="rgba(245, 242, 236, 0.35)" stroke="none" />
+              <circle cx="100" cy="105" r="1" fill="rgba(245, 242, 236, 0.25)" stroke="none" />
+              <circle cx="130" cy="125" r="2.2" fill="#C82D2D" fillOpacity="0.4" stroke="none" />
+              <circle cx="155" cy="100" r="1" fill="rgba(245, 242, 236, 0.25)" stroke="none" />
 
-            {/* Fine Latitude/Longitude Numbers */}
-            <text x="250" y="160" textAnchor="middle" fontSize="6.5" fill="rgba(245, 242, 236, 0.26)" fontFamily="var(--font-mono)" letterSpacing="0.05em" stroke="none">25° 12' 17" N</text>
-            <text x="382" y="318" textAnchor="start" fontSize="6.5" fill="rgba(245, 242, 236, 0.26)" fontFamily="var(--font-mono)" letterSpacing="0.05em" stroke="none">55° 16' 36" E</text>
-            <text x="250" y="450" textAnchor="middle" fontSize="6.5" fill="rgba(245, 242, 236, 0.26)" fontFamily="var(--font-mono)" letterSpacing="0.05em" stroke="none">8° 29' 42" N</text>
-            <text x="118" y="318" textAnchor="end" fontSize="6.5" fill="rgba(245, 242, 236, 0.26)" fontFamily="var(--font-mono)" letterSpacing="0.05em" stroke="none">76° 57' 11" E</text>
-
-            {/* Compass needle (increased opacity outline) */}
-            <path d="M 250,210 L 254,300 L 250,312 L 246,300 Z" fill="none" stroke="rgba(200, 45, 45, 0.28)" strokeWidth="0.8" />
-            <path d="M 250,390 L 254,300 L 250,288 L 246,300 Z" fill="none" stroke="rgba(245, 242, 236, 0.16)" strokeWidth="0.8" />
-          </motion.g>
-
-          {/* 5. Logo Integration (Fixed in center, no rotate, no distort) */}
-          <g transform="translate(250, 300) translate(-26, -34) scale(0.55)">
-            <path
-              d={`${outerPinPath} ${innerTPath}`}
-              fillRule="evenodd"
-              fill="none"
-              stroke="#C82D2D"
-              strokeWidth="1.5"
-              opacity="0.85"
-            />
-          </g>
-
-          {/* 6. Flowing Travel Route (Slow draw-in when footer enters, increased opacity) */}
-          {/* Base dotted route */}
-          <motion.path
-            d="M 250,300 C 290,260 330,230 370,230 C 410,230 440,180 480,170 C 520,160 560,190 600,200 C 640,210 670,170 710,160 C 750,150 780,210 810,220 C 840,230 870,260 880,300 C 890,340 850,370 810,410 C 770,450 720,440 680,470 C 640,500 600,520 550,520"
-            fill="none"
-            stroke="rgba(245, 242, 236, 0.22)"
-            strokeWidth="0.8"
-            strokeDasharray="4 6"
-            initial={isMobile ? { pathLength: 1 } : { pathLength: 0 }}
-            whileInView={{ pathLength: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 4.5, ease: "easeOut" }}
-          />
-          {/* Subtle crimson overlay path */}
-          <motion.path
-            d="M 250,300 C 290,260 330,230 370,230 C 410,230 440,180 480,170 C 520,160 560,190 600,200 C 640,210 670,170 710,160 C 750,150 780,210 810,220 C 840,230 870,260 880,300 C 890,340 850,370 810,410 C 770,450 720,440 680,470 C 640,500 600,520 550,520"
-            fill="none"
-            stroke={isMobile ? "rgba(200, 45, 45, 0.52)" : "rgba(200, 45, 45, 0.32)"}
-            strokeWidth={isMobile ? 1.4 : 1.0}
-            initial={isMobile ? { pathLength: 1 } : { pathLength: 0 }}
-            whileInView={{ pathLength: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 6.5, ease: "easeInOut" }}
-          />
-
-          {/* 7. Travel Icons along the Route (increased opacity, thin stroke, crimson accents) */}
-          {/* Icon 1: Airplane at (370, 230) */}
-          <g transform="translate(370, 230) scale(0.9) translate(-12, -12)" stroke="rgba(245, 242, 236, 0.24)" strokeWidth="0.8" fill="none">
-            <path d="M 12,2 L 14,9 L 22,12 L 14,15 L 12,22 L 10,15 L 2,12 L 10,9 Z" />
-            <circle cx="12" cy="2" r="1" fill="#C82D2D" stroke="none" fillOpacity="0.85" />
-          </g>
-
-          {/* Icon 2: Globe at (480, 170) */}
-          <g transform="translate(480, 170) scale(0.95) translate(-12, -12)" stroke="rgba(245, 242, 236, 0.24)" strokeWidth="0.8" fill="none">
-            <circle cx="12" cy="12" r="10" />
-            <path d="M 12,2 A 5,10 0 0,0 12,22 A 5,10 0 0,0 12,2" />
-            <path d="M 12,2 A 2.2,10 0 0,0 12,22 A 2.2,10 0 0,0 12,2" />
-            <line x1="2.2" y1="12" x2="21.8" y2="12" />
-            <path d="M 4,7 C 8,9 16,9 20,7" stroke="#C82D2D" strokeWidth="0.6" />
-          </g>
-
-          {/* Icon 3: Palm Tree at (600, 200) */}
-          <g transform="translate(600, 200) scale(0.95) translate(-12, -12)" stroke="rgba(245, 242, 236, 0.24)" strokeWidth="0.8" fill="none">
-            <path d="M 12,22 Q 10,14 12,8" />
-            <path d="M 12,8 Q 5,6 2,9 M 12,8 Q 6,3 7,1 M 12,8 Q 13,3 17,2 M 12,8 Q 18,5 21,8 M 12,8 Q 17,11 19,15 M 12,8 Q 8,10 5,14" />
-            <circle cx="6" cy="5" r="1.5" stroke="#C82D2D" strokeWidth="0.7" />
-          </g>
-
-          {/* Icon 4: Luxury Hotel Silhouette at (710, 160) */}
-          <g transform="translate(710, 160) scale(0.95) translate(-12, -12)" stroke="rgba(245, 242, 236, 0.24)" strokeWidth="0.8" fill="none">
-            <rect x="3" y="6" width="5" height="16" />
-            <path d="M 8,11 L 14,11 M 8,16 L 14,16" />
-            <rect x="14" y="3" width="7" height="19" />
-            <line x1="5.5" y1="9" x2="5.5" y2="20" strokeDasharray="1 2.5" />
-            <line x1="17.5" y1="6" x2="17.5" y2="20" strokeDasharray="1 2.5" />
-            <line x1="21" y1="3" x2="21" y2="1" stroke="#C82D2D" strokeWidth="0.8" />
-          </g>
-
-          {/* Icon 5: Mountain Outline at (810, 220) */}
-          <g transform="translate(810, 220) scale(0.95) translate(-12, -12)" stroke="rgba(245, 242, 236, 0.24)" strokeWidth="0.8" fill="none">
-            <path d="M 2,20 L 11,5 L 20,20" />
-            <path d="M 12,20 L 17,11 L 22,20" />
-            <path d="M 9,8 L 11,10 L 13,8" />
-            <circle cx="11" cy="5" r="1.2" fill="#C82D2D" stroke="none" fillOpacity="0.85" />
-          </g>
-
-          {/* Icon 6: Ocean Waves at (880, 300) */}
-          <g transform="translate(880, 300) scale(0.95) translate(-12, -12)" stroke="rgba(245, 242, 236, 0.24)" strokeWidth="0.8" fill="none">
-            <path d="M 2,9 Q 7,6 12,9 T 22,9" />
-            <path d="M 2,14 Q 7,11 12,14 T 22,14" />
-            <path d="M 6,19 Q 11,16 16,19" stroke="#C82D2D" strokeWidth="0.7" />
-          </g>
-
-          {/* Icon 7: Cruise Ship at (810, 410) */}
-          <g transform="translate(810, 410) scale(0.95) translate(-12, -12)" stroke="rgba(245, 242, 236, 0.24)" strokeWidth="0.8" fill="none">
-            <path d="M 2,15 L 20,15 L 22,11 L 5,11 Z" />
-            <rect x="6" y="7" width="12" height="4" />
-            <rect x="9" y="4" width="7" height="3" />
-            <line x1="11" y1="4" x2="11" y2="1.5" />
-            <line x1="14" y1="4" x2="14" y2="1.5" stroke="#C82D2D" />
-            <path d="M 0,17 C 5,18 7,16 12,17 C 17,18 19,16 24,17" />
-          </g>
-
-          {/* Icon 8: Hot Air Balloon at (680, 470) */}
-          <g transform="translate(680, 470) scale(0.95) translate(-12, -12)" stroke="rgba(245, 242, 236, 0.24)" strokeWidth="0.8" fill="none">
-            <path d="M 12,2 C 6,2 6,12 10,16 L 14,16 C 18,12 18,2 12,2 Z" />
-            <path d="M 12,2 C 9.2,2 9.2,12 11,16 M 12,2 C 14.8,2 14.8,12 13,16" />
-            <line x1="10" y1="16" x2="11" y2="19" />
-            <line x1="14" y1="16" x2="13" y2="19" />
-            <rect x="11" y="19" width="2" height="2" />
-            <path d="M 10,16 H 14" stroke="#C82D2D" strokeWidth="0.8" />
-          </g>
-
-          {/* Route Destination Marker (Crimson pin and pulsing auras at (550, 520)) */}
-          <g transform="translate(550, 520)">
-            {/* Dynamic Pulsing Dotted Circle */}
-            <circle cx="0" cy="0" r="10" fill="none" stroke="#C82D2D" strokeWidth="1.0" opacity="0.5">
-              <animate attributeName="r" values="6;16;6" dur="3s" repeatCount="indefinite" />
-              <animate attributeName="opacity" values="0.7;0.1;0.7" dur="3s" repeatCount="indefinite" />
-            </circle>
-
-            {/* Mini Crimson Location Pin */}
-            <g transform="translate(-10, -10) scale(0.85)">
-              <path d="M 12,2 C 8,2 5,5 5,9 C 5,14 12,22 12,22 C 12,22 19,14 19,9 C 19,5 16,2 12,2 Z" fill="none" stroke="#C82D2D" strokeWidth="1.2" />
-              <circle cx="12" cy="9" r="2.2" fill="#C82D2D" stroke="none" />
+              {/* Constellation B (Right Side) */}
+              <polyline points="800,70 825,95 860,85 885,115" />
+              <circle cx="800" cy="70" r="1" fill="rgba(245, 242, 236, 0.25)" stroke="none" />
+              <circle cx="825" cy="95" r="1.8" fill="rgba(245, 242, 236, 0.45)" stroke="none" />
+              <circle cx="860" cy="85" r="1.2" fill="rgba(245, 242, 236, 0.25)" stroke="none" />
+              <circle cx="885" cy="115" r="2" fill="#C82D2D" fillOpacity="0.4" stroke="none" />
             </g>
-          </g>
 
-          {/* 8. Very small floating dust particles (Looping slow drift) */}
-          {[
-            { id: 1, cx: 300, cy: 120, x: [0, 10, -5, 0], y: [0, -12, -20, 0], dur: 12 },
-            { id: 2, cx: 850, cy: 140, x: [0, -12, 8, 0], y: [0, -16, -8, 0], dur: 15 },
-            { id: 3, cx: 480, cy: 450, x: [0, 8, -4, 0], y: [0, -20, -12, 0], dur: 18 },
-            { id: 4, cx: 910, cy: 420, x: [0, -8, 10, 0], y: [0, -12, -25, 0], dur: 14 }
-          ].map((p) => (
-            <motion.circle
-              key={p.id}
-              cx={p.cx}
-              cy={p.cy}
-              r="1"
-              fill="rgba(245, 242, 236, 0.55)"
-              animate={{ x: p.x, y: p.y }}
+            {/* 3. Passport stamps & Travel Marks (increased opacity) */}
+            {/* Dubai Stamp (Top Left) */}
+            <g transform="translate(100, 70) rotate(-12)" opacity="0.14" stroke="rgba(245, 242, 236, 0.9)" strokeWidth="0.6" fill="none">
+              <circle cx="0" cy="0" r="24" />
+              <circle cx="0" cy="0" r="21" strokeDasharray="1.5 1.5" />
+              <text x="0" y="-8" textAnchor="middle" fontSize="4.5" fill="#F5F2EC" stroke="none" letterSpacing="0.08em" fontFamily="var(--font-sans)">TRAVINNO</text>
+              <text x="0" y="1" textAnchor="middle" fontSize="4" fill="#C82D2D" stroke="none" letterSpacing="0.05em" fontFamily="var(--font-sans)">★ DXB ★</text>
+              <text x="0" y="8" textAnchor="middle" fontSize="4" fill="#F5F2EC" stroke="none" letterSpacing="0.05em" fontFamily="var(--font-mono)">ENTRY 2026</text>
+            </g>
+            {/* Bangkok Stamp (Bottom Left) */}
+            <g transform="translate(120, 480) rotate(15)" opacity="0.12" stroke="rgba(245, 242, 236, 0.9)" strokeWidth="0.6" fill="none">
+              <polygon points="-20,-20 20,-20 28,-10 28,10 20,20 -20,20 -28,10 -28,-10" />
+              <text x="0" y="-7" textAnchor="middle" fontSize="4" fill="#F5F2EC" stroke="none" letterSpacing="0.1em" fontFamily="var(--font-sans)">MANAGEMENT</text>
+              <text x="0" y="2" textAnchor="middle" fontSize="5" fill="#C82D2D" stroke="none" letterSpacing="0.08em" fontFamily="var(--font-sans)">PASSED</text>
+              <text x="0" y="10" textAnchor="middle" fontSize="3.5" fill="#F5F2EC" stroke="none" letterSpacing="0.05em" fontFamily="var(--font-mono)">BKK / CUSTOMS</text>
+            </g>
+
+            {/* 4. Left Side: Compas Illustration (Slowly rotates 2° back and forth) */}
+            <motion.g
+              animate={{ rotate: [0, 2, 0] }}
               transition={{
-                duration: p.dur,
-                repeat: Infinity,
-                ease: "easeInOut"
+                duration: 20,
+                ease: "easeInOut",
+                repeat: Infinity
+              }}
+              style={{ originX: '250px', originY: '300px' }}
+            >
+              {/* Outer coordinate ring (increased opacity) */}
+              <circle cx="250" cy="300" r="130" stroke="rgba(245, 242, 236, 0.22)" strokeWidth="0.8" fill="none" />
+              {/* Dotted scale ring */}
+              <circle cx="250" cy="300" r="118" stroke="rgba(245, 242, 236, 0.16)" strokeWidth="0.6" strokeDasharray="3 3" fill="none" />
+              {/* Inner ring */}
+              <circle cx="250" cy="300" r="80" stroke="rgba(245, 242, 236, 0.16)" strokeWidth="0.8" fill="none" />
+
+              {/* Radial Ticks */}
+              <g transform="translate(250, 300)" stroke="rgba(245, 242, 236, 0.18)" strokeWidth="0.8" fill="none">
+                <line x1="0" y1="-122" x2="0" y2="-130" />
+                <line x1="0" y1="122" x2="0" y2="130" />
+                <line x1="-122" y1="0" x2="-130" y2="0" />
+                <line x1="122" y1="0" x2="130" y2="0" />
+                {/* Diagonals */}
+                <line x1="-86" y1="-86" x2="-92" y2="-92" />
+                <line x1="86" y1="-86" x2="92" y2="-92" />
+                <line x1="-86" y1="86" x2="-92" y2="92" />
+                <line x1="86" y1="86" x2="92" y2="92" />
+              </g>
+
+              {/* Cardinal Letters */}
+              <text x="250" y="180" textAnchor="middle" fontSize="10" fill="rgba(245, 242, 236, 0.45)" fontFamily="var(--font-sans)" fontWeight="400" letterSpacing="0.05em" stroke="none">N</text>
+              <text x="250" y="430" textAnchor="middle" fontSize="10" fill="rgba(245, 242, 236, 0.45)" fontFamily="var(--font-sans)" fontWeight="400" letterSpacing="0.05em" stroke="none">S</text>
+              <text x="130" y="303" textAnchor="middle" fontSize="10" fill="rgba(245, 242, 236, 0.45)" fontFamily="var(--font-sans)" fontWeight="400" letterSpacing="0.05em" stroke="none">W</text>
+              <text x="370" y="303" textAnchor="middle" fontSize="10" fill="rgba(245, 242, 236, 0.45)" fontFamily="var(--font-sans)" fontWeight="400" letterSpacing="0.05em" stroke="none">E</text>
+
+              {/* Compass needle (increased opacity outline) */}
+              <path d="M 250,210 L 254,300 L 250,312 L 246,300 Z" fill="none" stroke="rgba(200, 45, 45, 0.28)" strokeWidth="0.8" />
+              <path d="M 250,390 L 254,300 L 250,288 L 246,300 Z" fill="none" stroke="rgba(245, 242, 236, 0.16)" strokeWidth="0.8" />
+            </motion.g>
+
+            {/* 5. Logo Integration (Fixed in center, no rotate, no distort) */}
+            <g transform="translate(250, 300) translate(-26, -34) scale(0.55)">
+              <path
+                d={`${outerPinPath} ${innerTPath}`}
+                fillRule="evenodd"
+                fill="none"
+                stroke="#C82D2D"
+                strokeWidth="1.5"
+                opacity="0.85"
+              />
+            </g>
+
+            {/* 6. Flowing Travel Route (Slow draw-in when footer enters, increased opacity) */}
+            {/* Base dotted route */}
+            <motion.path
+              d="M 250,300 C 290,260 330,230 370,230 C 410,230 440,180 480,170 C 520,160 560,190 600,200 C 640,210 670,170 710,160 C 750,150 780,210 810,220 C 840,230 870,260 880,300 C 890,340 850,370 810,410 C 770,450 720,440 680,470 C 640,500 600,520 550,520"
+              fill="none"
+              stroke="rgba(245, 242, 236, 0.22)"
+              strokeWidth="0.8"
+              strokeDasharray="4 6"
+              initial={{ pathLength: 0 }}
+              whileInView={{ pathLength: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 4.5, ease: "easeOut" }}
+            />
+            {/* Elegant animated connecting route line plotting gradually */}
+            <path
+              d="M 370,230 C 410,230 440,180 480,170 C 520,160 560,190 600,200 C 640,210 670,170 710,160 C 750,150 780,210 810,220 C 840,230 870,260 880,300 C 890,340 850,370 810,410 C 770,450 720,440 680,470 C 640,500 600,520 550,520"
+              fill="none"
+              stroke="#C1121F"
+              strokeWidth="1.2"
+              strokeDasharray="1500"
+              strokeDashoffset="1500"
+              style={{
+                animation: 'drawRoute 12s infinite linear',
+                filter: 'drop-shadow(0 0 2px rgba(193, 18, 31, 0.65))'
               }}
             />
-          ))}
-        </svg>
+            {/* Glowing Destination Nodes with sequential pulsing and text labels */}
+            {[
+              { cx: 370, cy: 230, label: "DUBAI", labelY: 244, delay: "0s" },
+              { cx: 600, cy: 200, label: "THAILAND", labelY: 214, delay: "2s" },
+              { cx: 710, cy: 160, label: "MALAYSIA", labelY: 146, delay: "3.5s" },
+              { cx: 810, cy: 220, label: "SINGAPORE", labelY: 206, delay: "5s" },
+              { cx: 880, cy: 300, label: "VIETNAM", labelY: 314, delay: "6.8s" },
+              { cx: 680, cy: 470, label: "KENYA", labelY: 484, delay: "8.5s" }
+            ].map((node, index) => (
+              <g key={index}>
+                <circle cx={node.cx} cy={node.cy} r="2.5" fill="none" stroke="#C1121F" strokeWidth="1">
+                  <animate attributeName="r" values="2.5;7.5;2.5" dur="3s" repeatCount="indefinite" begin={node.delay} />
+                  <animate attributeName="opacity" values="0.8;0;0.8" dur="3s" repeatCount="indefinite" begin={node.delay} />
+                </circle>
+                <circle cx={node.cx} cy={node.cy} r="2.5" fill="#C1121F" style={{ filter: 'drop-shadow(0 0 2.5px rgba(193, 18, 31, 0.95))' }} />
+                <text 
+                  x={node.cx} 
+                  y={node.labelY} 
+                  textAnchor="middle" 
+                  fontSize="6.5" 
+                  fill="rgba(245, 242, 236, 0.45)" 
+                  fontFamily="var(--font-sans)" 
+                  fontWeight="500" 
+                  letterSpacing="0.08em"
+                  stroke="none"
+                >
+                  {node.label}
+                </text>
+              </g>
+            ))}
+
+            {/* 7. Travel Icons along the Route (increased opacity, thin stroke, crimson accents) */}
+            {/* Icon 1: Airplane at (370, 230) */}
+            <g transform="translate(370, 230) scale(0.9) translate(-12, -12)" stroke="rgba(245, 242, 236, 0.24)" strokeWidth="0.8" fill="none">
+              <path d="M 12,2 L 14,9 L 22,12 L 14,15 L 12,22 L 10,15 L 2,12 L 10,9 Z" />
+              <circle cx="12" cy="2" r="1" fill="#C82D2D" stroke="none" fillOpacity="0.85" />
+            </g>
+            {/* Icon 2: Globe at (480, 170) */}
+            <g transform="translate(480, 170) scale(0.95) translate(-12, -12)" stroke="rgba(245, 242, 236, 0.24)" strokeWidth="0.8" fill="none">
+              <circle cx="12" cy="12" r="10" />
+              <path d="M 12,2 A 5,10 0 0,0 12,22 A 5,10 0 0,0 12,2" />
+              <path d="M 12,2 A 2.2,10 0 0,0 12,22 A 2.2,10 0 0,0 12,2" />
+              <line x1="2.2" y1="12" x2="21.8" y2="12" />
+              <path d="M 4,7 C 8,9 16,9 20,7" stroke="#C82D2D" strokeWidth="0.6" />
+            </g>
+            {/* Icon 3: Palm Tree at (600, 200) */}
+            <g transform="translate(600, 200) scale(0.95) translate(-12, -12)" stroke="rgba(245, 242, 236, 0.24)" strokeWidth="0.8" fill="none">
+              <path d="M 12,22 Q 10,14 12,8" />
+              <path d="M 12,8 Q 5,6 2,9 M 12,8 Q 6,3 7,1 M 12,8 Q 13,3 17,2 M 12,8 Q 18,5 21,8 M 12,8 Q 17,11 19,15 M 12,8 Q 8,10 5,14" />
+              <circle cx="6" cy="5" r="1.5" stroke="#C82D2D" strokeWidth="0.7" />
+            </g>
+            {/* Icon 4: Luxury Hotel Silhouette at (710, 160) */}
+            <g transform="translate(710, 160) scale(0.95) translate(-12, -12)" stroke="rgba(245, 242, 236, 0.24)" strokeWidth="0.8" fill="none">
+              <rect x="3" y="6" width="5" height="16" />
+              <path d="M 8,11 L 14,11 M 8,16 L 14,16" />
+              <rect x="14" y="3" width="7" height="19" />
+              <line x1="5.5" y1="9" x2="5.5" y2="20" strokeDasharray="1 2.5" />
+              <line x1="17.5" y1="6" x2="17.5" y2="20" strokeDasharray="1 2.5" />
+              <line x1="21" y1="3" x2="21" y2="1" stroke="#C82D2D" strokeWidth="0.8" />
+            </g>
+            {/* Icon 5: Mountain Outline at (810, 220) */}
+            <g transform="translate(810, 220) scale(0.95) translate(-12, -12)" stroke="rgba(245, 242, 236, 0.24)" strokeWidth="0.8" fill="none">
+              <path d="M 2,20 L 11,5 L 20,20" />
+              <path d="M 12,20 L 17,11 L 22,20" />
+              <path d="M 9,8 L 11,10 L 13,8" />
+              <circle cx="11" cy="5" r="1.2" fill="#C82D2D" stroke="none" fillOpacity="0.85" />
+            </g>
+            {/* Icon 6: Ocean Waves at (880, 300) */}
+            <g transform="translate(880, 300) scale(0.95) translate(-12, -12)" stroke="rgba(245, 242, 236, 0.24)" strokeWidth="0.8" fill="none">
+              <path d="M 2,9 Q 7,6 12,9 T 22,9" />
+              <path d="M 2,14 Q 7,11 12,14 T 22,14" />
+              <path d="M 6,19 Q 11,16 16,19" stroke="#C82D2D" strokeWidth="0.7" />
+            </g>
+            {/* Icon 7: Cruise Ship at (810, 410) */}
+            <g transform="translate(810, 410) scale(0.95) translate(-12, -12)" stroke="rgba(245, 242, 236, 0.24)" strokeWidth="0.8" fill="none">
+              <path d="M 2,15 L 20,15 L 22,11 L 5,11 Z" />
+              <rect x="6" y="7" width="12" height="4" />
+              <rect x="9" y="4" width="7" height="3" />
+              <line x1="11" y1="4" x2="11" y2="1.5" />
+              <line x1="14" y1="4" x2="14" y2="1.5" stroke="#C82D2D" />
+              <path d="M 0,17 C 5,18 7,16 12,17 C 17,18 19,16 24,17" />
+            </g>
+            {/* Icon 8: Hot Air Balloon at (680, 470) */}
+            <g transform="translate(680, 470) scale(0.95) translate(-12, -12)" stroke="rgba(245, 242, 236, 0.24)" strokeWidth="0.8" fill="none">
+              <path d="M 12,2 C 6,2 6,12 10,16 L 14,16 C 18,12 18,2 12,2 Z" />
+              <path d="M 12,2 C 9.2,2 9.2,12 11,16 M 12,2 C 14.8,2 14.8,12 13,16" />
+              <line x1="10" y1="16" x2="11" y2="19" />
+              <line x1="14" y1="16" x2="13" y2="19" />
+              <rect x="11" y="19" width="2" height="2" />
+              <path d="M 10,16 H 14" stroke="#C82D2D" strokeWidth="0.8" />
+            </g>
+
+            {/* Route Destination Marker (Crimson pin and pulsing auras at (550, 520)) */}
+            <g transform="translate(550, 520)">
+              {/* Dynamic Pulsing Dotted Circle */}
+              <circle cx="0" cy="0" r="10" fill="none" stroke="#C82D2D" strokeWidth="1.0" opacity="0.5">
+                <animate attributeName="r" values="6;16;6" dur="3s" repeatCount="indefinite" />
+                <animate attributeName="opacity" values="0.7;0.1;0.7" dur="3s" repeatCount="indefinite" />
+              </circle>
+
+              {/* Mini Crimson Location Pin */}
+              <g transform="translate(-10, -10) scale(0.85)">
+                <path d="M 12,2 C 8,2 5,5 5,9 C 5,14 12,22 12,22 C 12,22 19,14 19,9 C 19,5 16,2 12,2 Z" fill="none" stroke="#C82D2D" strokeWidth="1.2" />
+                <circle cx="12" cy="9" r="2.2" fill="#C82D2D" stroke="none" />
+              </g>
+            </g>
+
+            {/* 8. Very small floating dust particles (Looping slow drift) */}
+            {[
+              { id: 1, cx: 300, cy: 120, x: [0, 10, -5, 0], y: [0, -12, -20, 0], dur: 12 },
+              { id: 2, cx: 850, cy: 140, x: [0, -12, 8, 0], y: [0, -16, -8, 0], dur: 15 },
+              { id: 3, cx: 480, cy: 450, x: [0, 8, -4, 0], y: [0, -20, -12, 0], dur: 18 },
+              { id: 4, cx: 910, cy: 420, x: [0, -8, 10, 0], y: [0, -12, -25, 0], dur: 14 }
+            ].map((p) => (
+              <motion.circle
+                key={p.id}
+                cx={p.cx}
+                cy={p.cy}
+                r="1"
+                fill="rgba(245, 242, 236, 0.55)"
+                animate={{ x: p.x, y: p.y }}
+                transition={{
+                  duration: p.dur,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+              />
+            ))}
+          </svg>
 
         {/* Big Backdrop Outline Typography */}
         <div
