@@ -421,7 +421,7 @@ function App() {
           </div>
 
           {/* Testimonials Section */}
-          <div className="home-testimonials-fade-wrap">
+          <div id="testimonials" className="home-testimonials-fade-wrap">
             <TestimonialsSection />
           </div>
 
