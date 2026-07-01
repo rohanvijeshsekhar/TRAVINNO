@@ -169,7 +169,7 @@ export default function CareersPage() {
           display: flex;
           flex-direction: column;
           gap: 24px;
-          margin-top: 48px;
+          margin-top: 20px;
         }
 
         .premium-job-card {
@@ -635,7 +635,7 @@ export default function CareersPage() {
               fontWeight: 500,
               letterSpacing: '0.05em',
               color: 'rgba(245, 242, 236, 0.85)',
-              marginBottom: '32px',
+              marginBottom: '16px',
               background: 'rgba(193, 18, 31, 0.05)',
               backdropFilter: 'blur(4px)',
               WebkitBackdropFilter: 'blur(4px)'
