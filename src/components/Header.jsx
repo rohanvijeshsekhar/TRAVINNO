@@ -104,7 +104,27 @@ export default function Header() {
     { name: 'Bali', index: 6 }
   ];
 
-
+  const handleDropdownItemClick = (e, href) => {
+    setIsMobileMenuOpen(false);
+    setHoveredMenu(null);
+    
+    if (href && href.startsWith('#')) {
+      const targetId = href.substring(1);
+      const isHomeSection = ['services', 'testimonials', 'contact', 'why', 'journey'].includes(targetId);
+      if (isHomeSection) {
+        const el = document.getElementById(targetId);
+        if (el) {
+          e.preventDefault();
+          window.location.hash = targetId;
+          if (window.lenis) {
+            window.lenis.scrollTo(el, { duration: 1.5 });
+          } else {
+            el.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+      }
+    }
+  };
 
   return (
     <>
@@ -313,6 +333,8 @@ export default function Header() {
                       onClick={(e) => {
                         if (isLockedMode) {
                           e.preventDefault();
+                        } else {
+                          handleDropdownItemClick(e, item.href);
                         }
                       }}
                       style={{
@@ -834,7 +856,7 @@ export default function Header() {
                                 if (isLockedMode) {
                                   e.preventDefault();
                                 } else {
-                                  setIsMobileMenuOpen(false);
+                                  handleDropdownItemClick(e, item.href);
                                 }
                               }}
                               style={{
@@ -1012,7 +1034,7 @@ export default function Header() {
                         } else {
                           setActiveMobileItem('contact');
                           setActiveTab('contact');
-                          setIsMobileMenuOpen(false);
+                          handleDropdownItemClick(e, '#contact');
                         }
                       }}
                       style={{
