@@ -446,18 +446,17 @@ export default function CareersPage() {
         }
       `}</style>
 
-      {/* Grid check pattern background with light reddish radial gradient */}
+      {/* Grid check pattern background */}
       <div
         style={{
           position: 'absolute',
           inset: 0,
           backgroundImage: `
             linear-gradient(rgba(245, 242, 236, 0.04) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(245, 242, 236, 0.04) 1px, transparent 1px),
-            radial-gradient(circle at 50% 25%, rgba(193, 18, 31, 0.12) 0%, transparent 55%)
+            linear-gradient(90deg, rgba(245, 242, 236, 0.04) 1px, transparent 1px)
           `,
-          backgroundSize: '50px 50px, 50px 50px, auto',
-          backgroundRepeat: 'repeat, repeat, no-repeat',
+          backgroundSize: '50px 50px, 50px 50px',
+          backgroundRepeat: 'repeat, repeat',
           backgroundColor: '#050505',
           zIndex: 1,
           pointerEvents: 'none'
