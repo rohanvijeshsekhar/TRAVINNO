@@ -9,7 +9,7 @@ const INITIAL_JOBS = [
     title: 'Senior Travel Consultant',
     location: 'Dubai, UAE',
     type: 'Full-Time',
-    description: 'Help design premium leisure and corporate travel experiences for global clients.',
+    description: 'Help create premium leisure and corporate travel experiences for global clients.',
     status: 'Open'
   },
   {
@@ -27,6 +27,14 @@ const INITIAL_JOBS = [
     type: 'Contract',
     description: 'Deliver bespoke local guiding, transfer coordination, and VIP guest relations.',
     status: 'Open'
+  },
+  {
+    id: 4,
+    title: 'Digital Marketing Lead',
+    location: 'London, UK',
+    type: 'Full-Time',
+    description: 'Direct digital brand strategies, campaigns, and audience growth across global luxury sectors.',
+    status: 'Closed'
   }
 ];
 
@@ -150,11 +158,11 @@ export default function CareersPage() {
         /* Local Careers Section styling to keep index.css lean */
         .careers-container {
           position: relative; 
-          zIndex: 2; 
-          maxWidth: 1200px; 
+          z-index: 2; 
+          max-width: 1200px; 
           margin: 0 auto; 
           padding: 160px 24px 120px 24px; 
-          boxSizing: border-box;
+          box-sizing: border-box;
         }
 
         .job-card-grid {
@@ -230,6 +238,10 @@ export default function CareersPage() {
           color: rgba(245, 242, 236, 0.65);
           font-weight: 300;
           max-width: 480px;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
         }
 
         .job-card-action {
@@ -414,17 +426,18 @@ export default function CareersPage() {
         }
       `}</style>
 
-      {/* Grid check pattern background */}
+      {/* Grid check pattern background with light reddish radial gradient */}
       <div
         style={{
           position: 'absolute',
           inset: 0,
           backgroundImage: `
-            linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px)
+            linear-gradient(rgba(245, 242, 236, 0.04) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(245, 242, 236, 0.04) 1px, transparent 1px),
+            radial-gradient(circle at 50% 25%, rgba(193, 18, 31, 0.12) 0%, transparent 55%)
           `,
-          backgroundSize: '50px 50px',
-          backgroundRepeat: 'repeat',
+          backgroundSize: '50px 50px, 50px 50px, auto',
+          backgroundRepeat: 'repeat, repeat, no-repeat',
           backgroundColor: '#050505',
           zIndex: 1,
           pointerEvents: 'none'
@@ -438,43 +451,60 @@ export default function CareersPage() {
           <motion.span
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 0.45, y: 0 }}
-            transition={faderTransition}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             style={{
               display: 'inline-block',
               fontFamily: 'var(--font-sans)',
               fontSize: '0.75rem',
               fontWeight: 600,
-              letterSpacing: '2px',
+              letterSpacing: '2.5px',
               color: 'rgba(245, 242, 236, 0.8)',
               textTransform: 'uppercase',
               marginBottom: '16px'
             }}
           >
-            Careers
+            CAREERS
           </motion.span>
           
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ ...faderTransition, delay: 0.1 }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
             style={{
               fontFamily: 'var(--font-heading)',
-              fontSize: 'clamp(2rem, 5vw, 3.5rem)',
-              fontWeight: 400,
+              fontSize: 'clamp(2.2rem, 5vw, 3.8rem)',
+              fontWeight: 450,
               lineHeight: 1.15,
               color: '#F5F2EC',
               margin: '0 0 24px 0',
-              textTransform: 'uppercase',
               letterSpacing: '-0.5px'
             }}
           >
-            Build Extraordinary <br />Journeys With Us
+            Build Extraordinary <br />
+            <span
+              style={{
+                fontFamily: "'Allura', cursive",
+                fontSize: '1.25em',
+                fontWeight: 400,
+                letterSpacing: '0.02em',
+                lineHeight: '1.2',
+                display: 'inline-block',
+                marginTop: '12px',
+                paddingBottom: '14px',
+                background: 'linear-gradient(to bottom, #F5F2EC 20%, #E8A7A7 60%, #C1121F 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text'
+              }}
+            >
+              Journeys With Us
+            </span>
           </motion.h1>
 
           <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 0.75 }}
-            transition={{ ...faderTransition, delay: 0.2 }}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 0.75, y: 0 }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
             style={{
               fontFamily: 'var(--font-sans)',
               fontSize: 'clamp(1rem, 1.8vw, 1.2rem)',
@@ -493,13 +523,14 @@ export default function CareersPage() {
         <section style={{ position: 'relative' }}>
           <motion.h2
             initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 0.55, y: 0 }}
-            transition={{ ...faderTransition, delay: 0.3 }}
+            whileInView={{ opacity: 0.55, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             style={{
               fontFamily: 'var(--font-sans)',
               fontSize: '0.75rem',
               fontWeight: 600,
-              letterSpacing: '2px',
+              letterSpacing: '2.5px',
               color: 'rgba(245, 242, 236, 0.8)',
               textTransform: 'uppercase',
               borderBottom: '1px solid rgba(245, 242, 236, 0.08)',
@@ -516,9 +547,10 @@ export default function CareersPage() {
                 <motion.div
                   key={job.id}
                   className="premium-job-card"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ ...faderTransition, delay: 0.3 + (idx * 0.1) }}
+                  initial={{ opacity: 0, y: 25 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: idx * 0.05 }}
                 >
                   <div className="job-card-info">
                     <div className="job-card-meta">
@@ -549,8 +581,9 @@ export default function CareersPage() {
             /* EMPTY STATE */
             <motion.div
               initial={{ opacity: 0, scale: 0.98 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ ...faderTransition, delay: 0.3 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
               style={{
                 textAlign: 'center',
                 padding: '80px 40px',
@@ -592,12 +625,17 @@ export default function CareersPage() {
               {!formSubmitted ? (
                 <>
                   <div style={{ marginBottom: '32px' }}>
-                    <span style={{ fontFamily: 'var(--font-sans)', fontSize: '0.72rem', fontWeight: 600, letterSpacing: '1px', color: 'rgba(245, 242, 236, 0.4)', textTransform: 'uppercase' }}>
-                      {selectedJob ? 'Applying for' : 'Submit Your Application'}
-                    </span>
-                    <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.8rem', fontWeight: 500, color: '#F5F2EC', margin: '4px 0 0 0' }}>
-                      {selectedJob ? selectedJob.title : 'General Application'}
+                    <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '2rem', fontWeight: 500, color: '#F5F2EC', margin: '0 0 8px 0' }}>
+                      Submit Your Application
                     </h2>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                      <span style={{ fontFamily: 'var(--font-sans)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '1px', color: 'rgba(245, 242, 236, 0.45)', textTransform: 'uppercase' }}>
+                        Applying for
+                      </span>
+                      <span style={{ fontFamily: 'var(--font-sans)', fontSize: '1.05rem', fontWeight: 500, color: '#C1121F' }}>
+                        {selectedJob ? selectedJob.title : 'General Application'}
+                      </span>
+                    </div>
                   </div>
 
                   <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
