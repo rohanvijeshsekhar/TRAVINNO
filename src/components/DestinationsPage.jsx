@@ -458,9 +458,9 @@ export default function DestinationsPage() {
         }
 
         .destination-detail-desc {
-          font-size: clamp(1.05rem, 1.8vw, 1.25rem);
-          line-height: 1.75;
-          color: rgba(245, 242, 236, 0.8);
+          font-size: clamp(0.92rem, 1.4vw, 1.08rem);
+          line-height: 1.8;
+          color: rgba(245, 242, 236, 0.75);
           font-weight: 300;
           margin-bottom: 48px;
           border-left: 2px solid #C1121F;
