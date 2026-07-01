@@ -514,11 +514,12 @@ export default function CareersPage() {
                   width: '100%',
                   height: '100%',
                   objectFit: 'cover',
-                  opacity: 0.42,
+                  opacity: 0.35,
                   borderRadius: '16px',
+                  filter: 'grayscale(100%) contrast(85%) brightness(75%)',
                   transition: 'opacity 0.5s ease',
-                  WebkitMaskImage: 'radial-gradient(circle at 75% 50%, black 10%, transparent 85%)',
-                  maskImage: 'radial-gradient(circle at 75% 50%, black 10%, transparent 85%)'
+                  WebkitMaskImage: 'radial-gradient(ellipse 40% 45% at 50% 50%, black 10%, transparent 100%)',
+                  maskImage: 'radial-gradient(ellipse 40% 45% at 50% 50%, black 10%, transparent 100%)'
                 }}
               />
             </motion.div>
