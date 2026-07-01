@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Compass, ArrowRight, X, Calendar, MapPin, Award, CheckCircle } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { ArrowRight, ArrowLeft, CheckCircle } from 'lucide-react';
 
 const destinationsData = [
   {
@@ -142,6 +142,28 @@ export default function DestinationsPage() {
       window.lenis.scrollTo(0, { immediate: true });
     }
   }, [activeDestination]);
+
+  // Synchronize state with URL hash (enables reload/back navigation to work seamlessly)
+  useEffect(() => {
+    const handleHash = () => {
+      const hash = window.location.hash;
+      const match = hash.match(/^#destination-(.+)$/);
+      if (match) {
+        const id = match[1];
+        const dest = destinationsData.find(d => d.id === id);
+        if (dest) {
+          setActiveDestination(dest);
+          return;
+        }
+      }
+      setActiveDestination(null);
+    };
+
+    window.addEventListener('hashchange', handleHash);
+    handleHash(); // check on initial mount
+
+    return () => window.removeEventListener('hashchange', handleHash);
+  }, []);
 
   const regions = ['All', 'Middle East', 'Southeast Asia', 'East Africa'];
 
@@ -341,128 +363,139 @@ export default function DestinationsPage() {
           transform: translateX(4px);
         }
 
-        /* DETAIL VIEW POPUP OVERLAY */
-        .destination-detail-overlay {
-          position: fixed;
-          inset: 0;
-          background: rgba(5, 5, 5, 0.85);
-          backdrop-filter: blur(20px);
-          -webkit-backdrop-filter: blur(20px);
-          z-index: 1000;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 24px;
+        /* EDITORIAL DETAIL VIEW STYLING */
+        .destination-detail-page {
+          position: relative;
+          z-index: 3;
+          width: 100%;
           box-sizing: border-box;
         }
 
-        .destination-detail-window {
+        .destination-detail-hero {
           width: 100%;
-          max-width: 860px;
-          height: 80vh;
-          background: #0B0B0D;
-          border: 1px solid rgba(245, 242, 236, 0.1);
-          border-radius: 28px;
-          overflow-y: auto;
-          box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
-          position: relative;
-          scrollbar-width: none;
-        }
-
-        .destination-detail-window::-webkit-scrollbar {
-          display: none;
-        }
-
-        .destination-detail-hero-banner {
-          width: 100%;
-          height: 33.3%;
+          height: 33.3vh;
+          min-height: 320px;
           position: relative;
           overflow: hidden;
-          border-bottom: 1px solid rgba(245, 242, 236, 0.06);
+          border-bottom: 1px solid rgba(245, 242, 236, 0.08);
         }
 
-        .destination-detail-hero-banner img {
+        .destination-detail-hero img {
           width: 100%;
           height: 100%;
           object-fit: cover;
-          filter: grayscale(100%) contrast(95%) brightness(55%);
+          filter: grayscale(100%) contrast(95%) brightness(60%);
         }
 
         .destination-detail-hero-overlay {
           position: absolute;
           inset: 0;
-          background: linear-gradient(180deg, rgba(5, 5, 5, 0.2) 0%, rgba(11, 11, 13, 0.98) 100%);
+          background: linear-gradient(180deg, rgba(5, 5, 5, 0.35) 0%, rgba(5, 5, 5, 0.95) 100%);
           display: flex;
           flex-direction: column;
           justify-content: space-between;
-          padding: 24px 32px 18px 32px;
+          padding: 100px 24px 32px 24px;
           box-sizing: border-box;
+          z-index: 2;
         }
 
-        .close-detail-btn {
-          width: 36px;
-          height: 36px;
-          border-radius: 50%;
-          background: rgba(255, 255, 255, 0.05);
-          border: 1px solid rgba(255, 255, 255, 0.08);
-          color: #F5F2EC;
+        .destination-detail-hero-content {
+          max-width: 900px;
+          margin: 0 auto;
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+        }
+
+        .destination-detail-meta {
           display: flex;
           align-items: center;
-          justify-content: center;
-          cursor: pointer;
-          align-self: flex-end;
-          transition: all 0.3s ease;
-          outline: none;
+          gap: 16px;
+          font-family: var(--font-sans);
+          font-size: 0.75rem;
+          font-weight: 500;
+          color: rgba(245, 242, 236, 0.65);
         }
 
-        .close-detail-btn:hover {
-          background: rgba(193, 18, 31, 0.15);
-          border-color: #C1121F;
-          color: #FFFFFF;
+        .destination-detail-title {
+          font-family: var(--font-heading);
+          font-size: clamp(2rem, 5vw, 3rem);
+          font-weight: 450;
+          line-height: 1.2;
+          color: #F5F2EC;
+          margin: 0;
+          letter-spacing: -0.4px;
+        }
+
+        .back-nav-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          background: none;
+          border: none;
+          color: rgba(245, 242, 236, 0.6);
+          font-family: var(--font-sans);
+          font-size: 0.82rem;
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          padding: 0;
+          width: fit-content;
+        }
+
+        .back-nav-btn:hover {
+          color: #C1121F;
+          transform: translateX(-4px);
         }
 
         .destination-detail-body {
-          padding: 32px 40px 60px 40px;
+          max-width: 900px;
+          margin: 0 auto;
+          padding: 56px 24px 140px 24px;
           box-sizing: border-box;
           font-family: var(--font-sans);
         }
 
         .destination-detail-desc {
-          font-size: clamp(1rem, 1.8vw, 1.15rem);
-          line-height: 1.7;
+          font-size: clamp(1.05rem, 1.8vw, 1.25rem);
+          line-height: 1.75;
           color: rgba(245, 242, 236, 0.8);
           font-weight: 300;
-          margin-bottom: 40px;
+          margin-bottom: 48px;
+          border-left: 2px solid #C1121F;
+          padding-left: 24px;
         }
 
         .detail-sections-grid {
           display: grid;
           grid-template-columns: 1fr 1.1fr;
-          gap: 40px;
+          gap: 48px;
         }
 
         .detail-section-title {
           font-family: var(--font-heading);
-          font-size: 1.25rem;
+          font-size: 1.35rem;
           font-weight: 450;
           color: #F5F2EC;
-          margin: 0 0 20px 0;
+          margin: 0 0 24px 0;
           border-bottom: 1px solid rgba(245, 242, 236, 0.08);
-          padding-bottom: 8px;
+          padding-bottom: 10px;
+          letter-spacing: -0.2px;
         }
 
         .experiences-list {
           display: flex;
           flex-direction: column;
-          gap: 16px;
+          gap: 18px;
         }
 
         .experience-item {
           display: flex;
           gap: 12px;
           align-items: flex-start;
-          font-size: 0.92rem;
-          line-height: 1.5;
+          font-size: 0.95rem;
+          line-height: 1.55;
           color: rgba(245, 242, 236, 0.7);
         }
 
@@ -473,10 +506,10 @@ export default function DestinationsPage() {
         }
 
         .itinerary-day-card {
-          background: rgba(255, 255, 255, 0.01);
-          border: 1px solid rgba(245, 242, 236, 0.04);
-          border-radius: 12px;
-          padding: 14px 18px;
+          background: rgba(255, 255, 255, 0.015);
+          border: 1px solid rgba(245, 242, 236, 0.05);
+          border-radius: 16px;
+          padding: 16px 20px;
           display: flex;
           flex-direction: column;
           gap: 4px;
@@ -492,17 +525,17 @@ export default function DestinationsPage() {
 
         .itinerary-day-title {
           font-family: var(--font-heading);
-          font-size: 0.95rem;
+          font-size: 1rem;
           font-weight: 450;
           color: #F5F2EC;
           margin: 0;
         }
 
         .itinerary-day-desc {
-          font-size: 0.8rem;
+          font-size: 0.82rem;
           line-height: 1.5;
           color: rgba(245, 242, 236, 0.55);
-          margin: 4px 0 0 0;
+          margin: 6px 0 0 0;
           font-weight: 300;
         }
 
@@ -528,13 +561,10 @@ export default function DestinationsPage() {
         @media (max-width: 768px) {
           .detail-sections-grid {
             grid-template-columns: 1fr;
-            gap: 32px;
-          }
-          .destination-detail-window {
-            height: 90vh;
+            gap: 36px;
           }
           .destination-detail-body {
-            padding: 24px 20px 48px 20px;
+            padding: 40px 20px 80px 20px;
           }
         }
 
@@ -545,359 +575,351 @@ export default function DestinationsPage() {
         }
       `}</style>
 
-      {/* Base solid black background layer */}
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          backgroundColor: '#050505',
-          zIndex: 0,
-          pointerEvents: 'none'
-        }}
-      />
+      {/* RENDER DETAILED VIEW */}
+      {activeDestination ? (
+        <div className="destination-detail-page">
+          
+          {/* Header Image banner occupying 1/3 viewport height */}
+          <div className="destination-detail-hero">
+            <img
+              src={`${import.meta.env.BASE_URL}${activeDestination.image}`}
+              alt={activeDestination.name}
+            />
+            <div className="destination-detail-hero-overlay">
+              <div className="destination-detail-hero-content" style={{ marginBottom: 'auto' }}>
+                <button
+                  onClick={() => {
+                    setActiveDestination(null);
+                    window.location.hash = 'destinations';
+                  }}
+                  className="back-nav-btn"
+                >
+                  <ArrowLeft size={16} />
+                  Back to Destinations
+                </button>
+              </div>
 
-      {/* Grid lines overlay layer */}
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          backgroundImage: `
-            linear-gradient(rgba(245, 242, 236, 0.04) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(245, 242, 236, 0.04) 1px, transparent 1px)
-          `,
-          backgroundSize: '100px 100px, 100px 100px',
-          backgroundRepeat: 'repeat, repeat',
-          zIndex: 2,
-          pointerEvents: 'none'
-        }}
-      />
+              <div className="destination-detail-hero-content">
+                <div className="destination-detail-meta">
+                  <span style={{ color: '#C1121F', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                    {activeDestination.region}
+                  </span>
+                  <span style={{ width: '4px', height: '4px', backgroundColor: 'rgba(245, 242, 236, 0.3)', borderRadius: '50%' }} />
+                  <span>Custom Itinerary</span>
+                </div>
+                <h1 className="destination-detail-title">{activeDestination.name}</h1>
+                <p style={{ color: 'rgba(245, 242, 236, 0.7)', fontSize: '0.95rem', margin: '4px 0 0 0', fontWeight: 300 }}>
+                  {activeDestination.tagline}
+                </p>
+              </div>
+            </div>
+          </div>
 
-      {/* Subtle Background/Foreground Editorial Hero Artwork */}
-      <div
-        className="hero-artwork-container"
-        style={{
-          position: 'absolute',
-          right: 0,
-          top: 0,
-          width: '54%',
-          height: '580px',
-          pointerEvents: 'none',
-          zIndex: 1,
-          overflow: 'hidden',
-          WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 70%)',
-          maskImage: 'linear-gradient(to right, transparent 0%, black 70%)'
-        }}
-      >
-        {/* Subtle Floating Movement wrapper */}
-        <motion.div
-          animate={{ y: [0, -3, 0] }}
-          transition={{
-            duration: 6,
-            ease: 'easeInOut',
-            repeat: Infinity
-          }}
-          style={{
-            width: '100%',
-            height: '100%',
-            position: 'relative'
-          }}
-        >
-          <img
-            src={`${import.meta.env.BASE_URL}images/destinations_hero.png`}
-            alt="Global Destinations map compass"
+          {/* Main article narrative content below the hero */}
+          <div className="destination-detail-body">
+            <p className="destination-detail-desc">
+              {activeDestination.description}
+            </p>
+
+            <div className="detail-sections-grid">
+              
+              {/* Left Column: Curated Experiences */}
+              <div>
+                <h2 className="detail-section-title">Bespoke Experiences</h2>
+                <div className="experiences-list">
+                  {activeDestination.experiences.map((exp, i) => (
+                    <div key={i} className="experience-item">
+                      <CheckCircle size={16} style={{ color: '#C1121F', marginTop: '3px', flexShrink: 0 }} />
+                      <span>{exp}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Right Column: Sample Itinerary */}
+              <div>
+                <h2 className="detail-section-title">Sample Bespoke Itinerary</h2>
+                <div className="itinerary-list">
+                  {activeDestination.itinerary.map((day) => (
+                    <div key={day.day} className="itinerary-day-card">
+                      <span className="itinerary-day-num">Day {day.day}</span>
+                      <h4 className="itinerary-day-title">{day.title}</h4>
+                      <p className="itinerary-day-desc">{day.desc}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+            </div>
+
+            {/* Inquiry Call to Action */}
+            <div style={{ display: 'flex', justifyContent: 'center', marginTop: '64px' }}>
+              <a
+                href="#contact"
+                style={{
+                  backgroundColor: '#C1121F',
+                  color: '#FFFFFF',
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '0.82rem',
+                  fontWeight: 600,
+                  letterSpacing: '1.5px',
+                  textTransform: 'uppercase',
+                  textDecoration: 'none',
+                  padding: '12px 32px',
+                  borderRadius: '100px',
+                  boxShadow: '0 8px 24px rgba(193, 18, 31, 0.25)',
+                  transition: 'all 0.3s ease',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = '#a00f19';
+                  e.currentTarget.style.boxShadow = '0 8px 28px rgba(193, 18, 31, 0.45)';
+                  e.currentTarget.style.transform = 'translateY(-2px)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = '#C1121F';
+                  e.currentTarget.style.boxShadow = '0 8px 24px rgba(193, 18, 31, 0.25)';
+                  e.currentTarget.style.transform = 'translateY(0px)';
+                }}
+              >
+                Inquire About This Journey <ArrowRight size={14} />
+              </a>
+            </div>
+          </div>
+
+        </div>
+      ) : (
+        /* RENDER STANDARD INDEX VIEW */
+        <>
+          {/* Base solid black background layer */}
+          <div
             style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              opacity: 0.38,
-              filter: 'grayscale(100%) contrast(80%) brightness(65%)',
-              transition: 'opacity 0.5s ease',
-              WebkitMaskImage: 'linear-gradient(to bottom, black 82%, transparent 100%)',
-              maskImage: 'linear-gradient(to bottom, black 82%, transparent 100%)'
+              position: 'absolute',
+              inset: 0,
+              backgroundColor: '#050505',
+              zIndex: 0,
+              pointerEvents: 'none'
             }}
           />
-        </motion.div>
-      </div>
 
-      <div className="destinations-container">
-        
-        {/* HERO SECTION */}
-        <section style={{ marginBottom: '40px', position: 'relative' }}>
-          
-          <div style={{ maxWidth: '640px', position: 'relative', zIndex: 3 }}>
-            <motion.span
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          {/* Grid lines overlay layer */}
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              backgroundImage: `
+                linear-gradient(rgba(245, 242, 236, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(245, 242, 236, 0.04) 1px, transparent 1px)
+              `,
+              backgroundSize: '100px 100px, 100px 100px, 100px 100px',
+              backgroundRepeat: 'repeat, repeat, repeat',
+              zIndex: 2,
+              pointerEvents: 'none'
+            }}
+          />
+
+          {/* Subtle Background/Foreground Editorial Hero Artwork */}
+          <div
+            className="hero-artwork-container"
+            style={{
+              position: 'absolute',
+              right: 0,
+              top: 0,
+              width: '54%',
+              height: '580px',
+              pointerEvents: 'none',
+              zIndex: 1,
+              overflow: 'hidden',
+              WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 70%)',
+              maskImage: 'linear-gradient(to right, transparent 0%, black 70%)'
+            }}
+          >
+            {/* Subtle Floating Movement wrapper */}
+            <motion.div
+              animate={{ y: [0, -3, 0] }}
+              transition={{
+                duration: 6,
+                ease: 'easeInOut',
+                repeat: Infinity
+              }}
               style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '6px',
-                padding: '4px 12px',
-                border: '1px solid rgba(193, 18, 31, 0.18)',
-                borderRadius: '100px',
-                fontFamily: 'var(--font-sans)',
-                fontSize: '0.72rem',
-                fontWeight: 500,
-                letterSpacing: '0.05em',
-                color: 'rgba(245, 242, 236, 0.85)',
-                marginBottom: '16px',
-                background: 'rgba(193, 18, 31, 0.05)',
-                backdropFilter: 'blur(4px)',
-                WebkitBackdropFilter: 'blur(4px)'
+                width: '100%',
+                height: '100%',
+                position: 'relative'
               }}
             >
-              <span
+              <img
+                src={`${import.meta.env.BASE_URL}images/destinations_hero.png`}
+                alt="Global Destinations map compass"
                 style={{
-                  width: '6px',
-                  height: '6px',
-                  backgroundColor: '#C1121F',
-                  borderRadius: '50%',
-                  display: 'inline-block'
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  opacity: 0.38,
+                  filter: 'grayscale(100%) contrast(80%) brightness(65%)',
+                  transition: 'opacity 0.5s ease',
+                  WebkitMaskImage: 'linear-gradient(to bottom, black 82%, transparent 100%)',
+                  maskImage: 'linear-gradient(to bottom, black 82%, transparent 100%)'
                 }}
               />
-              Explore
-            </motion.span>
-            
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-              style={{
-                fontFamily: 'var(--font-heading)',
-                fontSize: 'clamp(2.2rem, 5vw, 3.8rem)',
-                fontWeight: 450,
-                lineHeight: 1.15,
-                color: '#F5F2EC',
-                margin: '0 0 16px 0',
-                letterSpacing: '-0.5px'
-              }}
-            >
-              Our Extraordinary <br />
-              <span
-                style={{
-                  fontFamily: "'Allura', cursive",
-                  fontSize: '1.25em',
-                  fontWeight: 400,
-                  letterSpacing: '0.02em',
-                  lineHeight: '1.2',
-                  display: 'inline-block',
-                  marginTop: '-4px',
-                  paddingBottom: '0px',
-                  background: 'linear-gradient(to bottom, #F5F2EC 20%, #E8A7A7 60%, #C1121F 100%)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text'
-                }}
-              >
-                Destinations
-              </span>
-            </motion.h1>
-
-            <motion.p
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 0.75, y: 0 }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-              style={{
-                fontFamily: 'var(--font-sans)',
-                fontSize: 'clamp(1rem, 1.8vw, 1.2rem)',
-                lineHeight: 1.65,
-                color: '#F5F2EC',
-                margin: 0,
-                maxWidth: '680px',
-                fontWeight: 300
-              }}
-            >
-              A curated collection of the world's most remarkable luxury destinations, bespoke itineraries, and elite travel experiences.
-            </motion.p>
-          </div>
-        </section>
-
-        {/* DESTINATIONS FILTER & GRID SECTION */}
-        <section style={{ position: 'relative' }}>
-          
-          {/* Region filter tabs */}
-          <div className="filter-tabs-container">
-            {regions.map((region) => (
-              <button
-                key={region}
-                className={`filter-tab ${selectedRegion === region ? 'active' : ''}`}
-                onClick={() => setSelectedRegion(region)}
-              >
-                {region}
-              </button>
-            ))}
-          </div>
-
-          {/* Grid listing */}
-          <div className="destinations-grid">
-            {filteredDestinations.map((dest, idx) => (
-              <motion.div
-                key={dest.id}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: idx * 0.06 }}
-                className="destination-editorial-card"
-                onClick={() => setActiveDestination(dest)}
-              >
-                <div className="destination-img-wrapper">
-                  <img
-                    src={`${import.meta.env.BASE_URL}${dest.image}`}
-                    alt={dest.name}
-                  />
-                </div>
-                <div className="destination-content-block">
-                  <div>
-                    <div className="destination-meta-line">
-                      <span className="destination-region-badge">{dest.region}</span>
-                    </div>
-                    <h3 className="destination-card-title">{dest.name}</h3>
-                    <p className="destination-card-tagline">{dest.tagline}</p>
-                  </div>
-                  <div className="destination-card-footer">
-                    <span>Explore Bespoke Journeys</span>
-                    <div className="destination-card-arrow">
-                      <ArrowRight size={14} />
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </section>
-      </div>
-
-      {/* DETAIL MODAL DRAWER OVERLAY */}
-      <AnimatePresence>
-        {activeDestination && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="destination-detail-overlay"
-            onClick={() => setActiveDestination(null)}
-          >
-            {/* Slide up detailed window */}
-            <motion.div
-              initial={{ y: '50px', scale: 0.95 }}
-              animate={{ y: 0, scale: 1 }}
-              exit={{ y: '50px', scale: 0.95 }}
-              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-              className="destination-detail-window"
-              onClick={(e) => e.stopPropagation()}
-            >
-              
-              {/* Header Image banner occupying 1/3 window height */}
-              <div className="destination-detail-hero-banner">
-                <img
-                  src={`${import.meta.env.BASE_URL}${activeDestination.image}`}
-                  alt={activeDestination.name}
-                />
-                <div className="destination-detail-hero-overlay">
-                  <button
-                    onClick={() => setActiveDestination(null)}
-                    aria-label="Close details"
-                    className="close-detail-btn"
-                  >
-                    <X size={18} />
-                  </button>
-
-                  <div style={{ maxWidth: '800px', width: '100%', margin: '0 auto' }}>
-                    <div className="editorial-detail-meta" style={{ marginBottom: '4px' }}>
-                      <span style={{ color: '#C1121F', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                        {activeDestination.region}
-                      </span>
-                    </div>
-                    <h2 className="editorial-detail-title" style={{ fontSize: '2.5rem' }}>{activeDestination.name}</h2>
-                    <p style={{ color: 'rgba(245, 242, 236, 0.8)', fontSize: '0.9rem', margin: '4px 0 0 0', fontWeight: 300 }}>
-                      {activeDestination.tagline}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Detailed information columns */}
-              <div className="destination-detail-body">
-                <p className="destination-detail-desc">
-                  {activeDestination.description}
-                </p>
-
-                <div className="detail-sections-grid">
-                  
-                  {/* Left Column: Curated Experiences */}
-                  <div>
-                    <h3 className="detail-section-title">Bespoke Experiences</h3>
-                    <div className="experiences-list">
-                      {activeDestination.experiences.map((exp, i) => (
-                        <div key={i} className="experience-item">
-                          <CheckCircle size={16} className="experience-bullet" style={{ color: '#C1121F', marginTop: '2px', flexShrink: 0 }} />
-                          <span>{exp}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Right Column: Sample Itinerary */}
-                  <div>
-                    <h3 className="detail-section-title">Sample Bespoke Itinerary</h3>
-                    <div className="itinerary-list">
-                      {activeDestination.itinerary.map((day) => (
-                        <div key={day.day} className="itinerary-day-card">
-                          <span className="itinerary-day-num">Day {day.day}</span>
-                          <h4 className="itinerary-day-title">{day.title}</h4>
-                          <p className="itinerary-day-desc">{day.desc}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                </div>
-
-                {/* Inquiry Call to Action */}
-                <div style={{ display: 'flex', justifyContent: 'center', marginTop: '56px' }}>
-                  <a
-                    href="#contact"
-                    onClick={() => setActiveDestination(null)}
-                    style={{
-                      backgroundColor: '#C1121F',
-                      color: '#FFFFFF',
-                      fontFamily: 'var(--font-sans)',
-                      fontSize: '0.82rem',
-                      fontWeight: 600,
-                      letterSpacing: '1.5px',
-                      textTransform: 'uppercase',
-                      textDecoration: 'none',
-                      padding: '12px 32px',
-                      borderRadius: '100px',
-                      boxShadow: '0 8px 24px rgba(193, 18, 31, 0.25)',
-                      transition: 'all 0.3s ease',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '8px'
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundColor = '#a00f19';
-                      e.currentTarget.style.boxShadow = '0 8px 28px rgba(193, 18, 31, 0.45)';
-                      e.currentTarget.style.transform = 'translateY(-2px)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundColor = '#C1121F';
-                      e.currentTarget.style.boxShadow = '0 8px 24px rgba(193, 18, 31, 0.25)';
-                      e.currentTarget.style.transform = 'translateY(0px)';
-                    }}
-                  >
-                    Inquire About This Journey <ArrowRight size={14} />
-                  </a>
-                </div>
-
-              </div>
-
             </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          </div>
 
+          <div className="destinations-container">
+            
+            {/* HERO SECTION */}
+            <section style={{ marginBottom: '40px', position: 'relative' }}>
+              
+              <div style={{ maxWidth: '640px', position: 'relative', zIndex: 3 }}>
+                <motion.span
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    padding: '4px 12px',
+                    border: '1px solid rgba(193, 18, 31, 0.18)',
+                    borderRadius: '100px',
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '0.72rem',
+                    fontWeight: 500,
+                    letterSpacing: '0.05em',
+                    color: 'rgba(245, 242, 236, 0.85)',
+                    marginBottom: '16px',
+                    background: 'rgba(193, 18, 31, 0.05)',
+                    backdropFilter: 'blur(4px)',
+                    WebkitBackdropFilter: 'blur(4px)'
+                  }}
+                >
+                  <span
+                    style={{
+                      width: '6px',
+                      height: '6px',
+                      backgroundColor: '#C1121F',
+                      borderRadius: '50%',
+                      display: 'inline-block'
+                    }}
+                  />
+                  Explore
+                </motion.span>
+                
+                <motion.h1
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
+                  style={{
+                    fontFamily: 'var(--font-heading)',
+                    fontSize: 'clamp(2.2rem, 5vw, 3.8rem)',
+                    fontWeight: 450,
+                    lineHeight: 1.15,
+                    color: '#F5F2EC',
+                    margin: '0 0 16px 0',
+                    letterSpacing: '-0.5px'
+                  }}
+                >
+                  Our Extraordinary <br />
+                  <span
+                    style={{
+                      fontFamily: "'Allura', cursive",
+                      fontSize: '1.25em',
+                      fontWeight: 400,
+                      letterSpacing: '0.02em',
+                      lineHeight: '1.2',
+                      display: 'inline-block',
+                      marginTop: '-4px',
+                      paddingBottom: '0px',
+                      background: 'linear-gradient(to bottom, #F5F2EC 20%, #E8A7A7 60%, #C1121F 100%)',
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                      backgroundClip: 'text'
+                    }}
+                  >
+                    Destinations
+                  </span>
+                </motion.h1>
+
+                <motion.p
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 0.75, y: 0 }}
+                  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+                  style={{
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: 'clamp(1rem, 1.8vw, 1.2rem)',
+                    lineHeight: 1.65,
+                    color: '#F5F2EC',
+                    margin: 0,
+                    maxWidth: '680px',
+                    fontWeight: 300
+                  }}
+                >
+                  A curated collection of the world's most remarkable luxury destinations, bespoke itineraries, and elite travel experiences.
+                </motion.p>
+              </div>
+            </section>
+
+            {/* DESTINATIONS FILTER & GRID SECTION */}
+            <section style={{ position: 'relative' }}>
+              
+              {/* Region filter tabs */}
+              <div className="filter-tabs-container">
+                {regions.map((region) => (
+                  <button
+                    key={region}
+                    className={`filter-tab ${selectedRegion === region ? 'active' : ''}`}
+                    onClick={() => setSelectedRegion(region)}
+                  >
+                    {region}
+                  </button>
+                ))}
+              </div>
+
+              {/* Grid listing */}
+              <div className="destinations-grid">
+                {filteredDestinations.map((dest, idx) => (
+                  <motion.div
+                    key={dest.id}
+                    initial={{ opacity: 0, y: 24 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-40px" }}
+                    transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: idx * 0.06 }}
+                    className="destination-editorial-card"
+                    onClick={() => {
+                      setActiveDestination(dest);
+                      window.location.hash = `destination-${dest.id}`;
+                    }}
+                  >
+                    <div className="destination-img-wrapper">
+                      <img
+                        src={`${import.meta.env.BASE_URL}${dest.image}`}
+                        alt={dest.name}
+                      />
+                    </div>
+                    <div className="destination-content-block">
+                      <div>
+                        <div className="destination-meta-line">
+                          <span className="destination-region-badge">{dest.region}</span>
+                        </div>
+                        <h3 className="destination-card-title">{dest.name}</h3>
+                        <p className="destination-card-tagline">{dest.tagline}</p>
+                      </div>
+                      <div className="destination-card-footer">
+                        <span>Explore Bespoke Journeys</span>
+                        <div className="destination-card-arrow">
+                          <ArrowRight size={14} />
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </section>
+          </div>
+        </>
+      )}
     </div>
   );
 }
