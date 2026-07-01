@@ -110,7 +110,7 @@ function App() {
           setCurrentView('contact');
         } else if (hash === '#careers') {
           setCurrentView('careers');
-        } else if (hash === '#blog') {
+        } else if (hash === '#blog' || hash.startsWith('#blog-post-')) {
           setCurrentView('blog');
         } else {
           setCurrentView('home');
