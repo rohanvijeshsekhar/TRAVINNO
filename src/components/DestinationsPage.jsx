@@ -801,7 +801,7 @@ export default function DestinationsPage() {
                       display: 'inline-block',
                       marginTop: '-4px',
                       paddingBottom: '0px',
-                      background: 'linear-gradient(to bottom, #F5F2EC 20%, #E8A7A7 60%, #C1121F 100%)',
+                      background: 'linear-gradient(to bottom, #F5F2EC 0%, #E23E4B 50%, #C1121F 100%)',
                       WebkitBackgroundClip: 'text',
                       WebkitTextFillColor: 'transparent',
                       backgroundClip: 'text'
