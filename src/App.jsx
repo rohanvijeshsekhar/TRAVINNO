@@ -17,12 +17,14 @@ import WhyTravinno from './components/WhyTravinno';
 import ContactCTA from './components/ContactCTA';
 import TestimonialsSection from './components/TestimonialsSection';
 import Footer from './components/Footer';
+import { db } from './lib/db';
 const ParallaxDemo = lazy(() => import('./demos/default'));
 const TeamPage = lazy(() => import('./components/TeamPage'));
 const ContactPage = lazy(() => import('./components/ContactPage'));
 const CareersPage = lazy(() => import('./components/CareersPage'));
 const BlogPage = lazy(() => import('./components/BlogPage'));
 const DestinationsPage = lazy(() => import('./components/DestinationsPage'));
+const AdminPanel = lazy(() => import('./components/AdminPanel'));
 
 
 
@@ -89,10 +91,15 @@ function App() {
       findAndScroll();
     };
 
+    // Initialize LocalStorage database
+    db.init();
+
     const handleHashChange = () => {
       const hash = window.location.hash;
 
-      if (isLockedMode) {
+      if (hash === '#admin') {
+        setCurrentView('admin');
+      } else if (isLockedMode) {
         // Locked mode: Force view to remain on home page
         setCurrentView('home');
         if (hash && hash !== '#about' && hash !== '#team') {
@@ -220,7 +227,7 @@ function App() {
       )}
 
       {/* Floating Transparent Navigation Header */}
-      <Header />
+      {currentView !== 'admin' && <Header />}
 
       {/* Animated Film Grain Overlay — hidden on mobile via CSS */}
       <div className="film-grain" />
@@ -228,7 +235,9 @@ function App() {
       {/* Cursor-following spotlight — desktop only (mousemove already gated, but skip DOM on mobile) */}
       {!IS_TOUCH_DEVICE && <div className="cursor-glow" />}
 
-      {currentView === 'about' ? (
+      {currentView === 'admin' ? (
+        <Suspense fallback={null}><AdminPanel /></Suspense>
+      ) : currentView === 'about' ? (
         <Suspense fallback={null}><ParallaxDemo /></Suspense>
       ) : currentView === 'team' ? (
         <Suspense fallback={null}><TeamPage /></Suspense>

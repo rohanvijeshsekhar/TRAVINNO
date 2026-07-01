@@ -39,7 +39,16 @@ const INITIAL_JOBS = [
 ];
 
 export default function CareersPage() {
-  const [jobs] = useState(INITIAL_JOBS);
+  const [jobs, setJobs] = useState([]);
+
+  useEffect(() => {
+    import('../lib/db').then(({ db }) => {
+      setJobs(db.getCareers());
+      const handleUpdate = () => setJobs(db.getCareers());
+      window.addEventListener('travinno-db-update', handleUpdate);
+      return () => window.removeEventListener('travinno-db-update', handleUpdate);
+    });
+  }, []);
   const [selectedJob, setSelectedJob] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
@@ -146,7 +155,21 @@ export default function CareersPage() {
       return;
     }
 
-    // Mock successful submission
+    import('../lib/db').then(({ db }) => {
+      const newApp = {
+        id: 'app_' + Date.now(),
+        jobTitle: selectedJob ? selectedJob.title : 'General Inquiry',
+        fullName: formData.fullName,
+        email: formData.email,
+        phone: formData.phone,
+        coverLetter: formData.coverLetter || '',
+        fileName: selectedFile ? selectedFile.name : 'resume.pdf',
+        date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+      };
+      const list = db.getApplications();
+      db.saveApplications([...list, newApp], `New job application from ${newApp.fullName} for ${newApp.jobTitle}`);
+    });
+
     setFormSubmitted(true);
   };
 

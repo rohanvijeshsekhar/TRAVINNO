@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, ArrowLeft, CheckCircle } from 'lucide-react';
 
-const destinationsData = [
+const DEFAULT_DESTINATIONS = [
   {
     id: 'dubai',
     name: 'Dubai',
@@ -134,6 +134,17 @@ const destinationsData = [
 export default function DestinationsPage() {
   const [selectedRegion, setSelectedRegion] = useState('All');
   const [activeDestination, setActiveDestination] = useState(null);
+  const [destinationsData, setDestinationsData] = useState([]);
+
+  // Load and subscribe to DB updates
+  useEffect(() => {
+    import('../lib/db').then(({ db }) => {
+      setDestinationsData(db.getDestinations());
+      const handleUpdate = () => setDestinationsData(db.getDestinations());
+      window.addEventListener('travinno-db-update', handleUpdate);
+      return () => window.removeEventListener('travinno-db-update', handleUpdate);
+    });
+  }, []);
 
   // Sync scroll on open/close
   useEffect(() => {
@@ -163,7 +174,7 @@ export default function DestinationsPage() {
     handleHash(); // check on initial mount
 
     return () => window.removeEventListener('hashchange', handleHash);
-  }, []);
+  }, [destinationsData]);
 
   const regions = ['All', 'Middle East', 'Southeast Asia', 'East Africa'];
 

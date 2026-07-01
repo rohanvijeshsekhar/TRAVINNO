@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
 // Mock high-resolution royalty-free imagery matching Aman Resorts / luxury editorial aesthetics
 const HERO_IMAGE = 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=1920';
-const LEADERS = [
+const DEFAULT_LEADERS = [
   {
     name: 'Prinu Santhappan',
     position: 'Managing Director',
@@ -13,7 +13,7 @@ const LEADERS = [
   }
 ];
 
-const TEAM_MEMBERS = [
+const DEFAULT_TEAM_MEMBERS = [
   {
     name: 'Geetha Biju',
     position: 'Sr. Manager (Finance)',
@@ -87,6 +87,19 @@ const faderTransition = { duration: 1.2, ease: [0.25, 1, 0.5, 1] };
 export default function TeamPage() {
   const [hoveredLeader, setHoveredLeader] = useState(null);
   const [hoveredMember, setHoveredMember] = useState(null);
+  const [teamList, setTeamList] = useState([]);
+
+  useEffect(() => {
+    import('../lib/db').then(({ db }) => {
+      setTeamList(db.getTeam());
+      const handleUpdate = () => setTeamList(db.getTeam());
+      window.addEventListener('travinno-db-update', handleUpdate);
+      return () => window.removeEventListener('travinno-db-update', handleUpdate);
+    });
+  }, []);
+
+  const LEADERS = teamList.filter(m => m.isLeader);
+  const TEAM_MEMBERS = teamList.filter(m => !m.isLeader);
 
   return (
     <div 

@@ -75,6 +75,22 @@ export default function ContactPage() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validate()) {
+      // Lazy load/run db saving
+      import('../lib/db').then(({ db }) => {
+        const newInq = {
+          id: 'inq_' + Date.now(),
+          name: formData.fullName,
+          email: formData.email,
+          phone: formData.phoneNumber,
+          agencyName: formData.agencyName,
+          message: formData.message,
+          date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
+          read: false
+        };
+        const currentList = db.getInquiries();
+        db.saveInquiries([newInq, ...currentList], `New contact inquiry received from ${newInq.name}`);
+      });
+
       setIsSubmitted(true);
       setFormData({
         fullName: '',

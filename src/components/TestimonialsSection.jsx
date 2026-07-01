@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
 // Data-driven testimonials structured for easy future updates
-const testimonialsData = [
+const DEFAULT_TESTIMONIALS = [
   {
     id: 1,
     name: "Alexander Mercer",
@@ -85,6 +85,16 @@ function TestimonialCard({ item }) {
 }
 
 function TestimonialsSection() {
+  const [testimonialsData, setTestimonialsData] = useState([]);
+
+  useEffect(() => {
+    import('../lib/db').then(({ db }) => {
+      setTestimonialsData(db.getTestimonials());
+      const handleUpdate = () => setTestimonialsData(db.getTestimonials());
+      window.addEventListener('travinno-db-update', handleUpdate);
+      return () => window.removeEventListener('travinno-db-update', handleUpdate);
+    });
+  }, []);
   return (
     <section className="testimonials-section">
       

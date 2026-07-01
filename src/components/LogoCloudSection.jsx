@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 
 // Travinno location pin coordinates from scratch_logo_paths.json
@@ -137,6 +137,29 @@ const BackgroundIllustrations = () => {
 
 function LogoCloudSection() {
   const marqueeRef = useRef(null);
+  const [partners, setPartners] = useState([]);
+
+  useEffect(() => {
+    import('../lib/db').then(({ db }) => {
+      const dbLogos = db.getLogos();
+      setPartners(dbLogos.map((src, i) => ({
+        id: i,
+        src,
+        alt: PARTNER_NAMES[i] || `Luxury Travel Partner ${i + 1}`
+      })));
+      
+      const handleUpdate = () => {
+        const updated = db.getLogos();
+        setPartners(updated.map((src, i) => ({
+          id: i,
+          src,
+          alt: PARTNER_NAMES[i] || `Luxury Travel Partner ${i + 1}`
+        })));
+      };
+      window.addEventListener('travinno-db-update', handleUpdate);
+      return () => window.removeEventListener('travinno-db-update', handleUpdate);
+    });
+  }, []);
 
   // Pause the CSS marquee animation when the section is off-screen
   useEffect(() => {
@@ -157,7 +180,7 @@ function LogoCloudSection() {
 
   // Pre-generate loop elements with dividers placed dynamically every 7 logos
   const marqueeItems = [];
-  PARTNERS_DATA.forEach((partner, idx) => {
+  partners.forEach((partner, idx) => {
     marqueeItems.push({ type: 'logo', data: partner });
     // Subtly inject pin divider between every 7 logos (6-8 range)
     if ((idx + 1) % 7 === 0) {

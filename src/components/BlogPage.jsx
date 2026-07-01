@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, Clock, Calendar, ChevronLeft, ChevronRight, ArrowLeft } from 'lucide-react';
 
-const blogPosts = [
+const DEFAULT_BLOGS = [
   {
     id: 1,
     title: 'The Art of Slow Travel in Kenya',
@@ -195,7 +195,18 @@ const blogPosts = [
 
 export default function BlogPage() {
   const [selectedPost, setSelectedPost] = useState(null);
+  const [blogPosts, setBlogPosts] = useState([]);
   const viewportRef = useRef(null);
+
+  // Load and subscribe to DB updates
+  useEffect(() => {
+    import('../lib/db').then(({ db }) => {
+      setBlogPosts(db.getBlogs());
+      const handleUpdate = () => setBlogPosts(db.getBlogs());
+      window.addEventListener('travinno-db-update', handleUpdate);
+      return () => window.removeEventListener('travinno-db-update', handleUpdate);
+    });
+  }, []);
 
   // Reset scroll position to top when a post is opened/closed
   useEffect(() => {
@@ -225,7 +236,7 @@ export default function BlogPage() {
     handleHash(); // check on initial mount
 
     return () => window.removeEventListener('hashchange', handleHash);
-  }, []);
+  }, [blogPosts]);
 
   const scrollLeft = () => {
     if (viewportRef.current) {
@@ -659,7 +670,11 @@ export default function BlogPage() {
 
           {/* Main article narrative content below the hero */}
           <div className="editorial-body-content">
-            {selectedPost.content}
+            {typeof selectedPost.content === 'string' ? (
+              <div dangerouslySetInnerHTML={{ __html: selectedPost.content }} />
+            ) : (
+              selectedPost.content
+            )}
           </div>
 
         </div>
