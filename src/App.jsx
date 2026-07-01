@@ -70,6 +70,24 @@ function App() {
   }, []);
 
   useEffect(() => {
+    const scrollToAnchor = (targetId) => {
+      let attempts = 0;
+      const findAndScroll = () => {
+        const el = document.getElementById(targetId);
+        if (el) {
+          if (window.lenis) {
+            window.lenis.scrollTo(el, { duration: 1.2, offset: -80 });
+          } else {
+            el.scrollIntoView({ behavior: 'smooth' });
+          }
+        } else if (attempts < 30) {
+          attempts++;
+          setTimeout(findAndScroll, 50);
+        }
+      };
+      findAndScroll();
+    };
+
     const handleHashChange = () => {
       const hash = window.location.hash;
 
@@ -77,12 +95,7 @@ function App() {
         // Locked mode: Force view to remain on home page
         setCurrentView('home');
         if (hash && hash !== '#about' && hash !== '#team' && hash !== '#services') {
-          setTimeout(() => {
-            const el = document.getElementById(hash.substring(1));
-            if (el) {
-              el.scrollIntoView({ behavior: 'smooth' });
-            }
-          }, 150);
+          scrollToAnchor(hash.substring(1));
         }
       } else {
         // Normal mode (development)
@@ -99,12 +112,7 @@ function App() {
         } else {
           setCurrentView('home');
           if (hash) {
-            setTimeout(() => {
-              const el = document.getElementById(hash.substring(1));
-              if (el) {
-                el.scrollIntoView({ behavior: 'smooth' });
-              }
-            }, 150);
+            scrollToAnchor(hash.substring(1));
           }
         }
       }
