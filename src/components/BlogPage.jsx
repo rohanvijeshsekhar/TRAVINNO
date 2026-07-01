@@ -286,9 +286,18 @@ export default function BlogPage() {
           }
         }
 
-        @media (max-width: 600px) {
+        @media (max-width: 768px) {
+          .carousel-viewport {
+            scroll-snap-type: x mandatory;
+            padding-left: 16px !important;
+            padding-right: 16px !important;
+            scroll-padding: 0 16px;
+          }
           .premium-square-card {
-            flex: 0 0 100%;
+            flex: 0 0 calc(100% - 32px) !important;
+            min-width: unset !important;
+            scroll-snap-align: center;
+            scroll-snap-stop: always;
           }
         }
       `}</style>
