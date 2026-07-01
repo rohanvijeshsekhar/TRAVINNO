@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { db } from '../lib/db';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   LayoutDashboard,
   Globe,
