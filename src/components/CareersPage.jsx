@@ -525,7 +525,7 @@ export default function CareersPage() {
       <div className="careers-container">
         
         {/* HERO SECTION */}
-        <section style={{ marginBottom: '64px', position: 'relative' }}>
+        <section style={{ marginBottom: '24px', position: 'relative' }}>
           
           <div style={{ maxWidth: '640px', position: 'relative', zIndex: 3 }}>
             <motion.span
