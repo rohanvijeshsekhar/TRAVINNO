@@ -30,6 +30,8 @@ export default function Header() {
         setActiveTab('careers');
       } else if (hash === '#blog') {
         setActiveTab('blog');
+      } else if (hash === '#destinations') {
+        setActiveTab('destinations');
       } else {
         setActiveTab('home');
       }
@@ -48,6 +50,10 @@ export default function Header() {
         setActiveMobileItem('company');
         setMobileCompanyOpen(true);
         setMobileDestinationsOpen(false);
+      } else if (activeTab === 'destinations') {
+        setActiveMobileItem('destinations');
+        setMobileCompanyOpen(false);
+        setMobileDestinationsOpen(true);
       } else if (activeTab === 'contact') {
         setActiveMobileItem('contact');
         setMobileCompanyOpen(false);
@@ -279,9 +285,9 @@ export default function Header() {
                 fontWeight: 600,
                 letterSpacing: '2px',
                 textTransform: 'uppercase',
-                color: hoveredMenu === 'company' ? 'var(--accent-red)' : 'var(--text-primary)',
+                color: hoveredMenu === 'company' || activeTab === 'about' || activeTab === 'team' || activeTab === 'services' || activeTab === 'careers' || activeTab === 'blog' ? 'var(--accent-red)' : 'var(--text-primary)',
                 textDecoration: 'none',
-                opacity: hoveredMenu === 'company' ? 1 : 0.8,
+                opacity: hoveredMenu === 'company' || activeTab === 'about' || activeTab === 'team' || activeTab === 'services' || activeTab === 'careers' || activeTab === 'blog' ? 1 : 0.8,
                 padding: '4px 0',
                 display: 'flex',
                 alignItems: 'center',
@@ -390,9 +396,9 @@ export default function Header() {
                 fontWeight: 600,
                 letterSpacing: '2px',
                 textTransform: 'uppercase',
-                color: hoveredMenu === 'destinations' ? 'var(--accent-red)' : 'var(--text-primary)',
+                color: hoveredMenu === 'destinations' || activeTab === 'destinations' ? 'var(--accent-red)' : 'var(--text-primary)',
                 textDecoration: 'none',
-                opacity: hoveredMenu === 'destinations' ? 1 : 0.8,
+                opacity: hoveredMenu === 'destinations' || activeTab === 'destinations' ? 1 : 0.8,
                 padding: '4px 0',
                 display: 'flex',
                 alignItems: 'center',
@@ -942,6 +948,26 @@ export default function Header() {
                             marginBottom: '10px'
                           }}
                         >
+                          <a
+                            href={isLockedMode ? "#" : "#destinations"}
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            style={{
+                              color: 'rgba(255, 255, 255, 0.65)',
+                              fontSize: '0.9rem',
+                              textDecoration: 'none',
+                              fontFamily: 'var(--font-sans)',
+                              fontWeight: 500,
+                              transition: 'color 0.2s',
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '8px',
+                              borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
+                              paddingBottom: '8px',
+                              marginBottom: '4px'
+                            }}
+                          >
+                            Explore All Destinations
+                          </a>
                           {destinationItems.map((item) => (
                             <a
                               key={item.name}
