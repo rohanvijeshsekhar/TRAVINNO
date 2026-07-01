@@ -442,7 +442,7 @@ export default function CareersPage() {
             -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%) !important;
           }
           .hero-artwork-container img {
-            opacity: 0.22 !important;
+            opacity: 0.45 !important;
             border-radius: 0px !important;
           }
         }
