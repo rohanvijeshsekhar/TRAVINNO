@@ -177,19 +177,25 @@ export default function CareersPage() {
           justify-content: space-between;
           align-items: center;
           gap: 32px;
-          background: rgba(255, 255, 255, 0.015);
-          border: 1px solid rgba(245, 242, 236, 0.06);
-          border-radius: 16px;
+          background: linear-gradient(180deg, rgba(16, 16, 20, 0.7) 0%, rgba(10, 10, 12, 0.9) 100%);
+          border: 1px solid rgba(245, 242, 236, 0.09);
+          border-radius: 18px;
           padding: 36px 40px;
+          box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03), 0 12px 30px rgba(0, 0, 0, 0.45);
+          backdrop-filter: blur(20px);
+          -webkit-backdrop-filter: blur(20px);
           transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
           box-sizing: border-box;
         }
 
         .premium-job-card:hover {
-          border-color: #C1121F;
-          background-color: rgba(255, 255, 255, 0.03);
-          transform: translateY(-4px);
-          box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+          border-color: rgba(193, 18, 31, 0.65);
+          background: linear-gradient(180deg, rgba(24, 24, 30, 0.85) 0%, rgba(15, 15, 18, 0.98) 100%);
+          transform: translateY(-6px);
+          box-shadow: 
+            inset 0 1px 0 rgba(255, 255, 255, 0.08), 
+            0 20px 40px -10px rgba(193, 18, 31, 0.22), 
+            0 30px 60px -15px rgba(0, 0, 0, 0.85);
         }
 
         .job-card-info {
