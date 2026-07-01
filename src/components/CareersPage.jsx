@@ -543,25 +543,40 @@ export default function CareersPage() {
 
         {/* OPEN POSITIONS / AVAILABLE OPPORTUNITIES */}
         <section style={{ position: 'relative' }}>
-          <motion.h2
+          <motion.div
             initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 0.55, y: 0 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '4px 12px',
+              border: '1px solid rgba(193, 18, 31, 0.18)',
+              borderRadius: '100px',
               fontFamily: 'var(--font-sans)',
-              fontSize: '0.75rem',
-              fontWeight: 600,
-              letterSpacing: '2.5px',
-              color: 'rgba(245, 242, 236, 0.8)',
-              textTransform: 'uppercase',
-              borderBottom: '1px solid rgba(245, 242, 236, 0.08)',
-              paddingBottom: '16px',
-              margin: '0 0 32px 0'
+              fontSize: '0.72rem',
+              fontWeight: 500,
+              letterSpacing: '0.05em',
+              color: 'rgba(245, 242, 236, 0.85)',
+              marginBottom: '32px',
+              background: 'rgba(193, 18, 31, 0.05)',
+              backdropFilter: 'blur(4px)',
+              WebkitBackdropFilter: 'blur(4px)'
             }}
           >
+            <span
+              style={{
+                width: '6px',
+                height: '6px',
+                backgroundColor: '#C1121F',
+                borderRadius: '50%',
+                display: 'inline-block'
+              }}
+            />
             Available Opportunities
-          </motion.h2>
+          </motion.div>
 
           {openPositions.length > 0 ? (
             <div className="job-card-grid">
