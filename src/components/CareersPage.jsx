@@ -568,7 +568,7 @@ export default function CareersPage() {
                 fontWeight: 450,
                 lineHeight: 1.15,
                 color: '#F5F2EC',
-                margin: '0 0 24px 0',
+                margin: '0 0 16px 0',
                 letterSpacing: '-0.5px'
               }}
             >
@@ -581,8 +581,8 @@ export default function CareersPage() {
                   letterSpacing: '0.02em',
                   lineHeight: '1.2',
                   display: 'inline-block',
-                  marginTop: '12px',
-                  paddingBottom: '14px',
+                  marginTop: '-4px',
+                  paddingBottom: '0px',
                   background: 'linear-gradient(to bottom, #F5F2EC 20%, #E8A7A7 60%, #C1121F 100%)',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',

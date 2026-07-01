@@ -324,7 +324,7 @@ export default function ContactPage() {
               fontWeight: 500,
               lineHeight: 1.15,
               color: '#F5F2EC',
-              margin: '0 0 24px 0'
+              margin: '0 0 16px 0'
             }}
           >
             Reach Out To <br />
@@ -341,7 +341,8 @@ export default function ContactPage() {
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
-                paddingTop: '6px'
+                marginTop: '-4px',
+                paddingTop: '0px'
               }}
             >
               Our Experts
