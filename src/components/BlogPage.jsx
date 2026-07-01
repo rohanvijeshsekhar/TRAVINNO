@@ -554,6 +554,8 @@ export default function BlogPage() {
                 </div>
               </motion.div>
             ))}
+            {/* Spacer to preserve right padding on scroll */}
+            <div style={{ flex: '0 0 24px', width: '24px', pointerEvents: 'none' }} />
           </div>
         </section>
         
