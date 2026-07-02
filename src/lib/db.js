@@ -195,13 +195,7 @@ const INITIAL_TESTIMONIALS = [
   }
 ];
 
-const INITIAL_LOGOS = [
-  'images/partners/belmond.png',
-  'images/partners/oneandonly.png',
-  'images/partners/aman.png',
-  'images/partners/sixsenses.png',
-  'images/partners/mandarin.png'
-];
+const INITIAL_LOGOS = Array.from({ length: 52 }, (_, i) => `partners/partner-${i + 1}.webp`);
 
 const INITIAL_INQUIRIES = [
   {
@@ -267,7 +261,8 @@ export const db = {
     if (!localStorage.getItem('travinno_testimonials')) {
       localStorage.setItem('travinno_testimonials', JSON.stringify(INITIAL_TESTIMONIALS));
     }
-    if (!localStorage.getItem('travinno_logos')) {
+    const existingLogos = localStorage.getItem('travinno_logos');
+    if (!existingLogos || existingLogos.includes('images/partners/')) {
       localStorage.setItem('travinno_logos', JSON.stringify(INITIAL_LOGOS));
     }
     if (!localStorage.getItem('travinno_inquiries')) {

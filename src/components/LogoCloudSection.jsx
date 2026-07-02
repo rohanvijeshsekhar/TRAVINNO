@@ -36,7 +36,7 @@ const PartnerLogo = ({ partner }) => {
   return (
     <div className="partner-logo-item">
       <img 
-        src={partner.src} 
+        src={partner.src && (partner.src.startsWith('data:') || partner.src.startsWith('http')) ? partner.src : `${import.meta.env.BASE_URL || '/'}${partner.src}`} 
         alt={partner.alt} 
         className="partner-logo-img animate-fade-in"
         loading="lazy"

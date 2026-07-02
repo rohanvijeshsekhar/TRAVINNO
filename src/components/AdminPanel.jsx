@@ -1713,7 +1713,7 @@ export default function AdminPanel() {
                     alignItems: 'center'
                   }}
                 >
-                  <img src={logo} alt="Partner Logo" style={{ maxWidth: '90%', maxHeight: '60px', objectFit: 'contain', opacity: 0.65 }} />
+                  <img src={logo.startsWith('data:') || logo.startsWith('http') ? logo : `${import.meta.env.BASE_URL || '/'}${logo}`} alt="Partner Logo" style={{ maxWidth: '90%', maxHeight: '60px', objectFit: 'contain', opacity: 0.65 }} />
                   <button
                     onClick={() => deleteLogo(idx)}
                     style={{
