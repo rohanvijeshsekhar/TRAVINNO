@@ -326,13 +326,13 @@ export default function BlogPage() {
           width: 100%;
           height: 100%;
           object-fit: cover;
-          filter: grayscale(100%) contrast(90%) brightness(70%);
+          filter: contrast(90%) brightness(70%);
           transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease;
         }
 
         .premium-square-card:hover .card-image-wrapper img {
           transform: scale(1.08);
-          filter: grayscale(100%) contrast(100%) brightness(85%);
+          filter: contrast(100%) brightness(85%);
         }
 
         .card-info-content {
@@ -458,7 +458,7 @@ export default function BlogPage() {
           width: 100%;
           height: 100%;
           object-fit: cover;
-          filter: grayscale(100%) contrast(95%) brightness(60%);
+          filter: contrast(95%) brightness(60%);
         }
 
         .editorial-detail-hero-overlay {
@@ -719,7 +719,7 @@ export default function BlogPage() {
                   height: '100%',
                   objectFit: 'cover',
                   opacity: 0.38,
-                  filter: 'grayscale(100%) contrast(80%) brightness(65%)',
+                  filter: 'contrast(80%) brightness(65%)',
                   transition: 'opacity 0.5s ease',
                   WebkitMaskImage: 'linear-gradient(to bottom, black 82%, transparent 100%)',
                   maskImage: 'linear-gradient(to bottom, black 82%, transparent 100%)'

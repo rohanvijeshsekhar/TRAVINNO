@@ -285,7 +285,7 @@ export default function ContactPage() {
               height: '100%',
               objectFit: 'cover',
               opacity: 0.38,
-              filter: 'grayscale(100%) contrast(80%) brightness(65%)',
+              filter: 'contrast(80%) brightness(65%)',
               transition: 'opacity 0.5s ease',
               WebkitMaskImage: 'linear-gradient(to bottom, black 82%, transparent 100%)',
               maskImage: 'linear-gradient(to bottom, black 82%, transparent 100%)'

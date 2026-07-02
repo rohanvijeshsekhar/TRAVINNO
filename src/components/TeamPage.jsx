@@ -526,7 +526,7 @@ export default function TeamPage() {
                       height: member.height,
                       objectFit: 'cover',
                       objectPosition: '50% 0%',
-                      filter: hoveredMember === idx ? 'grayscale(0%)' : 'grayscale(100%)',
+                      filter: 'none',
                       transform: hoveredMember === idx ? 'scale(1.03)' : 'scale(1.0)',
                       transition: 'filter 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.8s cubic-bezier(0.25, 1, 0.5, 1)'
                     }}

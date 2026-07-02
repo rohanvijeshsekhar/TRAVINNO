@@ -322,7 +322,7 @@ export default function AboutPurpose() {
                   width: '100%',
                   height: '100%',
                   objectFit: 'cover',
-                  filter: 'grayscale(1) contrast(1.25) brightness(0.9)'
+                  filter: 'contrast(1.25) brightness(0.9)'
                 }}
               />
             </div>
@@ -365,7 +365,7 @@ export default function AboutPurpose() {
                   width: '100%',
                   height: '100%',
                   objectFit: 'cover',
-                  filter: 'grayscale(1) contrast(1.25) brightness(0.9)'
+                  filter: 'contrast(1.25) brightness(0.9)'
                 }}
               />
             </div>
