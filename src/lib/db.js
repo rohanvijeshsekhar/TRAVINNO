@@ -262,7 +262,7 @@ export const db = {
       localStorage.setItem('travinno_testimonials', JSON.stringify(INITIAL_TESTIMONIALS));
     }
     const existingLogos = localStorage.getItem('travinno_logos');
-    if (!existingLogos || existingLogos.includes('images/partners/')) {
+    if (!existingLogos || !existingLogos.includes('partner-1.webp')) {
       localStorage.setItem('travinno_logos', JSON.stringify(INITIAL_LOGOS));
     }
     if (!localStorage.getItem('travinno_inquiries')) {
